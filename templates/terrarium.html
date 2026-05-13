@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Terrarium - Little Forest{% endblock %}
+
+
+{% block content %}
+
+
+
+<section class="video-banner">
+    <video autoplay muted loop playsinline>
+        <source src="{% static 'images/terrarium.mp4' %}" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <div class="overlay">
+        <h1>Terrarium Collection</h1>
+        <p>Discover premium products crafted for you</p>
+    </div>
+</section>
+<section class="main-content-wrap shop-page section-ptb">
+    <div class="container">
+        <div class="row">
+            <div class="pro-grli-wrapper">
+
+                <div class="pro-grli-wrap product-grid">
+                    <!-- Product Grid -->
+                    <div class="special-product grid-3">
+                        <div class="collection-category">
+                            <div class="row">
+                                <div>
+                                    <ul class="product-view-ul">
+
+
+            {% for product in products %}
+
+            <li class="pro-item-li">
+
+                                            <div class="single-product-wrap">
+
+                                                <!-- Product Image -->
+                                                <div class="terr product-image banner-hover">
+                                                    <!-- Hover Actions -->
+                                                    <a href="{% url 'terrarium_product_detail' product.id %}">
+                                                        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                                                    </a>
+
+                                                    <!-- Hover Actions -->
+                                                    <div class="product-action">
+
+                                                        <a href="#"
+                                                        class="wishlist add-to-cart-btn"
+                                                        data-url="{% url 'add_to_cart' product.id %}"
+                                                        data-auth="{% if request.user.is_authenticated %}true{% else %}false{% endif %}">
+                                                            <span class="tooltip-text">Cart</span>
+                                                            <span class="pro-action-icon">
+                                                                <i class="feather-shopping-cart"></i>
+                                                            </span>
+                                                        </a>
+
+                                                        <a href="#"
+                                                        class="wishlist wishlist-btn"
+                                                        data-url="{% url 'add_to_wishlist' product.id %}"
+                                                        data-auth="{% if request.user.is_authenticated %}true{% else %}false{% endif %}">
+                                                            <span class="tooltip-text">Wishlist</span>
+                                                            <span class="pro-action-icon">
+                                                                <i class="feather-heart"></i>
+                                                            </span>
+                                                        </a>
+
+                                                    </div>
+                                                </div>
+
+                                                <!-- Product Details -->
+                                                <div class="product-caption">
+                                                    <div class="product-content">
+
+                                                        <div class="product-title">
+                                                            <div class="pro-title-price">
+                                                                <h6>
+                                                                    <a href="{% url 'product_detail' product.id %}">
+                                                                        {{product.name}}
+                                                                    </a>
+                                                                </h6>
+
+                                                                <div class="product-price">
+                                                                    <span class="price">₹{{ product.discounted_price }}</span>
+                                                                    <span class="old-price">
+                                                                        <del>₹{{ product.price }}</del>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="product-name">
+                                                                <span class="product-type">{{ product.category }} Terrarium</span>
+                                                                <span class="product-vendor">Height : {{ product.height }} Inches</span>
+                                                                <span class="product-vendor">Age : 2 - 3 years</span>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- Rating -->
+                                                        <div class="product-ratting">
+                                                            <span class="pro-ratting">
+                                                                <i class="fa-regular fa-star"></i>
+                                                                <i class="fa-regular fa-star"></i>
+                                                                <i class="fa-regular fa-star"></i>
+                                                                <i class="fa-regular fa-star"></i>
+                                                                <i class="fa-regular fa-star"></i>
+                                                            </span>
+                                                        </div>
+
+                                                        <!-- Bottom Actions -->
+                                                        <div class="product-action">
+                                                            <a href="{% url 'add_to_cart' product.id %}" class="wishlist add-to-cart-btn">
+                                                                <span class="tooltip-text">Cart</span>
+                                                                <span class="pro-action-icon">
+                                                                    <i class="feather-shopping-cart"></i>
+                                                                </span>
+                                                            </a>
+
+                                                            <a href="{% url 'add_to_wishlist' product.id %}" class="wishlist">
+                                                                <span class="tooltip-text">Wishlist</span>
+                                                                <span class="pro-action-icon">
+                                                                    <i class="feather-heart"></i>
+                                                                </span>
+                                                            </a>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                        </li>
+
+            {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}

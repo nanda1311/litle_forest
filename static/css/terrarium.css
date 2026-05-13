@@ -1,0 +1,137 @@
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Video Banner */
+.video-banner {
+    position: relative;
+    width: 100%;
+    height: 90vh;
+    overflow: hidden;
+}
+
+.video-banner video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.video-banner .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #fff;
+}
+
+.video-banner h1 {
+    font-size: 3rem;
+    margin-bottom: 10px;
+}
+
+.video-banner p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+}
+
+.btn {
+    padding: 10px 20px;
+    background: #fff;
+    color: #000;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    background: #000;
+    color: #fff;
+}
+
+/* Products Section */
+.products-section-terrarium {
+    padding: 60px 20px;
+    background: #f9f9f9;
+}
+
+.container {
+    max-width: 1200px;
+    margin: auto;
+}
+
+.section-title {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 40px;
+}
+.terrarium-page{
+    padding-bottom: 20px;
+    padding-top: 20px;
+    
+}
+/* Grid */
+.product-grid-terrarium {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+    text-decoration: none;
+}
+
+/* Card */
+.product-card-terrarium {
+    background: #d6dbd6;
+    border-radius: 10px;
+    transition: 0.3s;
+    text-decoration: none;
+
+}
+.product-card-terrarium img { 
+    width: 100%;
+    height: 395px;
+    object-fit: cover;
+    margin-bottom: 15px;
+    border-radius: 10px 10px 0 0;
+}
+
+.product-card-terrarium h3 {
+    margin-bottom: 10px;
+    margin-left: 10px;
+    color: #000;
+    text-align: left;
+}
+
+.product-card-terrarium p {
+    margin-bottom: 15px;
+    margin-left: 10px;
+    font-weight: bold;
+}
+.terr a img {
+    height: 399px;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .product-grid-terrarium {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 576px) {
+    .video-banner h1 {
+        font-size: 2rem;
+    }
+
+    .product-grid-terrarium {
+        grid-template-columns: 1fr;
+    }
+}

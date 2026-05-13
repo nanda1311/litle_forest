@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home - Little Forest{% endblock %}
+{% block content %}
+    <body>
+        <!-- header start -->
+     
+        <!-- header end -->
+        <!-- main start -->
+    
+        <section id="breadcrumb">
+            <div class="container-fluid fluid____mobile">
+                <div class="breadcrumb-content bg-breadcrumb-03">
+                    <div class="caption">
+                        <div class="title">OUR BLOG</div>
+                        <ul>
+                            <li>Home</li>
+                            <li>OUR BLOG</li>                    
+                        </ul>
+                    </div>                    
+                </div>
+            </div>
+        </section>
+        <!-- GALLERY -->
+         <div>
+            <div class="container">
+               <div class="blog-para"> 
+                <p class="blog_peragrpha">The Art and Soul of Bonsai
+                Explore the world of bonsai with expert tips, inspiring stories, and deep-rooted traditions.
+                Whether you’re a beginner or a seasoned artist, our blog is a place to learn, grow, and share the beauty of this ancient art.
+             </p>
+            </div>
+              </div>
+              
+              <div class="  blog-col gallery_1 clearfix ">
+                <div class="container">
+                    <div class="gallery gallery-restaurant">
+                        <!-- GALLERY CONTENT -->
+                        <div class="gallery-content">
+                            <div class="row">
+                                <div class="gallery-isotope blog-col-3 section-blog-list clearfix">
+                                    <!-- ITEM SIZE -->
+                                    <div class="item-size "></div>
+                                    <!-- END / ITEM SIZE -->
+                                    <!-- ITEM -->
+                                {% for post in posts %}
+<div class="item-isotope suite dining">
+    <div class="wrap-blog">
+        <div class="box-img">
+            <a href="{% url 'blog_detail' slug=post.slug %}">
+                <img src="{{ post.image.url }}" class="img-responsive" alt="{{ post.title }}" title="{{ post.title }}" onerror="this.onerror=null; this.src='/static/img/default-image.jpg';">
+            </a>
+        </div>
+        <div class="entry-content">
+            <div class="entry-between">
+               <span class="label">
+                    {% if post.categories.all %}
+                        {{ post.categories.all|first }}
+                    {% else %}
+                        Uncategorized
+                    {% endif %}
+                </span>
+            </div>
+            <div class="entry-meta">
+                <div class="entry-date">
+                    <p class="date">{{ post.date|date:"F j, Y" }}</p>
+                </div>
+                <div class="entry-title">
+                   <a href="{% url 'blog_detail' slug=post.slug %}">{{ post.title }}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+                                
+                                
+                                    <!-- END / ITEM -->
+                                    <!-- ITEM -->
+                                    
+                                    <!-- END / ITEM -->
+                                    <!-- ITEM -->
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <!-- GALLERY CONTENT -->
+                    </div>
+            </div>
+        </div>
+              
+
+
+       
+       
+      
+    </body>
+    {% endblock %}
+<!-- Mirrored from spacingtech.com/html/panno/panno/about-us.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 24 Feb 2025 05:33:55 GMT -->
+</html>

@@ -1,0 +1,282 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}Add Product{% endblock %}
+{% block page_title %}Create Product{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Reuse same card style as product list */
+    .dashboard-card {
+        border: none;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        background: white;
+    }
+
+    /* Form header - light like table thead */
+    .form-header {
+        background: #f1f5f9;
+        padding: 1.25rem 1.75rem;
+        border-bottom: 1px solid #e2e8f0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .form-header h5 {
+        margin: 0;
+        font-weight: 600;
+        color: #1e293b;
+    }
+
+    .form-body {
+        padding: 2rem 1.75rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: #475569;
+        margin-bottom: 0.5rem;
+        display: block;
+        font-size: 0.95rem;
+    }
+
+    .form-control,
+    .form-select,
+    textarea {
+        border: 1px solid #cbd5e1;
+        border-radius: 10px;
+        padding: 0.75rem 1rem;
+        font-size: 1rem;
+        background: white;
+        transition: all 0.2s ease;
+    }
+
+    .form-control:focus,
+    .form-select:focus,
+    textarea:focus {
+        border-color: #10b981;
+        box-shadow: 0 0 0 3px rgba(16,185,129,0.15);
+        outline: none;
+    }
+
+    textarea {
+        min-height: 140px;
+        resize: vertical;
+    }
+
+    .form-error {
+        color: #dc2626;
+        font-size: 0.875rem;
+        margin-top: 0.35rem;
+    }
+
+    .form-buttons {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        margin-top: 2.5rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid #e2e8f0;
+    }
+
+    .btn-action-form {
+        font-size: 0.95rem;
+        padding: 0.65rem 1.5rem;
+        border-radius: 10px;
+        transition: all 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .btn-save {
+        background: #10b981;
+        border: none;
+        color: white;
+    }
+
+    .btn-save:hover {
+        background: #059669;
+        transform: translateY(-1px);
+    }
+
+    .btn-cancel {
+        background: white;
+        border: 1px solid #cbd5e1;
+        color: #475569;
+    }
+
+    .btn-cancel:hover {
+        background: #f1f5f9;
+        border-color: #9ca3af;
+    }
+
+    .alert-form-error {
+        border-radius: 10px;
+        padding: 1rem 1.25rem;
+        margin-bottom: 1.75rem;
+        background: #fee2e2;
+        border: 1px solid #fecaca;
+        color: #991b1b;
+    }
+
+    @media (max-width: 768px) {
+        .form-body {
+            padding: 1.5rem 1.25rem;
+        }
+        .form-buttons {
+            flex-direction: column;
+        }
+        .btn-action-form {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-card">
+
+    <div class="card-body p-4 p-lg-5">
+
+        <!-- Header -->
+        <div class="form-header mb-4">
+            <h5>Create New Product</h5>
+            <small class="text-muted">Add your product details below</small>
+        </div>
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <!-- CKEditor media -->
+            {{ form.media }}
+
+            {% if form.errors %}
+            <div class="alert-form-error">
+                <strong>Please correct the errors below:</strong>
+                <ul class="mb-0 mt-2 ps-3">
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            <li>{{ field.label }}: {{ error }}</li>
+                        {% endfor %}
+                    {% endfor %}
+                    {% for error in form.non_field_errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+
+            <div class="row g-4">
+
+                <!-- Product Name -->
+                <div class="col-lg-6 form-group">
+                    <label class="form-label">Product Name <span class="text-danger">*</span></label>
+                    {{ form.name }}
+                    {% if form.name.errors %}<div class="form-error">{{ form.name.errors|join:", " }}</div>{% endif %}
+                </div>
+
+                <!-- SKU -->
+                <div class="col-lg-6 form-group">
+                    <label class="form-label">SKU</label>
+                    {{ form.sku }}
+                    {% if form.sku.errors %}<div class="form-error">{{ form.sku.errors|join:", " }}</div>{% endif %}
+                </div>
+
+                <!-- Category -->
+                <div class="col-lg-6 form-group">
+                    <label class="form-label">Category <span class="text-danger">*</span></label>
+                    {{ form.category }}
+                    {% if form.category.errors %}<div class="form-error">{{ form.category.errors|join:", " }}</div>{% endif %}
+                </div>
+
+                <!-- Height -->
+                <div class="col-lg-6 form-group">
+                    <label class="form-label">Height</label>
+                    {{ form.height }}
+                    {% if form.height.errors %}<div class="form-error">{{ form.height.errors|join:", " }}</div>{% endif %}
+                </div>
+
+                <!-- Price -->
+                <div class="col-lg-4 form-group">
+                    <label class="form-label">Price <span class="text-danger">*</span></label>
+                    {{ form.price }}
+                    {% if form.price.errors %}<div class="form-error">{{ form.price.errors|join:", " }}</div>{% endif %}
+                </div>
+
+                <!-- Discounted Price -->
+                <div class="col-lg-4 form-group">
+                    <label class="form-label">Discounted Price</label>
+                    {{ form.discounted_price }}
+                    {% if form.discounted_price.errors %}<div class="form-error">{{ form.discounted_price.errors|join:", " }}</div>{% endif %}
+                </div>
+
+                <!-- Stock Quantity -->
+                <div class="col-lg-4 form-group">
+                    <label class="form-label">Stock Quantity <span class="text-danger">*</span></label>
+                    {{ form.stock_quantity }}
+                    {% if form.stock_quantity.errors %}<div class="form-error">{{ form.stock_quantity.errors|join:", " }}</div>{% endif %}
+                </div>
+
+                <!-- Delivery Date -->
+                <div class="col-lg-6 form-group">
+                    <label class="form-label">Delivery Date</label>
+                    {{ form.delivery_date }}
+                    {% if form.delivery_date.errors %}<div class="form-error">{{ form.delivery_date.errors|join:", " }}</div>{% endif %}
+                </div>
+
+                <!-- Availability -->
+                <div class="col-lg-6 form-group">
+                    <label class="form-label">Availability</label>
+                    <div class="mt-2">
+                        {{ form.availability }}
+                    </div>
+                    {% if form.availability.errors %}<div class="form-error">{{ form.availability.errors|join:", " }}</div>{% endif %}
+                </div>
+
+                <!-- Description -->
+                <div class="col-12 form-group">
+                    <label class="form-label">Description</label>
+                    {{ form.description }}
+                    {% if form.description.errors %}<div class="form-error">{{ form.description.errors|join:", " }}</div>{% endif %}
+                </div>
+
+                <!-- Main Image -->
+                <div class="col-12 form-group">
+                    <label class="form-label">Main Image</label>
+                    {{ form.main_image }}
+                    {% if form.main_image.errors %}<div class="form-error">{{ form.main_image.errors|join:", " }}</div>{% endif %}
+                    <small class="text-muted d-block mt-1">Recommended size: 800×800px or larger, JPG/PNG/WebP</small>
+                </div>
+
+            </div>
+
+            <!-- Buttons -->
+            <div class="form-buttons">
+                <button type="submit" class="btn btn-action-form btn-save">
+                    <i data-lucide="save" class="w-5 h-5"></i>
+                    Save Product
+                </button>
+
+                <a href="{% url 'product_list' %}" class="btn btn-action-form btn-cancel">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                    Cancel
+                </a>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+{% endblock %}

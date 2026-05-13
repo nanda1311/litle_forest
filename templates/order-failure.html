@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home - Little Forest{% endblock %}
+{% block content %}
+
+    <body>
+        <!-- header start -->
+       
+        <!-- header end -->
+        <!-- main section start-->
+        <main>
+            <!-- breadcrumb start -->
+         
+            <section id="breadcrumb">
+                <div class="container-fluid fluid____mobile">
+                    <div class="breadcrumb-content bg-breadcrumb-01">
+                        <div class="caption">
+                            <div class="title">Order Failure </div>
+                            <ul>
+                                <li>Home</li>
+                                <li>Order Failure </li>                    
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- breadcrumb end -->
+            <!-- order-complete start -->
+            <section class="order-complete section-ptb">
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <div class="order-area">
+
+                                <!-- order-price end -->
+                                <!-- order-details start -->
+                                <div class="order-details">
+                                    <span class="text-success order-i"><i class="text-danger fa-solid fa-xmark"></i></span>
+                                    <h4>Payment Failed</h4>
+                                    <span class="order-s">Please Try to Order again</span>
+                                    <a href="{% url 'store' %}" class="tracking-link btn btn-style2">Continue Shopping</a>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- order-complete end -->
+        </main>
+        <!-- main section end-->
+   
+       
+    </body>
+
+    {% endblock %}
+</html>

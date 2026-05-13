@@ -1,0 +1,182 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home - Little Forest{% endblock %}
+
+{% block content %}
+
+<!-- Breadcrumb Section -->
+<section id="breadcrumb">
+    <div class="container-fluid fluid____mobile">
+        <div class="breadcrumb-content bg-breadcrumb-06">
+            <div class="caption">
+                <div class="title">Faq's</div>
+                <ul>
+                    <li>Home</li>
+                    <li>Faq's</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Main Content -->
+<section class="faq-page section-ptb">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+
+                <!-- Section Title -->
+                <div class="section-capture">
+                    <div class="section-title">
+                        <h2><span>Frequently asked questions</span></h2>
+                    </div>
+                </div>
+
+                <!-- FAQ Banner + Accordion -->
+                <div class="content-qa-banner">
+                    <!-- Banner Image -->
+                    <div class="banner-image banner-hover">
+                        <img src="{% static 'img/other-pages/faq.jpg' %}" class="img-fluid" alt="faq">
+                    </div>
+
+                    <!-- Accordion Questions & Answers -->
+                    <div class="que-ans">
+                        <ul class="accordian-ul">
+
+                            <li class="accordian-li">
+                                <a href="#template-1" class="accordian" data-bs-toggle="collapse" aria-expanded="true">
+                                    <h6 class="acco-text">What is a bonsai plant?</h6>
+                                    <span class="acco-arrow"><i class="bi bi-chevron-down"></i></span>
+                                </a>
+                                <div class="ans-accordian show" id="template-1">
+                                    <p>A bonsai is a miniature tree grown in a pot, shaped and trained over time using specific techniques. It reflects the beauty of a full-sized tree in a compact, artistic form.</p>
+                                </div>
+                            </li>
+
+                            <li class="accordian-li">
+                                <a href="#template-2" class="accordian" data-bs-toggle="collapse">
+                                    <h6 class="acco-text">What are some common bonsai species in India? </h6>
+                                    <span class="acco-arrow"><i class="bi bi-chevron-down"></i></span>
+                                </a>
+                                <div class="ans-accordian collapse" id="template-2">
+                                    <p>Popular bonsai species in India include Ficus, Banyan, Jade, Neem, Peepal, Chinese Elm, and Juniper. These adapt well to Indian weather and are ideal for beginners and hobbyists alike.</p>
+                                </div>
+                            </li>
+
+                            <li class="accordian-li">
+                                <a href="#template-3" class="accordian" data-bs-toggle="collapse">
+                                    <h6 class="acco-text">Can bonsais be grown indoors?</h6>
+                                    <span class="acco-arrow"><i class="bi bi-chevron-down"></i></span>
+                                </a>
+                                <div class="ans-accordian collapse" id="template-3">
+                                    <p>Yes, many bonsai trees like Ficus and Jade do well indoors. Just ensure they get enough indirect sunlight and are placed in a well-ventilated area.</p>
+                                </div>
+                            </li>
+
+                            <li class="accordian-li">
+                                <a href="#template-4" class="accordian" data-bs-toggle="collapse">
+                                    <h6 class="acco-text">How do I take care of bonsais?</h6>
+                                    <span class="acco-arrow"><i class="bi bi-chevron-down"></i></span>
+                                </a>
+                                <div class="ans-accordian collapse" id="template-4">
+                                    <p>Bonsai care involves proper watering, pruning, sunlight, and occasional repotting. Each species has different needs, so it's important to understand your tree’s specific requirements.</p>
+                                </div>
+                            </li>
+
+                            <li class="accordian-li">
+                                <a href="#template-5" class="accordian" data-bs-toggle="collapse">
+                                    <h6 class="acco-text">How often should I water my bonsai?</h6>
+                                    <span class="acco-arrow"><i class="bi bi-chevron-down"></i></span>
+                                </a>
+                                <div class="ans-accordian collapse" id="template-5">
+                                    <p>Watering depends on the species, pot size, and weather. As a general rule, water when the topsoil feels slightly dry- not completely dry or constantly wet.</p>
+                                </div>
+                            </li>
+
+                            <li class="accordian-li">
+                                <a href="#template-6" class="accordian" data-bs-toggle="collapse">
+                                    <h6 class="acco-text">How do I prune my bonsai?</h6>
+                                    <span class="acco-arrow"><i class="bi bi-chevron-down"></i></span>
+                                </a>
+                                <div class="ans-accordian collapse" id="template-6">
+                                    <p>Prune regularly to maintain the shape and size of your bonsai. Use clean, sharp tools and trim unwanted shoots or branches to encourage healthy growth and styling</p>
+                                </div>
+                            </li>
+
+                            <li class="accordian-li">
+                                <a href="#template-7" class="accordian" data-bs-toggle="collapse">
+                                    <h6 class="acco-text">How often should I repot my bonsai?</h6>
+                                    <span class="acco-arrow"><i class="bi bi-chevron-down"></i></span>
+                                </a>
+                                <div class="ans-accordian collapse" id="template-7">
+                                    <p>Most bonsai trees need repotting every 2–3 years to refresh the soil and prevent root binding. Younger trees may need it more frequently.</p>
+                                </div>
+                            </li>
+
+                            <li class="accordian-li">
+                                <a href="#template-8" class="accordian" data-bs-toggle="collapse">
+                                    <h6 class="acco-text">Is it safe to order bonsai plants online?</h6>
+                                    <span class="acco-arrow"><i class="bi bi-chevron-down"></i></span>
+                                </a>
+                                <div class="ans-accordian collapse" id="template-8">
+                                    <p>Absolutely. At Litle Forest, we ensure safe packaging and secure shipping so your bonsai arrives healthy and intact.</p>
+                                </div>
+                            </li>
+
+                            <li class="accordian-li">
+                                <a href="#template-9" class="accordian" data-bs-toggle="collapse">
+                                    <h6 class="acco-text">Can I check the order status?</h6>
+                                    <span class="acco-arrow"><i class="bi bi-chevron-down"></i></span>
+                                </a>
+                                <div class="ans-accordian collapse" id="template-9">
+                                    <p>Yes, once your order is placed, you’ll receive tracking details via email or SMS to check the status anytime.</p>
+                                </div>
+                            </li>
+
+                            <li class="accordian-li">
+                                <a href="#template-10" class="accordian" data-bs-toggle="collapse">
+                                    <h6 class="acco-text">Is Cash on Delivery available at Litle Forest?</h6>
+                                    <span class="acco-arrow"><i class="bi bi-chevron-down"></i></span>
+                                </a>
+                                <div class="ans-accordian collapse" id="template-10">
+                                    <p>Currently, we offer secure online payment options. Cash on Delivery is not available at this time.</p>
+                                </div>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Custom Accordion JavaScript (only one open at a time) -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const accordions = document.querySelectorAll(".accordian");
+
+    accordions.forEach(acc => {
+        acc.addEventListener("click", function(e) {
+            e.preventDefault();
+
+            const targetId = this.getAttribute("href").substring(1);
+            const targetDiv = document.getElementById(targetId);
+
+            // Close all others
+            document.querySelectorAll(".ans-accordian").forEach(div => {
+                if (div !== targetDiv) {
+                    div.classList.remove("show");
+                }
+            });
+
+            // Toggle current
+            targetDiv.classList.toggle("show");
+        });
+    });
+});
+</script>
+
+{% endblock %}

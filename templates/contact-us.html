@@ -1,0 +1,199 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home - Little Forest{% endblock %}
+{% block content %}
+
+    <body>
+        <!-- header start -->
+      
+        <!-- header end -->
+        <!-- main section start-->
+        <main>
+            
+            <!-- breadcrumb start -->
+            <section id="breadcrumb">
+                <div class="container-fluid fluid____mobile">
+                    <div class="breadcrumb-content bg-breadcrumb-04">
+                        <div class="caption">
+                            <div class="title">Contact us</div>
+                            <ul>
+                                <li>Home</li>
+                                <li>contact us</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- breadcrumb end -->
+            <!-- get-info-area start -->
+             <section class="section-contact">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="details-wrap">
+          <div class="details-wrapper">
+
+            <p class="contact-label">CONTACT US</p>
+
+            <h2 class="contact-title">Drop us message</span></h2>
+
+            <p class="contact-desc">
+              Thank you for your interest in Litle Forest a World of Living Art. 
+              We're excited to hear from you.
+            </p>
+
+            <!-- Phone -->
+            <div class="contact-item">
+              <div class="icon">
+                <i class="bi bi-headset"></i>
+              </div>
+              <div class="info">
+                <p class="label">Call us for inquiry</p>
+                <h6><a href="tel:+919966992122" class="get-add">Call: +91 99669 92122</a></h6>
+              </div>
+            </div>
+
+
+            <!-- Email -->
+            <div class="contact-item">
+              <div class="icon">
+                <i class="bi bi-envelope"></i>
+              </div>
+              <div class="info">
+                <p class="label">Email anytime</p>
+                <h6><a href="mailto:litleforest2025@gmail.com?subject=Inquiry&body=Hello%2C%20I%20have%20an%20inquiry..." class="get-add">litleforest2025@gmail.com</a></h6>
+              </div>
+            </div>
+
+
+            <!-- Address -->
+            <div class="contact-item">
+              <div class="icon">
+                <i class="bi bi-geo-alt"></i>
+              </div>
+              <div class="info">
+                <p class="label">Visit Our Office</p>
+                <h6>Kasthuri nagar, Bengaluru, Karnataka</h6>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Contact Form - Left Column -->
+      <div class="col-md-6">
+        <div class="section-capture">
+          <div class="">
+            <h2><span></span></h2>
+          </div>
+        </div>
+
+        <div class="form-warp contact-detail">
+          <div class="contact-form-list">
+
+            {% if messages %}
+              {% for msg in messages %}
+                <p style="color:green;">{{ msg }}</p>
+              {% endfor %}
+            {% endif %}
+
+            <form method="post">
+              {% csrf_token %}
+              <ul class="form-fill">
+                <li class="form-fill-li Name">
+                  <label>Name</label>
+                  <input type="text" name="name" autocomplete="name" placeholder="Name" required>
+                </li>
+                <li class="form-fill-li Email">
+                  <label>Email address</label>
+                  <input type="email" name="email" autocomplete="email" placeholder="Email address" required>
+                </li>
+                <li class="form-fill-li Phone number">
+                  <label>Phone number</label>
+                  <input type="tel" name="phone" placeholder="Phone number" required>
+                </li>
+                <li class="form-fill-li Message">
+                  <label>Message</label>
+                 <textarea rows="3" name="message" placeholder="Message" class="custom-textarea" required></textarea>
+
+                </li>
+              </ul>
+              <div class="contact-submit">
+                <button type="submit" class="btn-style2">
+                  <span class='contact__buton'>Send</span>
+                </button>
+              </div>
+            </form>
+
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+</section>
+
+            
+            {% comment %} <section class="get-info-area section-ptb">
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <div class="about-content">
+                                <!-- about title start -->
+                                <div class="section-capture">
+                                    <div class="">
+                                        <h2><span>Get in touch</span></h2>
+                                    </div>
+                                </div>
+                                <!-- about title end -->
+                                <!-- contact-detail start -->
+                                <div class="get-info contact-detail">
+                                    <ul class="get-info-ul">
+                                        <li class="get-info-li">
+                                            <span class="get-icon"><i class="bi bi-geo"></i></span>
+                                            <span class="get-add contact-block">
+                                                <span>ThinkB, Kasthrinagar</span>
+                                                <span>Bengaluru, Karnataka</span>
+                                                <!-- Adding a link to Google Maps -->
+                                                <a href="https://www.google.com/maps?q=ThinkB,+Kasthrinagar,+Bengaluru,+Karnataka" target="_blank" class="get-location">View on Map</a>
+                                            </span>
+                                        </li>
+                                        
+                                        <li class="get-info-li">
+                                            <span class="get-icon"><i class="bi bi-telephone"></i></span>
+                                            <div class="contact-block">
+                                                <a href="tel:+919966992122" class="get-add">Call: +91 99669 92122</a>
+                                               
+                                            </div>
+                                        </li>
+                                        <li class="get-info-li">
+                                            <span class="get-icon"><i class="bi bi-envelope"></i></span>
+                                            <div class="contact-block">
+                                                <a href="mailto:litleforest2025@gmail.com?subject=Inquiry&body=Hello%2C%20I%20have%20an%20inquiry..." class="get-add">litleforest2025@gmail.com</a>
+                                            </div>
+                                        </li>
+                                        
+                                    </ul>
+                                </div>
+                                
+                                <!-- contact-detail end -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section> {% endcomment %}
+            <!-- get-info-area end -->
+            <!-- google-map  start -->
+           
+            <!-- google-map  end -->
+            <!-- drop-detail  start -->
+         
+            <!-- drop-detail  end  -->
+        </main>
+        
+       
+    </body>
+    {% endblock %}
+
+</html>

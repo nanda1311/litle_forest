@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home - Little Forest{% endblock %}
+{% block content %}
+        <!-- header start -->
+     
+        <!-- header end -->
+      
+            <!-- offer-text end -->
+            
+            <!-- breadcrumb end -->
+            <!-- article-area start -->
+<section class="article-area section-ptb">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="blog-article-wrapper">
+                    <div class="blog-article-wrap blog-article">
+                        <!-- blog single-post start -->
+                        <div class="article-blog-post">
+                            <!-- blog img start -->
+                            <div class="blog-post-opt blog-post-img">
+                                <div class="blog-image">
+                                    <!-- Removed link -->
+                                    <img src="{{ post.image.url }}" class="img-fluid" alt="{{ post.title }}">
+                                </div>
+                            </div>
+                            <!-- blog img end -->
+
+                            <!-- blog title start -->
+                            <div class="blog-post-opt blog-post-title">
+                                <div class="blog-revert">
+                                    <h6 class="post-title">{{ post.title }}</h6>
+                                </div>
+                            </div>
+                            <!-- blog title end -->
+
+                            <!-- blog content start -->
+                            <div class="blog-post-opt blog-post-content">
+                                <div class="blog-content">
+                                    <div class="blog-wrap-desc">
+                                        <div class="content_view">
+                                            {{ post.content|safe }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- blog content end -->
+                        </div>
+                        <!-- blog single-post end -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+         
+        <!-- jquery js -->
+        <script src="js/jquery-3.6.3.min.js"></script>
+        <!-- bootstrap js -->
+        <script src="js/popper.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <!-- magnific-popup js -->
+        <script src="js/jquery.magnific-popup.min.js"></script>
+        <!-- owl-carousel js -->
+        <script src="js/owl.carousel.min.js"></script>
+        <!-- swiper-slider js -->
+        <script src="js/swiper-bundle.min.js"></script>
+        <!-- slick js -->
+        <script src="js/slick.min.js"></script>
+        <!-- waypoints js -->
+        <script src="js/waypoints.min.js"></script>
+        <!-- counter js -->
+        <script src="js/counter.js"></script>
+        <!-- main js -->
+        <script src="js/main.js"></script>
+    </body>
+    {% endblock %}
+
+<!-- Mirrored from spacingtech.com/html/panno/panno/article-post.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 19 Apr 2025 07:18:03 GMT -->
+</html>

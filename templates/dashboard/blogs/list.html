@@ -1,0 +1,81 @@
+{% extends "dashboard/base.html" %}
+
+{% block content %}
+
+<div class="card shadow-sm">
+    <div class="card-body">
+
+        <div class="d-flex justify-content-between mb-3">
+            <h5>Blogs List</h5>
+            <a href="{% url 'blog_create' %}" class="btn btn-primary">
+                + Add Blog
+            </a>
+        </div>
+
+        <table class="table table-bordered align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>#</th>
+                    <th>Image</th>
+                    <th>Title</th>
+                    
+                    <th>Date</th>
+                    
+                    <th>Slug</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for blog in blogs %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+
+                    <td>
+                        <img src="{{ blog.image.url }}" 
+                             width="70"
+                             style="border-radius:8px;">
+                    </td>
+
+                    <td><strong>{{ blog.title }}</strong></td>
+
+                   
+
+                    <td>{{ blog.date }}</td>
+
+                  
+
+                    <td>
+                        <small class="text-muted">
+                            {{ blog.slug }}
+                        </small>
+                    </td>
+
+                    <td>
+                        <a href="{% url 'blog_update' blog.id %}"
+                           class="btn btn-sm btn-warning">
+                            Edit
+                        </a>
+
+                        <a href="{% url 'blog_delete' blog.id %}"
+                           class="btn btn-sm btn-danger">
+                            Delete
+                        </a>
+                    </td>
+                </tr>
+
+                {% empty %}
+                <tr>
+                    <td colspan="8" class="text-center">
+                        No blogs found.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+
+        </table>
+
+    </div>
+</div>
+
+{% endblock %}

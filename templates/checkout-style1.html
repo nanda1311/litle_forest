@@ -1,0 +1,407 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Checkout - Little Forest{% endblock %}
+
+{% block content %}
+
+<!-- Checkout Page -->
+<section class="section-ptb">
+    <div class="container">
+        <div class="row">
+            <form method="post" class="col" id="checkout-form">
+                {% csrf_token %}
+
+                <div class="checkout-area">
+
+                    <!-- Left: Delivery Address Selection -->
+                    <div class="billing-area">
+                        <h3>Select a Delivery Address</h3>
+
+                        <div class="form-group address-dropdown">
+                            <label for="address">Choose an Address:</label>
+                            <select id="address" name="address" class="form-control" required onchange="handleAddressChange(this)">
+                                {% if user_addresses %}
+                                    <option value="" disabled selected>Select an address</option>
+                                    {% for address in user_addresses %}
+                                        <option value="{{ address.id }}">
+                                            {{ address.first_name }} {{ address.last_name }} -
+                                            {{ address.street_address }} {{ address.apartment_suite_unit }},
+                                            {{ address.city }}, {{ address.state }} {{ address.postcode }}
+                                        </option>
+                                    {% endfor %}
+                                    <option value="create_new">+ Add New Address</option>
+                                {% else %}
+                                    <option value="" disabled selected>Select an address</option>
+                                    <option value="create_new">+ Add New Address</option>
+                                {% endif %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Right: Order Summary + Payment -->
+                    <div class="order-area">
+                        <h2>Your order</h2>
+
+                        <ul class="order-history">
+                            <li class="order-details">
+                                <span>Product:</span>
+                                <span>Total</span>
+                            </li>
+
+                            {% for item in cart_items %}
+                            <li class="order-details">
+                                <span>{{ item.product.name }} × {{ item.quantity }}</span>
+                                <span class="amount full-price item___total_price"
+                                      data-price="{{ item.product.discounted_price|default:item.product.price }}"
+                                      data-quantity="{{ item.quantity }}">
+                                    Total: ₹{{ item.total_price }}
+                                </span>
+                            </li>
+                            {% endfor %}
+
+                            <li class="order-details">
+                                <span>Subtotal</span>
+                                <span>Rs. {{ subtotal|floatformat:2 }}</span>
+                            </li>
+
+                            <li class="order-details">
+                                <span>Shipping Charge</span>
+                                <span>Free</span>
+                            </li>
+
+                            <li class="order-details">
+                                <span>Total</span>
+                                <span class="amount total-price">Rs. {{ total|floatformat:2 }}</span>
+                            </li>
+                        </ul>
+
+                        <!-- Payment Method Selection -->
+                        <div style="padding: 0px 20px;">
+                            <h3>Select Payment Method</h3>
+                            <ul class="order-form pro-submit">
+                                <li class="label-info">
+                                    <label class="box-area">
+                                        <span class="text">Online Payment</span>
+                                        <input type="radio" name="payment_method" checked value="online" class="cust-checkbox" id="online-payment" required>
+                                        <span class="cust-check"></span>
+                                    </label>
+                                </li>
+                                <li class="label-info">
+                                    <label class="box-area">
+                                        <span class="text">Cash On Delivery</span>
+                                        <input type="radio" name="payment_method" value="cod" class="cust-checkbox" id="cod-payment" required>
+                                        <span class="cust-check"></span>
+                                    </label>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Place Order Button -->
+                        <div class="checkout-btn">
+                            <button type="submit" class="btn-style2 checkout" id="place-order-btn">Place order</button>
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- ====================== Add New Address Modal ====================== -->
+<!-- Overlay Background -->
+<div id="modalOverlay"></div>
+
+<!-- Address Modal -->
+<div id="addressModal" class="modal">
+    <div class="modal-header">
+        <h2>Add New Address</h2>
+        <!-- Close button on the right -->
+        <button type="button" class="close-btn" onclick="closeAddressModal()">×</button>
+    </div>
+
+    <form method="POST" action="{% url 'proaddress' %}">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ request.path }}">
+
+        <div class="form-grid">
+            <input type="text" name="first_name" placeholder="First Name" required>
+            <input type="text" name="last_name" placeholder="Last Name" required>
+            <input type="text" name="company_name" placeholder="Company Name (Optional)">
+            <input type="text" name="country" placeholder="Country" required>
+            <input type="text" name="street_address" placeholder="Street Address" required>
+            <input type="text" name="apartment_suite_unit" placeholder="Apt / Suite (Optional)">
+            <input type="text" name="city" placeholder="City" required>
+            <input type="text" name="state" placeholder="State" required>
+            <input type="text" name="postcode" placeholder="Postcode" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="text" name="phone" placeholder="Phone" required>
+        </div>
+
+        <div class="btn-area">
+            <button type="submit" class="save-btn">Save Address</button>
+        </div>
+    </form>
+</div>
+
+<!-- JS to close modal -->
+<script>
+function closeModal() {
+    document.getElementById('addressModal').style.display = 'none';
+}
+</script>
+
+<!-- Optional CSS for positioning the close button -->
+<style>
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.close-btn {
+    background: transparent;
+    border: none;
+    font-size: 2.0rem;
+    cursor: pointer;
+}
+</style>
+
+<!-- ====================== Styles for Modal ====================== -->
+<style>
+    /* Overlay background */
+    #modalOverlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.55);
+        z-index: 9998;
+    }
+
+    /* Modal box */
+    #addressModal {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 92%;
+        max-width: 520px;
+        background: #ffffff;
+        padding: 22px 20px;
+        border-radius: 14px;
+        z-index: 9999;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    /* Heading */
+    #addressModal h2 {
+        margin-bottom: 18px;
+        font-size: 22px;
+    }
+
+    /* Form Grid */
+    .form-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    /* Inputs */
+    .form-grid input {
+        width: 100%;
+        padding: 10px 12px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        font-size: 14px;
+    }
+
+    /* Buttons */
+    .btn-area {
+        margin-top: 18px;
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+    }
+
+    .save-btn,
+    .cancel-btn {
+        padding: 9px 15px;
+        border-radius: 8px;
+        cursor: pointer;
+        border: none;
+        font-size: 14px;
+    }
+
+    .save-btn {
+        background: #28a745;
+        color: white;
+    }
+
+    .cancel-btn {
+        background: #dc3545;
+        color: white;
+    }
+
+    /* Mobile friendly */
+    @media (max-width: 500px) {
+        #addressModal {
+            padding: 18px 16px;
+        }
+        #addressModal h2 {
+            font-size: 18px;
+        }
+    }
+</style>
+
+<!-- ====================== JavaScript ====================== -->
+
+<script>
+/* ====================== Handle Address Dropdown ====================== */
+function handleAddressChange(select) {
+    if (select.value === "create_new") {
+        document.getElementById("addressModal").style.display = "block";
+        document.getElementById("modalOverlay").style.display = "block";
+        select.value = ""; // Reset dropdown
+    }
+}
+
+/* ====================== Close Modal Function ====================== */
+function closeAddressModal() {
+    document.getElementById("addressModal").style.display = "none";
+    document.getElementById("modalOverlay").style.display = "none";
+}
+
+/* ====================== Close Modal on Overlay Click ====================== */
+document.getElementById("modalOverlay").addEventListener("click", closeAddressModal);
+
+/* ====================== Form Validation ====================== */
+function validateForm() {
+    const address = document.getElementById('address').value;
+    const paymentMethod = document.querySelector('input[name="payment_method"]:checked');
+    
+    if (!address) {
+        alert('Please select a delivery address.');
+        return false;
+    }
+
+    if (!paymentMethod) {
+        alert('Please select a payment method.');
+        return false;
+    }
+
+    return true;
+}
+</script>
+<!-- Calculate item totals (if needed) -->
+<script>
+    let total_div = document.querySelectorAll('.item___total_price')
+    total_div.forEach((item) => {
+        let price = Number(item.getAttribute('data-price'))
+        let quantity = Number(item.getAttribute('data-quantity'))
+        let total = price * quantity
+        item.innerHTML = `₹${total}`
+    })
+</script>
+
+<!-- Form validation before submit -->
+<script>
+function validateForm() {
+    const address = document.getElementById('address').value;
+    const paymentMethod = document.querySelector('input[name="payment_method"]:checked');
+
+    if (!address) {
+        alert('Please select a delivery address.');
+        return false;
+    }
+
+    if (!paymentMethod) {
+        alert('Please select a payment method.');
+        return false;
+    }
+
+    return true;
+}
+</script>
+
+<!-- Razorpay + COD handling -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    document.getElementById('checkout-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const address = document.getElementById('address').value;
+        const paymentMethod = document.querySelector('input[name="payment_method"]:checked');
+
+        if (!address || !paymentMethod) {
+            alert('Please select an address and payment method.');
+            return;
+        }
+
+        if (paymentMethod.value === 'online') {
+            const formData = new FormData(document.getElementById('checkout-form'));
+            fetch("{% url 'checklist' %}", {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                if (data.error) {
+                    alert(data.error);
+                    return;
+                }
+
+                const options = {
+                    "key": data.razorpay_key_id,
+                    "amount": data.razorpay_amount,
+                    "currency": data.razorpay_currency,
+                    "name": "Little Forest",
+                    "description": "Order #" + data.order_id,
+                    "order_id": data.razorpay_order_id,
+                    "callback_url": data.callback_url,
+                    "redirect": false,
+                    "notes": {
+                        address: "Ordering From Cart",
+                    },
+                    "theme": {
+                        "color": "#F37254"
+                    }
+                };
+
+                const rzp = new Razorpay(options);
+                rzp.on("payment.failed", function (response) {
+                    createToast("error","Payment failed");
+                    console.log("Payment failed", response);
+                    fetch("/payment/verify/", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded",
+                            "X-CSRFToken": "{{ csrf_token }}",
+                        },
+                        body: new URLSearchParams({
+                            razorpay_payment_id: response.error.metadata.payment_id,
+                            razorpay_order_id: response.error.metadata.order_id,
+                            razorpay_signature: response.error.metadata.signature,
+                        }),
+                    });
+                });
+                rzp.open();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while processing your request.');
+            });
+        } else {
+            // COD → direct submit
+            document.getElementById('checkout-form').submit();
+        }
+    });
+</script>
+
+{% endblock %}

@@ -1,0 +1,327 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+{{ product.name }} - Little Forest
+{% endblock %}
+
+{% block content %}
+
+<main style="background-color: #f9f8f2;">
+            <section id="breadcrumb">
+                <div class="container-fluid fluid____mobile">
+                    <div class="breadcrumb-content bg-breadcrumb-07">
+                        <div class="caption">
+                            <div class="title">{{ product.name }}</div>
+                            <ul>
+                                <li>Litle Forest</li>
+                                <li>{{ product.category }} Terrarium</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+<section class="product-detail-main py-5">
+    <div class="container">
+        <div class="row align-items-start">
+            <!-- IMAGE -->
+            <div class="col-md-6 mb-4">
+                <div class="bonsai-card">
+                    <img src="{{ product.image.url }}"
+                         alt="{{ product.name }}"
+                         width="100%">
+                </div>
+            </div>
+            <!-- CONTENT -->
+            <div class="col-md-6">
+                <div class="product-info">
+                    <h3 class="product__name">
+                        {{ product.name }}
+                    </h3>
+                    <h5 class="product__cateoryname">
+                        {{ product.category }} Terrarium
+                    </h5>
+                    <div class="pro-prlb pro-sale">
+                        <div class="price-box">
+                            {% if product.discounted_price %}
+                                <span class="new-price">
+                                    ₹ {{ product.discounted_price }}
+                                </span>
+                                <span class="old-price">
+                                    ₹ {{ product.price }}
+                                </span>
+                            {% else %}
+                                <span class="new-price">
+                                    ₹ {{ product.price }}
+                                </span>
+                            {% endif %}
+                        </div>
+                        <div class="save-count">
+                            Inclusive of all taxes
+                        </div>
+                        <div class="container10">
+                            <p class="detals__pera">
+                                {{ product.description }}
+                            </p>
+                        </div>
+                        <!-- BUTTONS -->
+                        <div style="margin-bottom:40px;">
+                            <!-- ADD TO CART -->
+                            {% if request.user.is_authenticated %}
+                            <a href="{% url 'add_to_cart_terrarium' product.id %}"
+                               style="text-decoration:none;">
+                                <button class="custom-button">
+                                    <img src="{% static 'img/bonsaiimgs/carticon.png' %}">
+                                    Add to Cart
+                                </button>
+                            </a>
+                            {% else %}
+                            <button class="custom-button"
+                                    onclick="showLoginAlert('add to cart')">
+                                <img src="{% static 'img/bonsaiimgs/carticon.png' %}">
+                                Add to Cart
+                            </button>
+                            {% endif %}
+
+                            {% if request.user.is_authenticated %}
+                            <a href="{% url 'buy_now' product.id %}?quantity=1" style="text-decoration:none;">
+                                <button class="custom-button-2">
+                                    <img src="{% static 'img/bonsaiimgs/buy.png' %}" alt="Buy Icon">
+                                    Buy Now
+                                </button>
+                            </a>
+                            {% else %}
+                            <button class="custom-button-2" onclick="showLoginAlert('buy now')">
+                                <img src="{% static 'img/bonsaiimgs/buy.png' %}" alt="Buy Icon">
+                                Buy Now
+                            </button>
+                            {% endif %}
+                        </div>
+                        <!-- Deliver Location Section -->
+                                        <div class="custom-container-product1">
+
+
+                                            <div class="delivery-content1">
+
+
+                                                <div class="custom-element1">
+
+                                                    <input 
+                                                        type="text" 
+                                                        id="pincodeInput" 
+                                                        class="pincode-input1"
+                                                        placeholder="Enter pincode"
+                                                        maxlength="6"
+                                                    >
+
+                                                    <button type="button" class="check-btn1" onclick="checkDelivery()">
+                                                        Check
+                                                    </button>
+
+                                                </div>
+
+                                                <!-- Dropdown Result -->
+                                                <div class="delivery-dropdown1" id="deliveryDropdown">
+                                                    <div id="deliveryResult"></div>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                        <script>
+                                            async function checkDelivery() {
+
+                                                const pincode = document.getElementById("pincodeInput").value;
+
+                                                if (pincode.length !== 6) {
+                                                    alert("Please enter a valid 6 digit pincode");
+                                                    return;
+                                                }
+
+                                                const response = await fetch(`/check-delivery/?pincode=${pincode}`);
+                                                const data = await response.json();
+
+                                                const dropdown = document.getElementById("deliveryDropdown");
+                                                const result = document.getElementById("deliveryResult");
+
+                                                dropdown.classList.add("active");
+
+                                                if (data.status === "fast") {
+
+                                                    result.innerHTML = `
+                                                        <div class="delivery-success">
+                                                            Estimated Delivery by ${data.delivery_date}
+                                                        </div>`;
+
+                                                } else if (data.status === "rural") {
+
+                                                    result.innerHTML = `
+                                                        <div class="delivery-rural">
+                                                            Estimated Delivery by ${data.delivery_date}
+                                                        </div>`;
+                                                } else {
+
+                                                    result.innerHTML = `
+                                                        <div class="delivery-failed">
+                                                            Delivery not available for this pincode.
+                                                        </div>`;
+                                                }
+                                            }
+
+                                            </script>
+                                                <div class="custom-container-product">
+                                                    <div class="share-product">
+                                                        <span class="share-title">Share :</span>
+                                                        <!-- WhatsApp -->
+                                                        <a href="https://wa.me/?text={{ request.build_absolute_uri }}"
+                                                        target="_blank"
+                                                        class="social-link whatsapp">
+                                                            <i class="bi bi-whatsapp"></i>
+                                                        </a>
+                                                        <!-- Facebook -->
+                                                        <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}"
+                                                        target="_blank"
+                                                        class="social-link facebook">
+                                                            <i class="bi bi-facebook"></i>
+                                                        </a>
+                                                        <!-- Instagram -->
+                                                        <a href="https://www.instagram.com/"
+                                                        target="_blank"
+                                                        class="social-link instagram">
+                                                            <i class="bi bi-instagram"></i>
+                                                        </a>
+                                                        <!-- Telegram -->
+                                                        <a href="https://t.me/share/url?url={{ request.build_absolute_uri }}"
+                                                        target="_blank"
+                                                        class="social-link telegram">
+                                                            <i class="bi bi-telegram"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                    <section class="care-guide py-2">
+                        <div class="container-10">
+                            <h2 class="mb-4">Care Guide & Ideal Setting</h2>
+
+                            <div class="light justify-content-center">
+
+                            <div class="col-md-4 mb-4">
+                                <div class="care-item">
+                                <i class="bi bi-sun icon-care"></i>
+                                <h5 class="mt-3"><span class="fw-bold">Light</span> Prefers bright, indirect light. Avoid direct harsh sunlight, as it can overheat the terrarium and damage moisture-loving plants.</h5>
+                                </div>
+                            </div>
+
+                            <div class="watering col-md-4 mb-4">
+                                <div class="care-item">
+                                <i class="bi bi-droplet icon-care"></i>
+                                <h5 class="mt-3"><span class="fw-bold">Watering</span> Keep the soil slightly moist but not waterlogged. Mist occasionally if the terrarium is open. Closed terrariums require very little watering.</h5>
+                                </div>
+                            </div>
+
+                            <div class="temperature col-md-4 mb-4">
+                                <div class="care-item">
+                                <i class="bi bi-thermometer-half icon-care"></i>
+                                <h5 class="mt-3"><span class="fw-bold">Temperature</span> Thrives in 18°C–27°C (65°F–80°F). Keep away from extreme heat, cold drafts, and frost.</h5>
+                                </div>
+                            </div>
+
+                            </div>
+                        </div>
+                    </section>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- RELATED PRODUCTS -->
+<section class="main-content-wrap shop-page section-ptb">
+
+    <div class="container">
+
+        <div class="section-capture tab mb-4">
+
+            <h2>
+                <span>You May Also Like</span>
+            </h2>
+
+        </div>
+
+        <div class="row">
+
+            {% for related_product in related_products %}
+
+            <div class="col-lg-4 col-md-8 col-12 mb-4">
+
+                <div class="single-product-wrap">
+
+                    <div class="product-image banner-hover">
+
+                        <a href="{% url 'terrarium_product_detail' related_product.id %}">
+
+                            <img src="{{ related_product.image.url }}"
+                                 class="img-fluid">
+
+                        </a>
+
+                    </div>
+
+                    <div class="product-content mt-3">
+
+                        <div class="product-title">
+
+                            <a href="{% url 'terrarium_product_detail' related_product.id %}">
+
+                                {{ related_product.name }}
+
+                            </a>
+
+                        </div>
+
+                        <div>
+
+                            {% if related_product.discounted_price %}
+
+                                <span class="new-price">
+                                    ₹ {{ related_product.discounted_price }}
+                                </span>
+
+                                <span class="old-price">
+                                    ₹ {{ related_product.price }}
+                                </span>
+
+                            {% else %}
+
+                                <span class="new-price">
+                                    ₹ {{ related_product.price }}
+                                </span>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</section>
+
+</main>
+
+
+{% endblock %}

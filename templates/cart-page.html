@@ -1,0 +1,199 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Shopping Cart - Little Forest{% endblock %}
+
+{% block content %}
+
+<meta name="csrf-token" content="{{ csrf_token }}">
+
+<!-- Cart Page -->
+<section class="cart-page section-pt">
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div class="cart-page-wrap">
+
+                        <!-- Left: Cart Items -->
+                        <div class="cart-wrap-info">
+                            <div class="cart-item-wrap">
+                                <div class="cart-title_headig">
+                                    <h6 class="cart-mainheading">Shopping Cart</h6>
+                                    <span class="cart-counter">({{ cart_items|length }})</span>
+                                </div>
+
+                                <div class="item-wrap">
+                                    {% if cart_items|length == 0 %}
+                                    <!-- Empty Cart -->
+                                    <div class="empty-cart text-center" style="padding: 40px;">
+                                        <img src="{% static 'img/bonsaiimgs/cartim.jpg' %}" alt="Empty Cart" style="max-width: 300px; border-radius: 10px;">
+                                        <h4 style="margin-top: 20px;">Your cart is empty</h4>
+                                    </div>
+                                    {% else %}
+                                    <!-- Cart Items List -->
+                                    {% for item in cart_items %}
+                                    <ul class="cart-wrap">
+                                        <li class="item-info">
+                                            <div class="item-img">
+                                                <a href="{% url 'product_detail' item.product.id %}">
+                                                    <img src="{{ item.product.main_image.url }}" alt="{{ item.product.name }}" class="img-fluid">
+                                                </a>
+                                            </div>
+                                            <div class="item-text">
+                                                <a href="{% url 'product_detail' item.product.id %}">{{ item.product.name }}</a>
+                                            </div>
+                                        </li>
+
+                                        <li class="item-qty">
+                                            <div class="item-remove">
+                                                <span class="remove-wrap">
+                                                    <div id="cart-item-{{ item.product.id }}">
+                                                        <span class="item-price">₹{{ item.product.discounted_price }}</span>
+                                                        <span class="old-price">₹ {{item.product.price}}</span>
+                                                    </div>
+                                                </span>
+                                            </div>
+                                        </li>
+
+                                        <li class="item-price">
+                                            <a href="{% url 'remove_from_cart' item.id %}">
+                                                <img src="{% static 'img/bonsaiimgs/into.png' %}" alt="Remove">
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    {% endfor %}
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <!-- Buttons: Continue + Clear Cart -->
+                            <div class="shapin-acrt">
+                                <div class="cart-buttons">
+                                    <a href="{% url 'collection' %}" class="btn-style2">Continue shopping</a>
+                                </div>
+
+                                {% if cart_items|length > 0 %}
+                                <button type="button" class="btn-style2" id="clear-cart-btn">
+                                    Clear Cart
+                                </button>
+                                {% endif %}
+
+                                <!-- SweetAlert2 Confirmation for Clear Cart -->
+                                <script>
+                                    document.getElementById("clear-cart-btn")?.addEventListener("click", function() {
+                                        Swal.fire({
+                                            title: "Are you sure?",
+                                            text: "This will remove all items from your cart.",
+                                            icon: "warning",
+                                            showCancelButton: true,
+                                            confirmButtonText: "Yes, clear it!",
+                                            cancelButtonText: "Cancel",
+                                            confirmButtonColor: "#28a745",
+                                            cancelButtonColor: "#d33"
+                                        }).then((result) => {
+                                            if (result.isConfirmed) {
+                                                fetch("{% url 'clear_cart' %}", {
+                                                    method: "POST",
+                                                    headers: {
+                                                        "X-CSRFToken": "{{ csrf_token }}",
+                                                        "Content-Type": "application/json"
+                                                    }
+                                                })
+                                                .then(response => response.json())
+                                                .then(data => {
+                                                    if (data.status === "success") {
+                                                        Swal.fire({
+                                                            icon: "success",
+                                                            title: "Cart Cleared",
+                                                            text: data.message,
+                                                            timer: 2000,
+                                                            showConfirmButton: false
+                                                        }).then(() => {
+                                                            location.reload();
+                                                        });
+                                                    }
+                                                });
+                                            }
+                                        });
+                                    });
+                                </script>
+                            </div>
+                        </div>
+
+                        <!-- Right: Price Summary -->
+                        <div class="cart-info-wrap">
+                            <div class="cart-total-wrap cart-info">
+                                <div class="cart-total">
+                                    <div class="total-amount line__forthis">
+                                        <h6 class="total-title">Price details</h6>
+                                    </div>
+
+                                    <div style="border-bottom: 1px solid var(--border-color);">
+                                        <div class="flre__Toatlprice">
+                                            <p class="Price_lent">Price({{ cart_items|length }} Items)</p>
+                                            <p class="price__card">₹ {{ original_total }}</p>
+                                        </div>
+
+                                        <div class="flre__Toatlprice">
+                                            <p>Total discount</p>
+                                            <span class="price__card">- ₹{{ total_discount }}</span>
+                                        </div>
+
+                                        <div class="flre__Toatlprice">
+                                            <p>Shipping for {{ cart_items|length }} item{{ cart_items|length|pluralize }}</p>
+                                            <p class="price__card">Free</p>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <div class="flre__Toatlprice">
+                                            <p class="taoal__cart">Total</p>
+                                            <p class="price__cart_item">₹ {{ final_total }}</p>
+                                        </div>
+
+                                        <div class="proceed-to-checkout">
+                                            {% if cart_items|length > 0 %}
+                                            <a href="{% url 'checklist' %}" class="btn btn-style2">Checkout</a>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</section>
+
+<!-- Extra Scripts (kept as-is, just organized) -->
+<script>
+    function showClearCartConfirmation() {
+        document.getElementById("clearCartConfirmationBox").style.display = "block";
+
+        document.getElementById("confirmClearCartButton").onclick = function() {
+            window.location.href = "{% url 'cartempty' %}";
+        };
+
+        document.getElementById("cancelClearCartButton").onclick = function() {
+            document.getElementById("clearCartConfirmationBox").style.display = "none";
+        };
+    }
+</script>
+
+<script>
+    let total_div = document.querySelectorAll('.item___total_price')
+    total_div.forEach((item) => {
+        let price = Number(item.getAttribute('data-price'))
+        let quantity = Number(item.getAttribute('data-quantity'))
+        let total = price * quantity
+        item.innerHTML = `₹${total}`
+    })
+</script>
+
+{% endblock %}

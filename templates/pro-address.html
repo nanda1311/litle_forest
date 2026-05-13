@@ -1,0 +1,180 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home - Little Forest{% endblock %}
+{% block content %}
+    <body>
+        <!-- header start -->
+     
+        <!-- header end -->
+        <!-- main section start-->
+        <main>
+            
+            <!-- breadcrumb start -->
+          
+            <!-- breadcrumb end -->
+            <!-- order history start -->
+            <section class="pro-address-area section-ptb">
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <div class="password-block">
+                                <!-- order profile start -->
+                                <div class="profile-info">
+                                    <div class="account-profile">
+                                        <div class="pro-img">
+                                            <a href="javascript:void(0)">
+                                                <i class="fas fa-user-circle fa-4x "></i>
+                                            </a>
+                                        </div>
+                                        <div class="profile-text">
+                                            <h6><h6>{{ user.username }}</h6></h6>
+                                            <span>Joined: {{ user.date_joined|date:"F d, Y" }}</span><br>
+                                        </div>
+                                    </div>
+                                    <div class="account-detail">
+                                        <ul class="profile-ul">
+                                            <li class="profile-li">
+                                                <a href="{% url 'orderhistory' %}">
+                                                    <span>Orders</span>
+                                                    <span class="pro-count">{{ cart_items|length }}</span>
+                                                </a>
+                                            </li>
+                                            <li class="profile-li">
+                                                <a href="{% url 'profile' %}">Profile</a>
+                                            </li>
+                                            <li class="profile-li">
+                                                <a href="{% url 'proaddress' %}"  class="active">Address</a>
+                                            </li>
+                                           
+                                            <li class="profile-li">
+                                                <a href="{% url 'changepassword' %}">
+                                                    <span>Change password</span>
+                                                </a>
+                                            </li>
+                                           
+                                            {% if user.is_authenticated %}
+                                            <li class="profile-li">
+                                                <a href="{% url 'logout' %}">
+                                                    <span>Sign out</span>
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                        </ul>
+                                    </div>
+                                 
+                                
+                                
+                                
+                                  
+                                </div>
+                                <!-- order profile end -->
+                                <!-- order info start -->
+                               
+                                
+                                <section class="address-section">
+                                    <div style="padding: 10px;">
+                                        <h2>Your Addresses</h2>
+                                    
+                                        {% if addresses %}
+                                        {% for address in addresses %}
+                                            <div class="address-box">
+                                                <h5>{{ address.first_name }} {{ address.last_name }}</h5>
+                                                <p>{{ address.street_address }} {{ address.apartment_suite_unit }}</p>
+                                                <p>{{ address.city }}, {{ address.state }} - {{ address.postcode }}</p>
+                                    
+                                                <!-- Edit and Delete Buttons -->
+                                                <a href="{% url 'edit_address' address.pk %}" class="btn btn-sm btn-primary">Edit</a>
+                                               <a href="{% url 'delete_address' address.pk %}" 
+                                                            class="btn btn-sm btn-danger delete-btn">
+                                                            Delete
+                                                            </a>
+                                            </div>
+                                        {% endfor %}
+                                    {% else %}
+                                        <p class="no-address-message">No addresses saved yet.</p>
+                                    {% endif %}
+                                       </div>
+                                  
+                                
+                                   
+                                   <div class="address-container">
+                                    <h2>Add New Address</h2>
+
+                                    <form method="POST" action="{% url 'proaddress' %}" class="address-form">
+                                        {% csrf_token %}
+
+                                        <!-- IMPORTANT -->
+                                        <input type="hidden" name="next" value="{{ request.path }}">
+
+                                        <input type="text" name="first_name" placeholder="First Name" required><br>
+                                        <input type="text" name="last_name" placeholder="Last Name" required><br>
+                                        <input type="text" name="company_name" placeholder="Company Name (Optional)"><br>
+                                        <input type="text" name="country" placeholder="Country" required><br>
+                                        <input type="text" name="street_address" placeholder="Street Address" required><br>
+                                        <input type="text" name="city" placeholder="City" required><br>
+                                        <input type="text" name="state" placeholder="State" required><br>
+                                        <input type="text" name="postcode" placeholder="Postcode" required><br>
+                                        <input type="email" name="email" placeholder="Email" required><br>
+                                        <input type="text" name="phone" placeholder="Phone" required><br>
+
+                                        <button type="submit" class="save-address-btn">Save Address</button>
+                                    </form>
+                                </div>
+                                    
+                                   
+                                    
+                                      
+                              
+                                    
+                                    
+                                
+                              
+                                
+                                
+                                
+                                
+                                            <!-- order info end -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+            </section>
+            <!-- order history end -->
+        </main>
+     
+      
+       
+        <script>
+document.querySelectorAll(".delete-btn").forEach(function(button){
+
+    button.addEventListener("click", function(e){
+        e.preventDefault();
+
+        let deleteUrl = this.getAttribute("href");
+
+        Swal.fire({
+            title: "Delete Address?",
+            text: "This address will be removed.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#0b4423",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it"
+        }).then((result) => {
+
+            if (result.isConfirmed) {
+                window.location.href = deleteUrl;
+            }
+
+        });
+
+    });
+
+});
+</script>
+    </body>
+    {% endblock %}
+
+<!-- Mirrored from spacingtech.com/html/panno/panno/order-history.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 19 Apr 2025 07:18:08 GMT -->
+</html>

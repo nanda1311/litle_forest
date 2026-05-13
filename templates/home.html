@@ -1,0 +1,832 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home - Little Forest{% endblock %}   <h1>Audio Test Page</h1>
+
+
+{% block content %}
+
+
+
+
+<main id="main-content" class="main-content-class">
+    <!-- main-slider start -->
+    <section class="hero-section">
+        <div class="hero-wrapper">
+            
+            <!-- Background Image -->
+            <div class="hero-bg">
+                <img src="{% static 'img/slider/home6-slider-1.jpg' %}" alt="Bonsai Banner" class="hero-desktop">
+                <img src="{% static 'img/slider/BannerA-MOB.jpg' %}" alt="Bonsai Mobile" class="hero-mobile">
+            </div>
+            
+            <!-- Content -->
+            <div class="container">
+                <div class="hero-content">
+                    <h1 class="hero-title">
+                        Welcome to <span class="head-color">The Art of Nature,</span><br>
+                        Refined for You
+                    </h1>
+                    
+                    <p class="hero-description">
+                        <strong> Litle Forest</strong> is a one-of-a-kind online marketplace where the art of bonsai meets purpose. Whether you're looking to buy a bonsai tree in Bangalore or showcase your own creations, we are here to nurture every step of your journey.
+                    </p>
+                    
+                    <div class="banner-btn-wrap mt-4 ">
+                        <a href="/collection/" class="bonsai-btn btn-theme">
+                            <span class="shop-now">Shop Now</span>
+                            <span class="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+                                    <path fill="currentColor" d="M6.505 2h11a1 1 0 0 1 .8.4l2.7 3.6v15a1 1 0 0 1-1 1h-16a1 1 0 0 1-1-1V6l2.7-3.6a1 1 0 0 1 .8-.4m12.5 6h-14v12h14zm-.5-2l-1.5-2h-10l-1.5 2zm-9.5 4v2a3 3 0 1 0 6 0v-2h2v2a5 5 0 0 1-10 0v-2z"></path>
+                                </svg>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        
+
+    </section>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+<section class="feature-strip py-4">
+    <div class="container">
+        <div class="row text-center g-4">
+
+            <div class="col-lg-3 col-md-6 col-6">
+                <div class="feature-box d-flex align-items-center justify-content-center gap-3">
+                    <i class="bi bi-truck feature-icon"></i>
+                    <div class="text-start">
+                        <h6 class="mb-1">Fast Delivery</h6>
+                        <p class="mb-0">Orders above 500</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 col-6">
+                <div class="feature-box d-flex align-items-center justify-content-center gap-3">
+                    <i class="bi bi-flower1 feature-icon"></i>
+                    <div class="text-start">
+                        <h6 class="mb-1">Plant Care Support</h6>
+                        <p class="mb-0">Complete guidance</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 col-6">
+                <div class="feature-box d-flex align-items-center justify-content-center gap-3">
+                    <i class="bi bi-heart-pulse feature-icon"></i>
+                    <div class="text-start">
+                        <h6 class="mb-1">Health Guarantee</h6>
+                        <p class="mb-0">30 days health guarantee</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 col-6">
+                <div class="feature-box d-flex align-items-center justify-content-center gap-3">
+                    <i class="bi bi-headset feature-icon"></i>
+                    <div class="text-start">
+                        <h6 class="mb-1">All Day Support</h6>
+                        <p class="mb-0">Quick support</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+    <!-- our-service end -->
+    
+<section class="plants-section">
+    <div class="container1">
+
+        <!-- LEFT: Main Featured Category -->
+        {% if categories %}
+        <div class="main-plant">
+            <div class="main-card">
+                <h3>
+                    {{ categories.0.name|linebreaksbr }}
+                </h3>
+                <img src="{{ categories.0.image.url }}" alt="{{ categories.0.name }}">
+                <a href="{% url 'collection_by_category' categories.0.id %}">
+                    View Category →
+                </a>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- RIGHT CONTENT -->
+        <div class="content">
+            <span class="tag">Litle Forest.</span>
+
+            <h1>The world<br>of <span class="head-color">Bonsai</span></h1>
+
+            <p>
+                Bonsai is more than just a plant; it's a living work of art that embodies patience,<br>
+                creativity, and a deep connection to nature. At Little Forest, we celebrate the beauty<br>
+                and tranquillity that bonsai trees bring to our lives.
+            </p>
+
+            <!-- SMALL CATEGORY CARDS -->
+<div class="plant-cards">
+
+    {% for category in categories|slice:"1:6" %}
+    <a href="{% url 'collection_by_category' category.id %}"
+       style="text-decoration: none; color: inherit;">
+        <div class="card1">
+            <img src="{{ category.image.url }}" alt="{{ category.name }}">
+            <p>{{ category.name|linebreaksbr }}</p>
+        </div>
+    </a>
+    {% endfor %}
+
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+    <section class="product">
+        <div class="wrap-blog">
+            <div class="container">
+                <div class="gallery gallery-restaurant clearfix">
+                    
+                    <!-- FILTER BUTTONS -->
+                    <div class="gallery-cat text-center">
+                        <h2 class="">Newly Awakened: <span class="head-color">The Latest Collection</span></h2>
+                        <ul class="list-inline text-center" id="categoryFilter">
+                            {% for category in categories %}
+                    <label class="filter-chip">
+                        <input type="checkbox" name="category" value="{{ category.id }}"
+                        {% if category.id in selected_categories %}checked{% endif %}
+                        onchange="this.form.submit()">
+                        
+                        <span>
+                            {{ category.name }}
+                        </span>
+                    </label>
+                            {% endfor %}
+                            <!-- View All Products -->
+                            <li class=" text-center">
+                                <div class="all-products" >
+                                    <a href="{% url 'collection' %}">All Products</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- END FILTER BUTTONS -->
+                    
+                    <!-- PRODUCTS SECTION -->
+                    <div class="gallery-content">
+                        <div class="row">
+                            {% for x in products|slice:":6" %}
+                            <li class="pro-item-li">
+                                
+                                <div class="single-product-wrap">
+                                    
+                                    <!-- Product Image -->
+                                    <div class="product-image banner-hover">
+                                        <a href="{% url 'product_detail' x.id %}" class="pro-img">
+                                            <img src="{{x.main_image.url}}" class="img-fluid img1 mobile-img1" alt="product">
+                                            <img src="{{x.main_image.url}}" class="img-fluid img2 mobile-img2" alt="product">
+                                        </a>
+                                        
+                                        <!-- Hover Actions -->
+                                        <div class="product-action">
+                                            
+                                            <a href="#"
+                                            class="wishlist add-to-cart-btn"
+                                            data-url="{% url 'add_to_cart' x.id %}"
+                                            data-auth="{% if request.user.is_authenticated %}true{% else %}false{% endif %}">
+                                            <span class="tooltip-text">Cart</span>
+                                            <span class="pro-action-icon">
+                                                <i class="feather-shopping-cart"></i>
+                                            </span>
+                                        </a>
+                                        
+                                        <a href="#"
+                                        class="wishlist wishlist-btn"
+                                        data-url="{% url 'add_to_wishlist' x.id %}"
+                                        data-auth="{% if request.user.is_authenticated %}true{% else %}false{% endif %}">
+                                        <span class="tooltip-text">Wishlist</span>
+                                        <span class="pro-action-icon">
+                                            <i class="feather-heart"></i>
+                                        </span>
+                                    </a>
+                                    
+                                </div>
+                            </div>
+                            
+                            <!-- Product Details -->
+                            <div class="product-caption">
+                                <div class="product-content">
+                                    
+                                    <div class="product-title">
+                                        <div class="pro-title-price">
+                                            <h6>
+                                                <a href="{% url 'product_detail' x.id %}">
+                                                    {{x.name}}
+                                                </a>
+                                            </h6>
+                                            
+                                            <div class="product-price">
+                                                <span class="price">₹{{ x.discounted_price }}</span>
+                                                <span class="old-price">
+                                                    <del>₹{{ x.price }}</del>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="product-name">
+                                            <span class="product-type">{{ x.category.name }}</span>
+                                            <span class="product-vendor">Height : {{ x.height }} Inches</span>
+                                            <span class="product-vendor">Age : 2 - 3 years</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Rating -->
+                                    <div class="product-ratting">
+                                        <span class="pro-ratting">
+                                            <i class="fa-regular fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                        </span>
+                                    </div>
+                                    
+                                    <!-- Bottom Actions -->
+                                    <div class="product-action">
+                                        <a href="{% url 'add_to_cart' x.id %}" class="wishlist add-to-cart-btn">
+                                            <span class="tooltip-text">Cart</span>
+                                            <span class="pro-action-icon">
+                                                <i class="feather-shopping-cart"></i>
+                                            </span>
+                                        </a>
+                                        
+                                        <a href="{% url 'add_to_wishlist' x.id %}" class="wishlist">
+                                            <span class="tooltip-text">Wishlist</span>
+                                            <span class="pro-action-icon">
+                                                <i class="feather-heart"></i>
+                                            </span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    {% endfor %}
+                    
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+</section>
+<div class="branch-image">
+    <img src="{% static 'images/branch2 2.png' %}" alt="Branch">
+</div>
+
+
+
+
+
+<section class="plants-section-2">
+    <div class="container2">
+        
+        <div style="" class="left-home-terr">
+            <video id="autoVideo" muted playsinline preload="auto">
+                <source src="{% static 'images/terrarium-section-video.mp4' %}" type="video/mp4">
+            </video>
+        </div>
+        
+        <div class="right-home-terr">
+            <div class="right-section-images-home">
+                <img src="{% static 'images/image_29_27.png' %}" alt="right image" class="right-image">
+                <img src="{% static 'images/image_29_28.png' %}" alt="right image" class="right-image">
+                <img src="{% static 'images/image_29_29.png' %}" alt="right image" class="right-image">
+                <img src="{% static 'images/image_29_26.png' %}" alt="right image" class="right-image">
+            </div>
+            <p class="subtitle-home-terr">New Collection 2020</p>
+            <h1>Terrarium</h1>
+            <p class="description-home-terr">
+                A terrarium is a miniature garden enclosed in a glass container, designed to create a self-sustaining ecosystem. It typically consists of layers of soil, rocks, and plants, creating a visually appealing and low-maintenance indoor garden that brings a touch of nature into any space.
+            </p>
+            
+            <div class="divider-home-terr"></div>
+            
+            <a href="{% url 'terrarium_page' %}" class="btn-home-terr">SHOP NOW →</a>
+        </div>
+        
+    </div>
+</section>
+
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+    }
+    
+    .container2 {
+        display: flex;
+        min-height: 100vh;
+    }
+    
+    /* LEFT VIDEO */
+    .left-home-terr {
+        width: 50%;
+        height: 100vh;
+        border-radius: 20px!important;
+        overflow: hidden !important;
+        display: flex;
+        align-items: centre;
+        justify-content: centre;
+        
+    }
+    
+    .left-home-terr video {
+        width: 74%;
+        height: auto;
+        max-height: 589px;
+        object-fit: contain;
+        border-radius: 20px;
+    }
+
+    /* RIGHT CONTENT */
+    .right-home-terr {
+        width: 50%;
+        display: flex;
+        flex-direction: column;
+        justify-content: centre;
+    }
+    .right-section-images-home{
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+        margin-top: -142px;
+        
+    }
+    .right-image {
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 10px;
+    }
+    
+    .subtitle-home-terr {
+        font-size: 14px;
+        letter-spacing: 2px;
+        color: grey;
+    }
+    
+    h1 {
+        font-size: 48px;
+        margin: 10px 0;
+    }
+    
+    .description-home-terr {
+        font-size: 16px;
+        line-height: 1.6;
+        margin: 20px 0;
+    }
+    
+    .btn-home-terr {
+        text-decoration: none;
+        font-weight: bold;
+        color: black;
+    }
+    @media (max-width: 992px) {
+        .container2 {
+            flex-direction: column;
+        }
+        
+        .left-home-terr, .right-home-terr {
+            width: 100%;
+            height: auto;
+            margin-bottom: 33px;
+        }
+        
+        .left-home-terr video {
+            width: 100%;
+            max-height: none;
+        }
+        
+        .right-section-images-home {
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .right-image {
+            width: 80px;
+            height: 86px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+    }
+</style>
+<script>
+    const video = document.getElementById("autoVideo");
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                video.play();
+            } else {
+                video.pause();
+            }
+        });
+    }, {
+        threshold: 0.5
+    });
+    
+    observer.observe(video);
+</script>
+<section class="terrarium-home">
+    <div class="container">
+        <div class="product-grid-terrarium">
+            {% for product in terrarium_products|slice:"1:4" %}
+                            <li class="pro-item-liter">
+                                
+                                <div class="single-product-wrap">
+                                    
+                                    <!-- Product Image -->
+                                    <div class="product-image banner-hover">
+                                        <a href="{% url 'product_detail' product.id %}" class="pro-img">
+                                            <img src="{{ product.image.url }}" class="img-fluid img1 mobile-img1">
+                                        </a>
+                                        
+                                        <!-- Hover Actions -->
+                                        <div class="product-action">
+                                            
+                                            <a href="#"
+                                            class="wishlist add-to-cart-btn"
+                                            data-url="{% url 'add_to_cart' product.id %}"
+                                            data-auth="{% if request.user.is_authenticated %}true{% else %}false{% endif %}">
+                                            <span class="tooltip-text">Cart</span>
+                                            <span class="pro-action-icon">
+                                                <i class="feather-shopping-cart"></i>
+                                            </span>
+                                        </a>
+                                        
+                                        <a href="#"
+                                        class="wishlist wishlist-btn"
+                                        data-url="{% url 'add_to_wishlist' product.id %}"
+                                        data-auth="{% if request.user.is_authenticated %}true{% else %}false{% endif %}">
+                                        <span class="tooltip-text">Wishlist</span>
+                                        <span class="pro-action-icon">
+                                            <i class="feather-heart"></i>
+                                        </span>
+                                    </a>
+                                    
+                                </div>
+                            </div>
+                            
+                            <!-- Product Details -->
+                            <div class="product-caption">
+                                <div class="product-content">
+                                    
+                                    <div class="product-title">
+                                        <div class="pro-title-price">
+                                            <h6>
+                                                <a href="{% url 'product_detail' product.id %}">
+                                                    {{ product.name }}
+                                                </a>
+                                            </h6>
+                                            
+                                            <div class="product-price">
+                                                <span class="price">₹{{ product.discounted_price }}</span>
+                                                <span class="old-price">
+                                                    <del>₹{{ product.price }}</del>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="product-name">
+                                            <span class="product-type">{{ product.category }} Terrarium</span>
+                                            <span class="product-vendor">Height : {{ product.height }} Inches</span>
+                                            <span class="product-vendor">Age : 2 - 3 years</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Rating -->
+                                    <div class="product-ratting">
+                                        <span class="pro-ratting">
+                                            <i class="fa-regular fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                        </span>
+                                    </div>
+                                    
+                                    <!-- Bottom Actions -->
+                                    <div class="product-action">
+                                        <a href="{% url 'add_to_cart' product.id %}" class="wishlist add-to-cart-btn">
+                                            <span class="tooltip-text">Cart</span>
+                                            <span class="pro-action-icon">
+                                                <i class="feather-shopping-cart"></i>
+                                            </span>
+                                        </a>
+                                        
+                                        <a href="{% url 'add_to_wishlist' product.id %}" class="wishlist">
+                                            <span class="tooltip-text">Wishlist</span>
+                                            <span class="pro-action-icon">
+                                                <i class="feather-heart"></i>
+                                            </span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{% comment %} 
+<section class="viedo_section">
+    <div class="video_showcase_section">
+            {% empty %}
+            <p>No terrarium products available</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{% comment %} 
+<section class="viedo_section">
+    <div class="video_showcase_section">
+        <div class="container">
+            <h2 class="main-heading">Explore Our Bonsai Videos</h2>
+            <div class="video_row">
+                <div class="video_box">
+                    <video src="static/videos/v1.mp4" muted loop></video>
+                    <h5 class="video-title">Unboxing Our Mini Bonsai</h5>
+                </div>
+                <div class="video_box">
+                    <video src="static/videos/v2.mp4" muted loop></video>
+                    <h5 class="video-title">How to Care for Your Bonsai</h5>
+                </div>
+                <div class="video_box">
+                <video src="static/videos/v3.mp4" muted loop></video>
+                <h5 class="video-title">Behind the Scenes at Little Forest</h5>
+            </div>
+            <div class="video_box">
+                <video src="static/videos/v4.mp4" muted loop></video>
+                <h5 class="video-title">Why Bonsai is Perfect for Gifting</h5>
+            </div>
+        </div>
+    </div>
+</div>
+</section> {% endcomment %}
+
+
+<div class="testimonial_section">
+    <div class="container">
+        <h2 data-aos="fade-up" data-aos-anchor-placement="center-bottom" data-aos-delay="300" class="heading">
+            What Our Customers Say About <span class="head-color">Little Forest</span>
+        </h2>
+        <p data-aos="fade-up" data-aos-anchor-placement="center-bottom" data-aos-delay="400" class="description">
+            Discover how our bonsai trees have brought calm, beauty, and a touch of nature into the lives of our cherished customers.
+        </p>
+        <div class="testimonial_carousel">
+            
+            <div data-aos="fade-up" data-aos-anchor-placement="center-bottom" data-aos-delay="200" class="box">
+                <img src="assets/img/icons/quote.png" alt="" class="quote img-fluid">
+                <div class="top_box">
+                    <div class="img_box">
+                        <a href="javascript:void(0)">
+                            <i class="fas fa-user-circle fa-4x "></i>
+                        </a>
+                    </div>
+                    <div class="txt_box">
+                        <h4 class="name">Anjali Mehta</h4>
+                        <h6 class="designation">Home Decor Enthusiast</h6>
+                    </div>
+                </div>
+                <div class="rating">
+                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                </div>
+                <p class="review">
+                    I bought a bonsai for my living room and it instantly brightened the space. The tree arrived healthy and beautifully packed. Highly recommended!
+                </p>
+            </div>
+            
+            <div data-aos="fade-up" data-aos-anchor-placement="center-bottom" data-aos-delay="300" class="box">
+                <img src="assets/img/icons/quote.png" alt="" class="quote img-fluid">
+                <div class="top_box">
+                    <div class="img_box">
+                        <a href="javascript:void(0)">
+                            <i class="fas fa-user-circle fa-4x "></i>
+                        </a>
+                    </div>
+                    <div class="txt_box">
+                        <h4 class="name">Rohit Sharma</h4>
+                        <h6 class="designation">Urban Gardener</h6>
+                    </div>
+                </div>
+                <div class="rating">
+                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                </div>
+                <p class="review">
+                    The bonsai is thriving on my balcony. I’ve tried a few other online stores before, but Little Forest delivers quality and care instructions that actually work.
+                </p>
+            </div>
+            
+            <div data-aos="fade-up" data-aos-anchor-placement="center-bottom" data-aos-delay="400" class="box">
+                <img src="assets/img/icons/quote.png" alt="" class="quote img-fluid">
+                <div class="top_box">
+                    <div class="img_box">
+                        <a href="javascript:void(0)">
+                            <i class="fas fa-user-circle fa-4x "></i>
+                        </a>
+                    </div>
+                    <div class="txt_box">
+                        <h4 class="name">Priya Nair</h4>
+                        <h6 class="designation">Corporate Professional</h6>
+                    </div>
+                </div>
+                <div class="rating">
+                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                </div>
+                <p class="review">
+                    I keep my bonsai on my work desk and it’s such a stress reliever. The team provided detailed care instructions and the plant is growing beautifully.
+                </p>
+            </div>
+            
+            <div data-aos="fade-up" data-aos-anchor-placement="center-bottom" data-aos-delay="500" class="box">
+                <img src="assets/img/icons/quote.png" alt="" class="quote img-fluid">
+                <div class="top_box">
+                    <div class="img_box">
+                        <a href="javascript:void(0)">
+                            <i class="fas fa-user-circle fa-4x "></i>
+                        </a>
+                    </div>
+                    <div class="txt_box">
+                        <h4 class="name">Kavya Reddy</h4>
+                        <h6 class="designation">Plant Collector</h6>
+                    </div>
+                </div>
+                <div class="rating">
+                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                </div>
+                <p class="review">
+                    Little Forest’s bonsais are always fresh and healthy. I’ve added 3 of their trees to my collection — each one looks stunning and grows well.
+                </p>
+            </div>
+            
+            <div data-aos="fade-up" data-aos-anchor-placement="center-bottom" data-aos-delay="600" class="box">
+                <img src="assets/img/icons/quote.png" alt="" class="quote img-fluid">
+                <div class="top_box">
+                    <div class="img_box">
+                        <a href="javascript:void(0)">
+                            <i class="fas fa-user-circle fa-4x "></i>
+                        </a>
+                    </div>
+                    <div class="txt_box">
+                        <h4 class="name">Vikram Singh</h4>
+                        <h6 class="designation">Interior Designer</h6>
+                    </div>
+                </div>
+                <div class="rating">
+                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                </div>
+                <p class="review">
+                    I use these bonsai trees in client homes for decoration. They’re elegant, low-maintenance, and arrive in perfect condition every time.
+                </p>
+            </div>
+            
+            <div data-aos="fade-up" data-aos-anchor-placement="center-bottom" data-aos-delay="700" class="box">
+                <img src="assets/img/icons/quote.png" alt="" class="quote img-fluid">
+                <div class="top_box">
+                    <div class="img_box">
+                        <a href="javascript:void(0)">
+                            <i class="fas fa-user-circle fa-4x "></i>
+                        </a>
+                    </div>
+                    <div class="txt_box">
+                        <h4 class="name">Meera Joshi</h4>
+                        <h6 class="designation">Bonsai Beginner</h6>
+                    </div>
+                </div>
+                <div class="rating">
+                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                </div>
+                <p class="review">
+                    I was nervous about starting with a bonsai, but Little Forest’s guidance made it easy. My first tree is healthy and thriving — I love it!
+                </p>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+
+<section class="blog-section">
+    <div class="container">
+        <div class="blog-section-title">
+            <h2>Why Choose <span class="head-color">Little Forest?</span></h2>
+            <h6>Discover the reasons why Little Forest is the best choice for your bonsai needs.</h6>
+        </div>
+        
+        <div class="blog-cards">
+            
+            <!-- Card 1 -->
+            <div class="blog-card">
+                <img src="{% static 'images/image_28_11.png' %}" alt="Eco Home">
+                <h3>Weell Eco-Friendly Homes</h3>
+                <p>Energy initiatives and eco comfort that promote healthier living spaces.</p>
+                <a href="#" class="btn">Learn More</a>
+            </div>
+            
+            <!-- Card 2 -->
+            <div class="blog-card">
+                <img src="{% static 'images/image_29_26.png' %}" alt="Sustainable Home">
+                <h3>Sustainability Living Homes</h3>
+                <p>Practical solutions that help reduce energy usage while enhancing lifestyle.</p>
+                <a href="#" class="btn">Learn More</a>
+            </div>
+            
+            <!-- Card 3 -->
+            <div class="blog-card">
+                <img src="{% static 'images/image_29_27.png' %}" alt="Comfort Home">
+                <h3>Comfortable Living</h3>
+                <p>Designed spaces that ensure comfort and modern living solutions.</p>
+                <a href="#" class="btn">Learn More</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+</main>
+
+
+
+<script>
+    $(document).ready(function() {
+        $('.gallery-cat a').click(function(e) {
+            e.preventDefault(); // stop link action
+            
+            // Make the clicked button active
+            $('.gallery-cat li').removeClass('active');
+            $(this).parent().addClass('active');
+            
+            // Get filter class
+            var filter = $(this).attr('data-filter');
+            
+            // Show or hide products
+            if (filter === '*') {
+                $('.custom-box').show();
+            } else {
+                $('.custom-box').hide();
+                $(filter).show();
+            }
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function(){
+        $("#testimonial-carousel").owlCarousel({
+            items: 1,
+            loop: true,
+            margin: 10,
+            nav: true,
+            dots: false,
+            navText: ["<i class='feather-arrow-left'></i>", "<i class='feather-arrow-right'></i>"]
+        });
+    });
+</script>
+<script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
+{% endblock %}

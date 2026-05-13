@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home - Little Forest{% endblock %}
+{% block content %}
+    <body>
+        <!-- header start -->
+     
+        <!-- header end -->
+        <!-- main section start-->
+        <main>
+           
+            <!-- breadcrumb start -->
+          
+            <!-- breadcrumb end -->
+            <!-- order history start -->
+            <section class="order-histry-area section-ptb">
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <div class="password-block">
+                                <!-- order profile start -->
+                                <div class="profile-info">
+                                    <div class="account-profile">
+                                        <div class="pro-img">
+                                            <a href="javascript:void(0)">
+                                                <i class="fas fa-user-circle fa-4x "></i>
+                                            </a>
+                                            
+                                        </div>
+                                        <div class="profile-text">
+                                            <h6>{{ user.get_full_name|default:user.username }}</h6>
+                                            <span>Member since {{ user.date_joined|date:"F d, Y" }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="account-detail">
+                                        <ul class="profile-ul">
+                                            <li class="profile-li">
+                                                <a href="{% url 'orderhistory' %}" class="active">
+                                                   <span>Orders</span>
+                                                        <span class="active">
+                                                            <span class="cart-counter">{{ orders_with_items|length }}</span>
+                                                        </span>
+                                                   
+                                                </a>
+                                            </li>
+                                            <li class="profile-li">
+                                                <a href="{% url 'profile' %}" >Profile</a>
+                                            </li>
+                                            <li class="profile-li">
+                                                <a href="{% url 'proaddress' %}">Address</a>
+                                            </li>
+                                           
+                                            <li class="profile-li">
+                                                <a href="{% url 'changepassword' %}">
+                                                    <span>Change password</span>
+                                                </a>
+                                            </li>
+                                           
+                                            {% if user.is_authenticated %}
+                                            <li class="profile-li">
+                                                <a href="{% url 'logout' %}">
+                                                    <span>Sign out</span>
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                        </ul>
+                                    </div>
+                                </div>
+                                <!-- order profile end -->
+                                <!-- order info start -->
+                                <div class="profile-form order-info">
+                                    <div class="pro-add-title">
+                                        <h6>Order History</h6>
+                                    </div>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Order #</th>
+                                                <th>Date</th>
+                                                <th>Status</th>
+                                                <th>Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                           {% for order_data in orders_with_items %}
+                                            <tr>
+                                            <td>{{ order_data.order.id }}</td>
+                                            <td>{{ order_data.order.created_at }}</td>
+                                            <td>{{ order_data.order.status }}</td>
+                                            <td>{{ order_data.total_amount }}</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                    
+                                </div>
+                                
+                                <!-- order info end -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- order history end -->
+        </main>
+      
+       
+    </body>
+    {% endblock %}
+
+<!-- Mirrored from spacingtech.com/html/panno/panno/order-history.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 19 Apr 2025 07:18:08 GMT -->
+</html>

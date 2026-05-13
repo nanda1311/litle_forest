@@ -1,0 +1,218 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}Delete Product{% endblock %}
+{% block page_title %}Delete Product{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Same card style as list & add pages */
+    .dashboard-card {
+        border: none;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        background: white;
+    }
+
+    .delete-warning-header {
+        background: #fee2e2;
+        padding: 1.25rem 1.75rem;
+        border-bottom: 1px solid #fecaca;
+        text-align: center;
+    }
+
+    .delete-warning-header h4 {
+        margin: 0;
+        color: #000000;           /* pure black for max visibility */
+        font-weight: 700;
+        font-size: 1.4rem;
+    }
+
+    .delete-warning-header p {
+        margin: 0.35rem 0 0;
+        color: #1f2937;           /* dark gray-black */
+        font-weight: 500;
+    }
+
+    .delete-body {
+        padding: 2rem 1.75rem;
+    }
+
+    .product-preview-img {
+        width: 100%;
+        max-height: 240px;
+        object-fit: cover;
+        border-radius: 12px;
+        border: 1px solid #e2e8f0;
+        background: #f9fafb;
+    }
+
+    .product-info {
+        margin-bottom: 1.75rem;
+    }
+
+    .product-info h5 {
+        color: #000000;           /* pure black */
+        font-weight: 700;
+        margin-bottom: 1.25rem;
+        font-size: 1.35rem;
+    }
+
+    .product-info p {
+        margin-bottom: 0.85rem;
+        font-size: 1rem;
+        color: #111827;           /* very dark gray-black */
+    }
+
+    .product-info strong {
+        color: #000000;
+        font-weight: 600;
+    }
+
+    .delete-confirmation-box {
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        color: #000000;           /* black text for readability */
+        padding: 1.25rem 1.5rem;
+        border-radius: 10px;
+        margin: 1.75rem 0;
+        font-size: 1.05rem;
+        font-weight: 500;
+    }
+
+    .delete-confirmation-box strong {
+        color: #b91c1c;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .action-btn {
+        font-size: 0.95rem;
+        padding: 0.7rem 1.6rem;
+        border-radius: 10px;
+        font-weight: 500;
+        transition: all 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .action-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .btn-cancel {
+        background: white;
+        border: 1px solid #9ca3af;
+        color: #111827;           /* dark black-gray */
+    }
+
+    .btn-cancel:hover {
+        background: #f3f4f6;
+        border-color: #6b7280;
+    }
+
+    .btn-delete {
+        background: #dc2626;
+        border: none;
+        color: white;
+    }
+
+    .btn-delete:hover {
+        background: #b91c1c;
+    }
+
+    @media (max-width: 768px) {
+        .delete-body {
+            padding: 1.5rem 1.25rem;
+        }
+        .action-buttons {
+            flex-direction: column;
+        }
+        .action-btn {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-card">
+
+    <div class="card-body p-4 p-lg-5">
+
+        <!-- Warning Header -->
+        <div class="delete-warning-header mb-5">
+            <h4>Delete Product</h4>
+            <p>This action cannot be undone.</p>
+        </div>
+
+        <div class="row g-4 align-items-start">
+
+            <!-- Product Image -->
+            <div class="col-md-4 text-center">
+                {% if product.main_image %}
+                    <img src="{{ product.main_image.url }}" 
+                         class="product-preview-img" 
+                         alt="{{ product.name }}">
+                {% else %}
+                    <div class="product-preview-img d-flex align-items-center justify-content-center bg-light text-muted">
+                        No Image
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Product Details & Confirmation -->
+            <div class="col-md-8">
+
+                <h5>{{ product.name }}</h5>
+
+                <div class="product-info">
+                    <p><strong>Category:</strong> {{ product.category.name|default:"—" }}</p>
+                    <p><strong>Price:</strong> ₹{{ product.price }}</p>
+                    {% if product.discounted_price %}
+                    <p><strong>Discounted:</strong> ₹{{ product.discounted_price }} ({{ product.discount_percentage }}% OFF)</p>
+                    {% endif %}
+                    <p><strong>Stock:</strong> {{ product.stock_quantity }}</p>
+                    {% if product.rating %}
+                    <p><strong>Rating:</strong> ⭐ {{ product.rating }} ({{ product.reviews_count|default:0 }} reviews)</p>
+                    {% endif %}
+                </div>
+
+                <div class="delete-confirmation-box">
+                    Are you sure you want to <strong>permanently delete</strong> this product?
+                </div>
+
+                <form method="post">
+                    {% csrf_token %}
+
+                    <div class="action-buttons">
+                        <a href="{% url 'product_list' %}" 
+                           class="btn action-btn btn-cancel">
+                            <i data-lucide="x" class="w-5 h-5"></i>
+                            Cancel
+                        </a>
+
+                        <button type="submit" 
+                                class="btn action-btn btn-delete">
+                            <i data-lucide="trash-2" class="w-5 h-5"></i>
+                            Yes, Delete Product
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

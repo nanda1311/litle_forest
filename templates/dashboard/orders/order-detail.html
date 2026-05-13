@@ -1,0 +1,248 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}Order #{{ order.id }}{% endblock %}
+{% block page_title %}Order #{{ order.id }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .dashboard-card {
+        border: none;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        background: white;
+    }
+
+    .order-header {
+        background: #f1f5f9;
+        padding: 20px 28px;
+        border-bottom: 1px solid #e2e8f0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 16px;
+    }
+
+    .order-header h5 {
+        margin: 0;
+        font-weight: 600;
+        color: #000000;
+        font-size: 1.4rem;
+    }
+
+    .summary-box {
+        background: #f8fafc;
+        border-radius: 12px;
+        padding: 24px;
+        margin-bottom: 32px;
+    }
+
+    .summary-item {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 12px;
+        font-size: 1rem;
+        color: #111827;
+    }
+
+    .summary-item strong {
+        color: #000000;
+        font-weight: 600;
+    }
+
+    .customer-box,
+    .items-box {
+        margin-bottom: 32px;
+    }
+
+    .customer-box p,
+    .items-box p {
+        margin-bottom: 10px;
+        font-size: 1rem;
+        color: #111827;
+    }
+
+    .customer-box strong,
+    .items-box strong {
+        color: #000000;
+        font-weight: 600;
+    }
+
+    .table-items {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .table-items th,
+    .table-items td {
+        padding: 16px;
+        border-bottom: 1px solid #e2e8f0;
+        text-align: left;
+        color: #111827;
+    }
+
+    .table-items th {
+        background: #f1f5f9;
+        font-weight: 600;
+        color: #000000;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .table-items tr:hover {
+        background: #f8fafc;
+    }
+
+    .status-badge {
+        padding: 8px 16px;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+
+    .status-pending { background: #fef3c7; color: #92400e; }
+    .status-completed { background: #d1fae5; color: #059669; }
+    .status-canceled { background: #fee2e2; color: #dc2626; }
+
+    .action-btn {
+        padding: 10px 24px;
+        border-radius: 10px;
+        transition: all 0.2s;
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .action-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .btn-back {
+        background: white;
+        border: 1px solid #cbd5e1;
+        color: #111827;
+    }
+
+    .btn-back:hover {
+        background: #f1f5f9;
+        border-color: #9ca3af;
+    }
+
+    @media (max-width: 991px) {
+        .card-body {
+            padding: 20px 16px;
+        }
+        .order-header {
+            padding: 16px 20px;
+        }
+        .summary-box,
+        .customer-box,
+        .items-box {
+            padding: 16px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-card">
+
+    <div class="card-body">
+
+        <!-- Header -->
+        <div class="order-header mb-4">
+            <h5>Order #{{ order.id }}</h5>
+            <span class="status-badge {% if order.status == 'Completed' %}status-completed{% elif order.status == 'Canceled' %}status-canceled{% else %}status-pending{% endif %}">
+                {{ order.status }}
+            </span>
+        </div>
+
+        <!-- Summary Box -->
+        <div class="summary-box">
+            <div class="summary-item">
+                <span>Date:</span>
+                <strong>{{ order.created_at|date:"d M Y, h:i A" }}</strong>
+            </div>
+            <div class="summary-item">
+                <span>Total Amount:</span>
+                <strong>₹{{ order.total_amount|floatformat:2 }}</strong>
+            </div>
+            <div class="summary-item">
+                <span>Payment Method:</span>
+                <strong>
+                    {% if order.payment_method == 'cod' %}Cash on Delivery
+                    {% elif order.payment_method == 'online' %}Online Payment
+                    {% else %}{{ order.payment_method|default:"—" }}{% endif %}
+                </strong>
+            </div>
+            <div class="summary-item">
+                <span>Payment ID:</span>
+                <strong>{{ order.payment_id|default:"—" }}</strong>
+            </div>
+        </div>
+
+        <!-- Customer & Address -->
+        <div class="customer-box">
+            <h6 class="fw-bold mb-3">Customer & Delivery Details</h6>
+            <p><strong>Username:</strong> {{ order.user.username }}</p>
+            <p><strong>Name:</strong> {{ order.user.first_name|default:"—" }}</p>
+            {% if order.address %}
+                <p><strong>Full Address:</strong> {{ order.address.street_address }}, {{ order.address.city }}, {{ order.address.state }} - {{ order.address.postcode }}, {{ order.address.country }}</p>
+                <p><strong>Phone:</strong> {{ order.address.phone|default:"—" }}</p>
+                <p><strong>Email:</strong> {{ order.address.email|default:"—" }}</p>
+                {% if order.address.company_name %}
+                    <p><strong>Company:</strong> {{ order.address.company_name }}</p>
+                {% endif %}
+            {% else %}
+                <p class="text-muted">No delivery address available.</p>
+            {% endif %}
+        </div>
+
+        <!-- Ordered Products -->
+        <div class="items-box">
+            <h6 class="fw-bold mb-3">Ordered Products</h6>
+            <div class="table-responsive">
+                <table class="table table-items">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Quantity</th>
+                            <th>Unit Price</th>
+                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in order.order_items.all %}
+                        <tr>
+                            <td>{{ item.product.name }}</td>
+                            <td>{{ item.quantity }}</td>
+                            <td>₹{{ item.price|floatformat:2 }}</td>
+                           
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="4" class="text-center py-4 text-muted">No items in this order.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Back Button -->
+        <div class="mt-4">
+            <a href="{% url 'order_list' %}" class="btn action-btn btn-back">
+                <i data-lucide="arrow-left" class="w-5 h-5 me-1"></i>
+                Back to All Orders
+            </a>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

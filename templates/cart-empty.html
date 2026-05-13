@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home - Little Forest{% endblock %}
+{% block content %}
+    <body>
+        <!-- header start -->
+        
+        <!-- main section start-->
+        <main>
+          
+            <!-- breadcrumb start -->
+           
+            <!-- breadcrumb end -->
+            <!-- terms-rules start -->
+            <section class="cart-page section-pt">
+              <div class="container">
+                  <div class="row">
+                      <div class="col">
+                          <div class="empty-cart-page">
+                              <div class="section-capture">
+                                  <div class="section-title">
+                                      <h2><span>Cart empty</span></h2>
+                                      <p>Sorry your cart has currently no more products, click on 'here' given below for continue browsing.</p>
+                                      <p>Continue browsing
+                                        <a href="{% url 'collection' %}">here</a>
+
+                                      </p>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </section>
+        </main>
+        <!-- main section end-->
+       
+       
+       
+    </body>
+
+    {% endblock %}
+</html>

@@ -1,0 +1,288 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}Products{% endblock %}
+{% block page_title %}All Products{% endblock %}
+
+{% block extra_css %}
+<style>
+    .product-card {
+        border: none;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        background: white;
+    }
+
+    .product-table {
+        border-collapse: separate;
+        border-spacing: 0 8px;
+    }
+
+    .product-table thead th {
+        background: #f1f5f9;
+        color: #475569;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        letter-spacing: 0.5px;
+        border: none;
+        padding: 14px 16px;
+    }
+
+    .product-table tbody tr {
+        background: white;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        border-radius: 12px;
+        transition: all 0.2s ease;
+    }
+
+    .product-table tbody tr:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+    }
+
+    .product-table td {
+        padding: 16px;
+        vertical-align: middle;
+        border: none;
+        border-top: 1px solid #e2e8f0;
+    }
+
+    .product-table td:first-child {
+        border-top-left-radius: 12px;
+        border-bottom-left-radius: 12px;
+    }
+
+    .product-table td:last-child {
+        border-top-right-radius: 12px;
+        border-bottom-right-radius: 12px;
+    }
+
+    .product-img {
+        width: 64px;
+        height: 64px;
+        object-fit: cover;
+        border-radius: 10px;
+        border: 1px solid #e2e8f0;
+        background: #f8fafc;
+    }
+
+    .badge-low-stock {
+        background: #fee2e2;
+        color: #dc2626;
+        font-weight: 600;
+    }
+
+    .badge-in-stock {
+        background: #d1fae5;
+        color: #059669;
+        font-weight: 600;
+    }
+
+    .btn-action {
+        font-size: 0.875rem;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        transition: all 0.2s;
+    }
+
+    .btn-action:hover {
+        transform: translateY(-1px);
+    }
+
+    .search-form .form-control {
+        border-radius: 10px;
+        border: 1px solid #cbd5e1;
+        padding: 0.65rem 1rem;
+    }
+
+    .search-form .btn {
+        border-radius: 10px;
+        padding: 0.65rem 1.25rem;
+    }
+
+    .no-products {
+        padding: 3rem 1rem;
+        background: #f8fafc;
+        border-radius: 12px;
+        text-align: center;
+        color: #64748b;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="product-card">
+
+    <div class="card-body p-4 p-lg-5">
+
+        <!-- Header -->
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
+            <h5 class="mb-0 fw-semibold text-slate-800">Products List</h5>
+
+            <a href="{% url 'product_create' %}" class="btn btn-primary d-flex align-items-center gap-2 px-4 py-2">
+                <i data-lucide="plus" class="w-5 h-5"></i>
+                Add Product
+            </a>
+        </div>
+
+        <!-- Search -->
+        <form method="GET" class="search-form row g-3 mb-4">
+            <div class="col-md-5 col-lg-6">
+                <input 
+                    type="text" 
+                    name="search" 
+                    class="form-control shadow-sm"
+                    placeholder="Search by name, category, price..." 
+                    value="{{ search|default:'' }}"
+                >
+            </div>
+
+            <div class="col-auto">
+                <button type="submit" class="btn btn-dark px-4">
+                    <i data-lucide="search" class="w-4 h-4 me-1"></i> Search
+                </button>
+            </div>
+
+            <div class="col-auto">
+                <a href="{% url 'product_list' %}" class="btn btn-outline-secondary px-4">
+                    Reset
+                </a>
+            </div>
+        </form>
+
+        <!-- Table -->
+        <div class="table-responsive">
+            <table class="table product-table align-middle mb-0">
+
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Image</th>
+                        <th>Name</th>
+                        <th>Category</th>
+                        <th>Price</th>
+                        <th>Stock</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for product in products %}
+                    <tr>
+                        <td class="fw-medium text-muted">
+                            {{ forloop.counter0|add:products.start_index }}
+                        </td>
+
+                        <td>
+                            {% if product.main_image %}
+                            <img src="{{ product.main_image.url }}" 
+                                 class="product-img" 
+                                 alt="{{ product.name }}">
+                            {% else %}
+                            <div class="product-img d-flex align-items-center justify-content-center bg-light text-muted">
+                                No Image
+                            </div>
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            <div class="fw-semibold">{{ product.name }}</div>
+                        </td>
+
+                        <td class="text-muted">
+                            {{ product.category.name|default:"—" }}
+                        </td>
+
+                        <td>
+                            <div class="fw-medium">₹{{ product.price }}</div>
+                            {% if product.discounted_price %}
+                            <small class="text-success d-block">
+                                ₹{{ product.discounted_price }}
+                                <span class="text-muted ms-1">({{ product.discount_percentage }}% OFF)</span>
+                            </small>
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            {% if product.stock_quantity <= 5 %}
+                            <span class="badge badge-low-stock px-3 py-2">
+                                {{ product.stock_quantity }} (Low)
+                            </span>
+                            {% else %}
+                            <span class="badge badge-in-stock px-3 py-2">
+                                {{ product.stock_quantity }}
+                            </span>
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            {% if product.availability %}
+                            <span class="badge bg-success-subtle text-success px-3 py-2">
+                                Available
+                            </span>
+                            {% else %}
+                            <span class="badge bg-secondary-subtle text-secondary px-3 py-2">
+                                Out of Stock
+                            </span>
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            <div class="d-flex gap-2">
+                                <a href="{% url 'product_update' product.id %}" 
+                                   class="btn btn-action btn-warning text-white">
+                                    <i data-lucide="edit" class="w-4 h-4"></i> Edit
+                                </a>
+                                <a href="{% url 'product_delete' product.id %}" 
+                                   class="btn btn-action btn-danger">
+                                    <i data-lucide="trash-2" class="w-4 h-4"></i> Delete
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="8">
+                            <div class="no-products">
+                                <i data-lucide="package" class="w-10 h-10 text-slate-300 mb-3"></i>
+                                <h6 class="text-slate-500 mb-1">No products found</h6>
+                                <small>Try adjusting your search or add a new product.</small>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        {% if products.has_other_pages %}
+        <div class="d-flex justify-content-center align-items-center mt-5 gap-3 flex-wrap">
+            {% if products.has_previous %}
+            <a class="btn btn-outline-secondary px-4 py-2"
+               href="?search={{ search }}&page={{ products.previous_page_number }}">
+                <i data-lucide="chevron-left" class="w-4 h-4 me-1"></i> Previous
+            </a>
+            {% endif %}
+
+            <span class="badge bg-light text-dark px-4 py-2 fw-normal">
+                Page {{ products.number }} of {{ products.paginator.num_pages }}
+            </span>
+
+            {% if products.has_next %}
+            <a class="btn btn-primary px-4 py-2"
+               href="?search={{ search }}&page={{ products.next_page_number }}">
+                Next <i data-lucide="chevron-right" class="w-4 h-4 ms-1"></i>
+            </a>
+            {% endif %}
+        </div>
+        {% endif %}
+
+    </div>
+</div>
+
+{% endblock %}

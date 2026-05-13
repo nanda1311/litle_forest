@@ -1,0 +1,165 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}Dashboard Home{% endblock %}
+{% block page_title %}Overview{% endblock %}
+
+{% block content %}
+
+<div class="row mt-4">
+  <div class="col-md-4">
+    <div class="card p-3 shadow-sm text-center">
+      <h6>Pending Orders</h6>
+      <h3>{{ pending_orders }}</h3>
+      <span class="badge bg-warning text-dark">Pending</span>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card p-3 shadow-sm text-center">
+      <h6>Completed Orders</h6>
+      <h3>{{ completed_orders }}</h3>
+      <span class="badge bg-success">Completed</span>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card p-3 shadow-sm text-center">
+      <h6>Cancelled Orders</h6>
+      <h3>{{ cancelled_orders }}</h3>
+      <span class="badge bg-danger">Cancelled</span>
+    </div>
+  </div>
+</div>
+<div class="row mt-4">
+  <div class="col-md-12">
+    <div class="card p-3 shadow-sm">
+      <h6>Monthly Revenue</h6>
+      <canvas id="revenueChart" height="100"></canvas>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const ctx = document.getElementById('revenueChart').getContext('2d');
+const revenueChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: {{ months|safe }},
+        datasets: [{
+            label: 'Revenue (₹)',
+            data: {{ sales|safe }},
+            fill: true,
+            borderColor: 'rgba(75, 192, 192, 1)',
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            tension: 0.4
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { display: false }
+        },
+        scales: {
+            y: { beginAtZero: true }
+        }
+    }
+});
+</script>
+<div class="row mt-4">
+  <div class="col-md-12">
+    <div class="card p-3 shadow-sm">
+      <h6>Monthly Revenue</h6>
+      <canvas id="revenueChart" height="100"></canvas>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const ctx = document.getElementById('revenueChart').getContext('2d');
+const revenueChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: {{ months|safe }},
+        datasets: [{
+            label: 'Revenue (₹)',
+            data: {{ sales|safe }},
+            fill: true,
+            borderColor: 'rgba(75, 192, 192, 1)',
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            tension: 0.4
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { display: false }
+        },
+        scales: {
+            y: { beginAtZero: true }
+        }
+    }
+});
+</script>
+<div class="row mt-4">
+  <div class="col-md-4">
+    <div class="card p-3 shadow-sm text-center">
+      <h6>Total Customers</h6>
+      <h3>{{ total_customers }}</h3>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card p-3 shadow-sm text-center">
+      <h6>New Customers This Month</h6>
+      <h3>{{ new_customers_this_month }}</h3>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card p-3 shadow-sm text-center">
+      <h6>Active Carts</h6>
+      <h3>{{ active_carts }}</h3>
+    </div>
+  </div>
+</div>
+<div class="row mt-4">
+  <div class="col-md-12">
+    <div class="card shadow-sm">
+      <div class="card-header">
+        <h6 class="mb-0">Recent Orders</h6>
+      </div>
+      <div class="card-body table-responsive">
+        <table class="table table-hover align-middle">
+          <thead class="table-light">
+            <tr>
+              <th>#</th>
+              <th>User</th>
+              <th>Total</th>
+              <th>Status</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for order in recent_orders %}
+            <tr>
+              <td>#{{ order.id }}</td>
+              <td>{{ order.user.username }}</td>
+              <td>₹{{ order.total_amount }}</td>
+              <td>
+                {% if order.status == "Completed" %}
+                  <span class="badge bg-success">Completed</span>
+                {% elif order.status == "Canceled" %}
+                  <span class="badge bg-danger">Canceled</span>
+                {% else %}
+                  <span class="badge bg-warning text-dark">Pending</span>
+                {% endif %}
+              </td>
+              <td>{{ order.created_at|date:"d M Y H:i" }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

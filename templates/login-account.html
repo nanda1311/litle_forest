@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home - Little Forest{% endblock %}
+{% block content %}
+    <body>
+       
+        <!-- header end -->
+        <!-- main section start-->
+        <main>
+            <!-- breadcrumb start -->
+            <section id="breadcrumb">
+                <div class="container-fluid fluid____mobile">
+                    <div class="breadcrumb-content bg-breadcrumb-01">
+                        <div class="caption">
+                            <div class="title">Account</div>
+                            <ul>
+                                <li>Home</li>
+                                <li>Account</li>                    
+                            </ul>
+                        </div>                    
+                    </div>
+                </div>
+            </section>
+            <!-- breadcrumb end -->
+            <!-- customer-page start -->
+            <section class="customer-page section-ptb">
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <!-- account login title start -->
+                            <div class="section-capture">
+                                <div class="">
+                                    <h2><span>Login account</span></h2>
+                                </div>
+                            </div>
+                            <!-- account login title end -->
+                            <!-- account login start  -->
+                            <div class="log-acc-page">
+                                <!-- Displaying error messages -->
+                                
+                                
+                                <!-- Contact form for login -->
+                                <div class="contact-form-list">
+                                  <form method="post" action="{% url 'loginaccount' %}">
+                                        {% csrf_token %}
+                                        <ul class="form-fill">
+                                            <li class="form-fill-li Email">
+                                                <label>Email address</label>
+                                                <input type="email" name="email" autocomplete="email" placeholder="Email address" required>
+                                            </li>
+                                            <li class="form-fill-li Password">
+                                                <label>Password</label>
+                                                <input type="password" name="password" placeholder="Password" required>
+                                            </li>
+                                        </ul>
+                                        <div class="form-action-button">
+                                            <div class="button-forget">
+                                                <button type="submit" class="btn btn-style2">Sign in</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                
+                                <div class="acc-wrapper">
+                                    <h6>Don't have an account? </h6>
+                                    <div class="account-optional">
+                                        <a href="{% url 'createaccount' %}">Create an account</a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            
+                            
+                            <!-- account login start -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- customer-page end  -->
+        </main>
+      
+      
+    </body>
+    {% endblock %}
+</html>

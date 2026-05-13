@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Edit Address - Little Forest{% endblock %}
+
+{% block content %}
+
+<!-- Breadcrumb -->
+<section id="breadcrumb">
+    <div class="container-fluid fluid____mobile">
+        <div class="breadcrumb-content bg-breadcrumb-01">
+            <div class="caption">
+                <div class="title">pro address</div>
+                <ul>
+                    <li>Home</li>
+                    <li>pro address</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Main Profile + Address Edit Section -->
+<section class="pro-address-area section-ptb">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="password-block">
+
+                    <!-- === Left Side: Profile Info & Navigation === -->
+                    <div class="profile-info">
+                        <!-- User Avatar & Name -->
+                        <div class="account-profile">
+                            <div class="pro-img">
+                                <a href="javascript:void(0)">
+                                    <i class="fas fa-user-circle fa-4x"></i>
+                                </a>
+                            </div>
+                            <div class="profile-text">
+                                <h6>{{ user.username }}</h6>
+                                <span>Joined: {{ user.date_joined|date:"F d, Y" }}</span>
+                            </div>
+                        </div>
+
+                        <!-- Profile Menu Links -->
+                        <div class="account-detail">
+                            <ul class="profile-ul">
+                                <li class="profile-li">
+                                    <a href="{% url 'orderhistory' %}">
+                                        <span>Orders</span>
+                                        <span class="pro-count">5</span>
+                                    </a>
+                                </li>
+                                <li class="profile-li">
+                                    <a href="{% url 'profile' %}">Profile</a>
+                                </li>
+                                <li class="profile-li">
+                                    <a href="{% url 'proaddress' %}" class="active">Address</a>
+                                </li>
+                                <li class="profile-li">
+                                    <a href="{% url 'changepassword' %}">
+                                        <span>Change password</span>
+                                    </a>
+                                </li>
+                                {% if user.is_authenticated %}
+                                <li class="profile-li">
+                                    <a href="{% url 'logout' %}">
+                                        <span>Sign out</span>
+                                    </a>
+                                </li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- === Right Side: Edit Address Form === -->
+                    <div class="address-section">
+                        <h2>Edit Address</h2>
+
+                        <div class="add-address-form">
+                            <form method="POST">
+                                {% csrf_token %}
+
+                                <input type="text" name="first_name" placeholder="First Name" value="{{ address.first_name }}" required>
+                                <input type="text" name="last_name" placeholder="Last Name" value="{{ address.last_name }}" required>
+                                <input type="text" name="company_name" placeholder="Company Name (Optional)" value="{{ address.company_name }}">
+
+                                <input type="text" name="country" placeholder="Country" value="{{ address.country }}" required>
+                                <input type="text" name="street_address" placeholder="Street Address" value="{{ address.street_address }}" required>
+                                <input type="text" name="apartment_suite_unit" placeholder="Apartment/Suite/Unit" value="{{ address.apartment_suite_unit }}">
+
+                                <input type="text" name="city" placeholder="City" value="{{ address.city }}" required>
+                                <input type="text" name="state" placeholder="State" value="{{ address.state }}" required>
+                                <input type="text" name="postcode" placeholder="Postcode" value="{{ address.postcode }}" required>
+
+                                <input type="email" name="email" placeholder="Email" value="{{ address.email }}" required>
+                                <input type="text" name="phone" placeholder="Phone" value="{{ address.phone }}" required>
+
+                                <button type="submit" class="btn btn-style2">Save Address</button>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Your existing inline styles (kept exactly as you wrote) -->
+<style>
+    /* Overall container for the address section */
+    .address-section {
+        font-family: Arial, sans-serif;
+        margin-bottom: 20px;
+        width: 50%;
+        margin: 0px 23px 0px 23px;
+    }
+
+    /* Styling for the address list */
+    .address-box {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 12px;
+        background-color: #f9f9f9;
+        margin-bottom: 10px;
+        font-size: 14px;
+    }
+
+    .address-box p {
+        margin: 5px 0;
+    }
+
+    .address-box h5 {
+        font-size: 16px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    /* Styling for the add address form */
+    .add-address-form {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 15px;
+        background-color: #fff;
+        font-size: 14px;
+    }
+
+    .add-address-form form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .add-address-form button {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        margin-top: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+    .add-address-form button:hover {
+        background-color: #45a049;
+    }
+
+    /* Styling for the "no addresses" message */
+    .no-address-message {
+        font-size: 14px;
+        color: #888;
+    }
+</style>
+
+{% endblock %}

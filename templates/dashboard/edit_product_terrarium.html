@@ -1,0 +1,192 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}Edit Product{% endblock %}
+{% block page_title %}Edit Terrarium Product{% endblock %}
+
+{% block content %}
+
+<section class="upload-section">
+    <div class="container">
+
+        <div class="form-card">
+
+            <h2>Edit Product</h2>
+
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <label>Product Name *</label>
+                    <input type="text" name="name" value="{{ product.name }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label>SKU</label>
+                    <input type="text" name="sku" value="{{ product.sku }}">
+                </div>
+
+                <div class="form-group">
+                    <label>Category *</label>
+
+                    <select name="category" required>
+
+                        <option value="succulent" {% if product.category == 'succulent' %}selected{% endif %}>
+                            Succulent
+                        </option>
+
+                        <option value="moss" {% if product.category == 'moss' %}selected{% endif %}>
+                            Moss
+                        </option>
+
+                        <option value="closed" {% if product.category == 'closed' %}selected{% endif %}>
+                            Closed Terrarium
+                        </option>
+
+                        <option value="open" {% if product.category == 'open' %}selected{% endif %}>
+                            Open Terrarium
+                        </option>
+
+                        <option value="mini" {% if product.category == 'mini' %}selected{% endif %}>
+                            Mini Terrarium
+                        </option>
+
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Height</label>
+                    <input type="text" name="height" value="{{ product.height }}">
+                </div>
+
+                <div class="form-group">
+                    <label>Price *</label>
+                    <input type="number" step="0.01" name="price" value="{{ product.price }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Discounted Price</label>
+                    <input type="number" step="0.01" name="discounted_price" value="{{ product.discounted_price }}">
+                </div>
+
+                <div class="form-group">
+                    <label>Stock Quantity *</label>
+                    <input type="number" name="stock_quantity" value="{{ product.stock_quantity }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Availability</label>
+
+                    <select name="availability">
+
+                        <option value="in_stock" {% if product.availability == 'in_stock' %}selected{% endif %}>
+                            In Stock
+                        </option>
+
+                        <option value="out_of_stock" {% if product.availability == 'out_of_stock' %}selected{% endif %}>
+                            Out Of Stock
+                        </option>
+
+                        <option value="pre_order" {% if product.availability == 'pre_order' %}selected{% endif %}>
+                            Pre Order
+                        </option>
+
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea name="description">{{ product.description }}</textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Current Image</label>
+
+                    <img src="{{ product.image.url }}" class="preview">
+                </div>
+
+                <div class="form-group">
+                    <label>Change Image</label>
+
+                    <input type="file" name="image">
+
+                    <small>
+                        Recommended size: 800×800px or larger,
+                        JPG/PNG/WebP
+                    </small>
+                </div>
+
+                <button type="submit">
+                    Update Product
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+</section>
+
+<style>
+
+.upload-section{
+    padding:40px 20px;
+}
+
+.form-card{
+    max-width:700px;
+    margin:auto;
+    background:#fff;
+    padding:30px;
+    border-radius:12px;
+    box-shadow:0 5px 20px rgba(0,0,0,0.08);
+}
+
+form{
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+}
+
+.form-group{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+}
+
+input,
+textarea,
+select{
+    padding:12px;
+    border:1px solid #d1d5db;
+    border-radius:8px;
+    width:100%;
+}
+
+.preview{
+    width:120px;
+    height:120px;
+    object-fit:cover;
+    border-radius:10px;
+}
+
+button{
+    padding:14px;
+    background:#000;
+    color:#fff;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:16px;
+}
+
+@media(max-width:768px){
+
+    .form-card{
+        padding:20px;
+    }
+
+}
+
+</style>
+
+{% endblock %}

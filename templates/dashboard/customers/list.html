@@ -1,0 +1,73 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}Customers{% endblock %}
+{% block page_title %}All Customers{% endblock %}
+
+{% block content %}
+
+<div class="card shadow-sm">
+    <div class="card-body">
+
+        <div class="d-flex justify-content-between mb-4">
+            <h5 class="mb-0">Customers</h5>
+            <a href="/dashboard/" class="btn btn-secondary">
+                Back to Dashboard
+            </a>
+        </div>
+
+        <div class="table-responsive">
+    <table class="table table-bordered table-hover align-middle">
+        <thead class="table-light text-center">
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Date Joined</th>
+                <th>Staff</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for user in customers %}
+            <tr>
+                <td class="text-center">{{ forloop.counter }}</td>
+
+                <td>{{ user.first_name|default:user.username }}</td>
+
+                <td>{{ user.email }}</td>
+
+                <td>{{ user.date_joined|date:"d M Y, h:i A" }}</td>
+
+                <td class="text-center">
+                    {% if user.is_staff %}
+                        <span class="badge bg-primary">Admin</span>
+                    {% else %}
+                        <span class="badge bg-secondary">Customer</span>
+                    {% endif %}
+                </td>
+
+                <td class="text-center">
+                    {% if user.is_active %}
+                        <span class="badge bg-success">Active</span>
+                    {% else %}
+                        <span class="badge bg-danger">Inactive</span>
+                    {% endif %}
+                </td>
+            </tr>
+
+            {% empty %}
+            <tr>
+                <td colspan="6" class="text-center py-4">
+                    <span class="text-muted">No customers found.</span>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+    </div>
+</div>
+
+{% endblock %}

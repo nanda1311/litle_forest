@@ -1,0 +1,4502 @@
+jQuery(document).ready(function() {
+    /*==============================
+        counter js
+    ==============================*/
+    $('.count-number').counterUp({
+        delay: 10,
+        time: 1000
+    });
+
+    /*==============================
+       video popup js
+    ==============================*/
+    var $video_popup = $('.play-button');
+        $video_popup.magnificPopup({
+            tClose: 'Close (Esc)',
+            type: 'iframe',
+            mainClass: 'mfp-fade',
+            removalDelay: 160,
+            preloader: false,
+            fixedContentPos: false
+    });
+
+    /*============================== 
+        magnificPopup js
+    ==============================*/
+    $('.full-view').on('click', function () {
+        $(this).next().magnificPopup('open');
+    });
+    $('.slider-big, .style2-slider-big, .style4-slider-big, .slider-big-6, .slider-big-7').magnificPopup({
+        delegate: 'a',
+        type: 'image',
+        showCloseBtn: true,
+        closeBtnInside: false,
+        midClick: true,
+        tLoading: 'Loading image #%curr%...',
+        mainClass: 'mfp-img-mobile',
+        gallery: {
+            enabled: true,
+            navigateByImgClick: true,
+        preload: [0,1] // Will preload 0 - before current, and 1 after the current image
+        },
+        image: {
+            tError: '<a href="%url%">The image #%curr%</a> could not be loaded.'
+        }
+    });
+
+    /*====================================
+        header-sticky js
+    ====================================*/
+    var lastScrollTop = 0;
+    $(window).on('scroll', () => {
+        var header = $('#stickyheader'),
+        sticky = $(window).scrollTop();
+        if (sticky >= 100) {
+            header.addClass('sticky-header');
+        } else {
+            header.removeClass('sticky-header');
+        }
+    });
+
+    /*====================================
+        toggler-menu js
+    ====================================*/
+    $(".toggler-wrapper button.toggler-btn").on("click", function() {
+        $("#mobile-menu, .main-menu-area, .header-bottom").addClass('active');
+        $(".bg-screen").addClass('active');
+        $("body").addClass('hidden');
+    });
+    $(".menu-close button.menu-close-btn").on("click", function() {
+        $("#mobile-menu, .main-menu-area, .header-bottom").removeClass('active');
+        $(".bg-screen").removeClass('active');
+        $("body").removeClass('hidden');
+    });
+
+    /*==============================
+        filter js
+    ==============================*/
+    $('button.filter-button').on('click', function () {
+        $('.filter-sidebar').addClass("active");
+        $('.screen-bg').addClass("active");
+    });
+    $('button.close-sidebar').on('click', function () {
+        $('.filter-sidebar').removeClass("active");
+        $('.screen-bg').removeClass("active");
+    });
+
+    /*====================================
+        cart-drawer js
+    ====================================*/
+    $(".cart-wrapper a.js-cart-drawer,  .bottom-menu-wrapper a.bottom-menu-cart, a.add-to-cart").on("click", function() {
+        $("#cart-drawer").addClass('active');
+        $(".bg-screen").addClass('active');
+        $("body").addClass('hidden');
+    });
+    $(".drawer-close button.drawer-close-btn").on("click", function() {
+        $("#cart-drawer").removeClass('active');
+        $(".bg-screen").removeClass('active');
+        $("body").removeClass('hidden');
+    });
+
+    /*====================================
+        bg-screen js
+    ====================================*/
+    $(".bg-screen").on("click", function() {
+        $(this).removeClass('active');
+        $(".main-menu-area").removeClass('active');
+        $("#cart-drawer").removeClass('active');
+        $("body").removeClass('hidden');
+        });
+        $('#trigger-overlay').on('click', function(){
+        $(".overlay").addClass('open'); 
+    });
+
+    $('.overlay-close').on('click', function(){
+        $(".overlay").removeClass('open');  
+    });
+    
+    /*===================================
+        product-short js
+    ===================================*/
+    $('.product-short a.short-title-lg').on('click', function () {
+        if ($('#select-wrap').hasClass('active')) {
+            $('#select-wrap').removeClass('active');
+            $(this).removeClass('active');
+        }
+        else {
+            $('#select-wrap').addClass('active');
+            $(this).addClass('active');
+        }
+    });
+
+    /*========================================== 
+        Minus and Plus Btn js
+    ==========================================*/
+    $('.dec').on("click",function () {
+        var $input = $(this).parent().find('input');
+        var count = parseInt($input.val()) - 1;
+        count = count < 1 ? 1 : count;
+        $input.val(count);
+        $input.change();
+        return false;
+    });
+    
+    $('.inc').on("click",function () {
+        var $input = $(this).parent().find('input');
+        $input.val(parseInt($input.val()) + 1);
+        $input.change();
+        return false;
+    });
+
+    /*============================== 
+        quickview slider js
+    ==============================*/
+    var galleryThumbs = new Swiper(".gallery-thumbs", {
+        loop: true,
+        spaceBetween: 15,
+        slidesPerView: 3,
+        thumbs: {
+            swiper: galleryTop,
+        },
+    });
+    var galleryTop = new Swiper(".gallery-top", {
+        loop: true,
+        spaceBetween: 15,
+        navigation: {
+            nextEl: ".quick-next",
+            prevEl: ".quick-prev",
+        },
+        thumbs: {
+            swiper: galleryThumbs,
+        },
+    });
+});
+
+/*==============================
+    popup js
+==============================*/
+$(window).on('load', function () {
+    var popup = localStorage.getItem('popup_value');
+    if (popup != 1) {
+    $('#news-letter-modal').modal('show');
+}
+
+/*==============================
+    pre-loader js
+==============================*/
+  $('.preloader').delay(100).fadeOut('fast');
+});
+
+/*===================================
+    range slider js
+===================================*/
+if($('#range1').length){
+    var slider1 = document.getElementById("range1");
+    var slider2 = document.getElementById("range2");
+    var output1 = document.getElementById("demo1");
+    var output2 = document.getElementById("demo2");
+    output1.innerHTML = slider1.value;
+    output2.innerHTML = slider2.value;
+
+    slider1.oninput = function() {
+        output1.innerHTML = slider1.value;
+    }
+    slider2.oninput = function() {
+        output2.innerHTML = slider2.value;
+    }
+}
+
+/*==============================
+    zoom js
+==============================*/
+function zoom(e){
+    var zoomer = e.currentTarget;
+    e.offsetX ? offsetX = e.offsetX : offsetX = e.touches[0].pageX
+    e.offsetY ? offsetY = e.offsetY : offsetX = e.touches[0].pageX
+    x = offsetX/zoomer.offsetWidth*100
+    y = offsetY/zoomer.offsetHeight*100
+    zoomer.style.backgroundPosition = x + '% ' + y + '%';
+}
+
+/*====================================
+   home-1  text-replace js
+====================================*/
+if($('ul.offer-text-ul li.offer-text-li').length){  
+    addEventListener('DOMContentLoaded', (event) => {
+        var slides = document.querySelectorAll('ul.offer-text-ul li.offer-text-li');
+        var currentSlide = 0;
+        var slideInterval = setInterval(nextSlide, 3000);
+        function nextSlide(){
+          slides[currentSlide].className = 'offer-text-li';
+          currentSlide = (currentSlide+1)%slides.length;
+          slides[currentSlide].className = 'offer-text-li show';
+        }
+    }); 
+}  
+
+/*==============================
+    read-agree js
+==============================*/
+$('label.box-area, .read-agree').on('click', function () {
+    if($('.cust-checkbox, .create-checkbox').is(':checked')) {
+        $('.checkout, .create').removeClass('disabled');
+    }
+    else {
+        $('.checkout, .create').addClass('disabled');
+    }
+});
+
+/*===================================
+    product-grid js
+===================================*/
+$('.list-change-view').on("click",function () {
+    event.preventDefault();
+    var data_grid = $(this).attr('data-grid-view');
+    if ($('.special-product').hasClass('grid-1') || 
+        $('.special-product').hasClass('grid-2') || 
+        $('.special-product').hasClass('grid-3') || 
+        $('.special-product').hasClass('grid-4')) 
+    {
+        $('.special-product').removeClass('grid-1');
+        $('.special-product').removeClass('grid-2');
+        $('.special-product').removeClass('grid-3');
+        $('.special-product').removeClass('grid-4');
+        $('.special-product').addClass('grid-'+data_grid);
+    }
+    else {
+        $('.special-product').addClass('grid-'+data_grid);
+    }
+});
+$('.list-change-view').on("click",function () {
+    $('.list-change-view').removeClass('active');
+    $(this).addClass('active');
+});
+
+"use strict";
+/*====================================
+    deal-day clock js
+====================================*/
+    var deadline = new Date(Date.parse(new Date()) + 520 * 80 * 60 * 60 * 1000);
+        initializeClock('clock1', deadline);
+    var deadline = new Date(Date.parse(new Date()) + 620 * 80 * 60 * 60 * 1000);
+        initializeClock('clock2', deadline);
+    var deadline = new Date(Date.parse(new Date()) + 720 * 80 * 60 * 60 * 1000);
+        initializeClock('clock3', deadline);
+    var deadline = new Date(Date.parse(new Date()) + 420 * 80 * 60 * 60 * 1000);
+        initializeClock('clock4', deadline);
+function getTimeRemaining(endtime) {
+    var t = Date.parse(endtime) - Date.parse(new Date());
+    var seconds = Math.floor((t / 1000) % 60);
+    var minutes = Math.floor((t / 1000 / 60) % 60);
+    var hours = Math.floor((t / (1000 * 60 * 60)) % 24);
+    var days = Math.floor(t / (1000 * 60 * 60 * 60));
+    return {
+      'total': t,
+      'days': days,
+      'hours': hours,
+      'minutes': minutes,
+      'seconds': seconds
+    };
+}
+function initializeClock(id, endtime) {
+    var clock = document.getElementById(id);
+    if(clock != null){
+      var daysSpan = clock.querySelector('.days');
+      var hoursSpan = clock.querySelector('.hours');
+      var minutesSpan = clock.querySelector('.minutes');
+      var secondsSpan = clock.querySelector('.seconds');
+
+      function updateClock() {
+        var t = getTimeRemaining(endtime);
+        daysSpan.innerHTML = t.days;
+        hoursSpan.innerHTML = ('0' + t.hours).slice(-2);
+        minutesSpan.innerHTML = ('0' + t.minutes).slice(-2);
+        secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
+
+        if (t.total <= 0) {
+          clearInterval(timeinterval);
+        }
+      }
+
+      updateClock();
+      var timeinterval = setInterval(updateClock, 1000);
+    }
+}
+
+    /*====================================
+        home-1 home-slider js
+    ====================================*/
+    var swiper = new Swiper('.swiper#home-slider', {
+        loop: false,
+        rewind: true,
+        slidesPerView: 1,
+        spaceBetween: 0,
+        observer: true,
+        observeParents: true,
+        watchSlidesProgress: true,
+        navigation: {
+            prevEl: '.swiper-prev-homeslider',
+            nextEl: '.swiper-next-homeslider'
+        },
+        pagination: {
+            el: ".swiper-pagination-homeslider",
+            clickable: true
+        },
+        autoplay: {
+            delay: 5000,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true
+        }
+    });
+
+    /*====================================
+        home-2/ home-3/ home-6 /home-7 slider js
+    ====================================*/
+    $('#homeslider2, #homeslider3, #home-slider5, #home-slider6, #homeslider7').owlCarousel({
+        loop: false,
+        items: 1,
+        nav: false,
+        navText : ['<i class="feather-arrow-left"></i>','<i class="feather-arrow-right"></i>'],
+        dots: true,
+        responsive: {
+        }
+    });
+
+    /*====================================
+       home-1 product  js
+    ====================================*/
+    $('#category-slider').owlCarousel({
+        loop: false,
+        rewind: true,
+        margin: 30,
+        items: 4,
+        nav: false,
+        navText: ['<i class="bi bi-arrow-left-short"></i>','<i class="bi bi-arrow-right-short"></i>'],
+        dots: false,
+        autoplay: true,
+        autoplayTimeout: 5000,
+        autoplayHoverPause: true,
+        responsive: {
+            0 : {
+                items: 1,
+                margin: 12
+            },
+            479 : {
+                items: 1,
+                margin: 12
+            },
+            540 : {
+                items: 2,
+                margin: 12
+            },
+            640 : {
+                items: 2,
+                margin: 12
+            },
+            768 : {
+                items: 2,
+                margin: 30
+            },
+            979 : {
+                items: 3,
+                margin: 30
+            },
+            1199 : {
+                items: 4,
+                margin: 30
+            },
+            1399 : {
+                items: 4,
+                margin: 30
+            }
+        }
+    });
+
+    /*==============================
+      home-2 category-slider js
+    ==============================*/
+    $('#category-slider').owlCarousel({
+        loop: false,
+        rewind: true,
+        margin: 30,
+        items: 4,
+        nav: false,
+        navText: ['<i class="bi bi-arrow-left-short"></i>','<i class="bi bi-arrow-right-short"></i>'],
+        dots: false,
+        autoplay: true,
+        autoplayTimeout: 5000,
+        autoplayHoverPause: true,
+        responsive: {
+            0 : {
+                items: 1,
+                margin: 12
+            },
+            479 : {
+                items: 1,
+                margin: 12
+            },
+            540 : {
+                items: 2,
+                margin: 12
+            },
+            640 : {
+                items: 2,
+                margin: 12
+            },
+            768 : {
+                items: 2,
+                margin: 30
+            },
+            979 : {
+                items: 2,
+                margin: 30
+            },
+            1199 : {
+                items: 3,
+                margin: 30
+            },
+            1399 : {
+                items: 4,
+                margin: 30
+            }
+        }
+    });
+
+    /*==============================
+      home-3 category-slider js
+    ==============================*/
+    $('#category-slider3').owlCarousel({
+        loop: false,
+        rewind: true,
+        margin: 30,
+        items: 3,
+        nav: false,
+        navText: ['<i class="bi bi-arrow-left-short"></i>','<i class="bi bi-arrow-right-short"></i>'],
+        dots: false,
+        autoplay: true,
+        autoplayTimeout: 5000,
+        autoplayHoverPause: true,
+        responsive: {
+            0 : {
+                items: 1,
+                margin: 12
+            },
+            479 : {
+                items: 1,
+                margin: 12
+            },
+            540 : {
+                items: 2,
+                margin: 12
+            },
+            640 : {
+                items: 2,
+                margin: 12
+            },
+            768 : {
+                items: 2,
+                margin: 30
+            },
+            979 : {
+                items: 2,
+                margin: 30
+            },
+            1199 : {
+                items: 3,
+                margin: 30
+            }
+        }
+    });
+
+    /*==============================
+        home-5 category-slider js
+    ==============================*/
+    var swiper = new Swiper('.swiper#category-slider5', {
+        loop: false,
+        rewind: true,
+        slidesPerView: 3,
+        grid: {
+            rows: 1,
+            fill: 'row' | 'column'
+        },
+        spaceBetween: 30,
+        observer: true,
+        observeParents: true,
+        watchSlidesProgress: true,
+        navigation: {
+            prevEl: '.swiper-prev-cat6',
+            nextEl: '.swiper-next-cat6'
+        },
+        pagination: {
+            el: ".swiper-pagination-cat6",
+            clickable: true
+        },
+        autoplay: {
+        delay: 5000,
+        disableOnInteraction: false,
+        pauseOnMouseEnter: true
+        },
+        breakpoints: {
+            0: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 12
+            },
+            320: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 12
+            },
+            360: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 12
+            },
+            540: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 12
+            },
+            640: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 12
+            },
+            768: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 30
+            },
+            1024: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 30
+            },
+            1199: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 30
+            },
+            1399: {
+                slidesPerView: 3,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 30
+            }
+        }
+    });
+
+    /*==============================
+      home-6 category-slider js
+    ==============================*/
+    $('#category-slider6').owlCarousel({
+        loop: false,
+        rewind: true,
+        margin: 30,
+        items: 4,
+        nav: false,
+        navText: ['<i class="bi bi-arrow-left-short"></i>','<i class="bi bi-arrow-right-short"></i>'],
+        dots: false,
+        autoplay: true,
+        autoplayTimeout: 5000,
+        autoplayHoverPause: true,
+        responsive: {
+            0 : {
+                items: 1,
+                margin: 12
+            },
+            479 : {
+                items: 1,
+                margin: 12
+            },
+            540 : {
+                items: 2,
+                margin: 12
+            },
+            640 : {
+                items: 2,
+                margin: 12
+            },
+            768 : {
+                items: 2,
+                margin: 30
+            },
+            979 : {
+                items: 3,
+                margin: 30
+            },
+            1199 : {
+                items: 3,
+                margin: 30
+            },
+            1399 : {
+                items: 4,
+                margin: 30
+            }
+        }
+    });
+
+    /*==============================
+        home-7 category-slider js
+    ==============================*/
+    var swiper = new Swiper('.swiper#category-slider7', {
+        slidesPerView: 6,
+        grid: {
+            rows: 1,
+            fill: 'row' | 'column',
+        },
+        spaceBetween: 30,
+        loop: true,
+        observer: true,
+        observeParents: true,
+        watchSlidesProgress: true,navigation: {
+            nextEl: '.swiper-next-',
+            prevEl: '.swiper-prev-',
+        },
+        pagination: {
+            el: ".swiper-pagination-",
+            clickable: true
+        },
+        autoplay: true,
+        autoplayTimeout: 5000,
+        autoplayHoverPause: true,
+        autoplaySpeed: 250,
+        breakpoints: {
+            0: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 12
+            },
+            320: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 12
+            },
+            360: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 12
+            },
+            540: {
+                slidesPerView: 3,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 12
+            },
+            640: {
+                slidesPerView: 3,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 12
+            },
+            768: {
+                slidesPerView: 3,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 30
+            },
+            1024: {
+                slidesPerView: 4,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 30
+            },
+            1199: {
+                slidesPerView: 5, 
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 30
+            },
+            1399: {
+                slidesPerView: 6,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 30
+            }
+        }
+    });
+
+    /*====================================
+       home-1 new-product  js
+    ====================================*/
+    // new-product js
+    var swiper = new Swiper('.swiper#new-product, .swiper#trending-product', {
+        loop: false,
+        rewind: true,
+        slidesPerView: 4,
+        grid: {
+            rows: 1,
+            fill: 'row' | 'column'
+        },
+        spaceBetween: 30,
+        observer: true,
+        observeParents: true,
+        watchSlidesProgress: true,
+        navigation: {
+            prevEl: '.swiper-prev-new',
+            nextEl: '.swiper-next-new'
+        },
+        pagination: {
+            el: ".swiper-pagination-new",
+            clickable: true
+        },
+        autoplay: {
+            delay: 5000,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true
+        },
+        breakpoints: {
+            0: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            320: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            360: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            540: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            640: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            768: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1024: {
+                slidesPerView: 3,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1199: {
+                slidesPerView: 4,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1399: {
+                slidesPerView:4,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1499: {
+                slidesPerView: 4,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            }
+        }
+    });
+
+    /*====================================
+       home-2 tab-product  js
+    ====================================*/
+    // new-product tab js
+    var swiper = new Swiper('.swiper#new-product2', {
+        loop: false,
+        rewind: true,
+        slidesPerView: 4,
+        grid: {
+            rows: 2,
+            fill: 'row' | 'column'
+        },
+        spaceBetween: 30,
+        observer: true,
+        observeParents: true,
+        watchSlidesProgress: true,
+        navigation: {
+            prevEl: '.swiper-prev-new2',
+            nextEl: '.swiper-next-new2'
+        },
+        pagination: {
+            el: ".swiper-pagination-new2",
+            clickable: true
+        },
+        autoplay: {
+            delay: 5000,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true
+        },
+        breakpoints: {
+            0: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            320: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            360: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            540: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            640: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            768: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1024: {
+                slidesPerView: 3,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1199: {
+                slidesPerView: 4,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1399: {
+                slidesPerView: 4,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1499: {
+                slidesPerView: 4,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            }
+        }
+    });
+
+    // best-product tab js
+    var swiper = new Swiper('.swiper#best-product2', {
+        loop: false,
+        rewind: true,
+        slidesPerView: 4,
+        grid: {
+            rows: 2,
+            fill: 'row' | 'column'
+        },
+        spaceBetween: 30,
+        observer: true,
+        observeParents: true,
+        watchSlidesProgress: true,
+        navigation: {
+            prevEl: '.swiper-prev-best2',
+            nextEl: '.swiper-next-best2'
+        },
+        pagination: {
+            el: ".swiper-pagination-best2",
+            clickable: true
+        },
+        autoplay: {
+            delay: 5000,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true
+        },
+         breakpoints: {
+            0: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            320: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            360: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            540: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            640: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            768: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1024: {
+                slidesPerView: 3,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1199: {
+                slidesPerView: 3,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1399: {
+                slidesPerView: 3,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1499: {
+                slidesPerView: 4,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            }
+        }
+    });
+
+    // feature-product tab js
+    var swiper = new Swiper('.swiper#feature-product2', {
+        loop: false,
+        rewind: true,
+        slidesPerView: 4,
+        grid: {
+            rows: 2,
+            fill: 'row' | 'column'
+        },
+        spaceBetween: 30,
+        observer: true,
+        observeParents: true,
+        watchSlidesProgress: true,
+        navigation: {
+            prevEl: '.swiper-prev-feature2',
+            nextEl: '.swiper-next-feature2'
+        },
+        pagination: {
+            el: ".swiper-pagination-feature2",
+            clickable: true
+        },
+        autoplay: {
+            delay: 5000,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true
+        },
+         breakpoints: {
+            0: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            320: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            360: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            540: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            640: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            768: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1024: {
+                slidesPerView: 3,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1199: {
+                slidesPerView: 3,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1399: {
+                slidesPerView: 4,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1499: {
+                slidesPerView: 4,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            }
+        }
+    });
+
+    /*====================================
+       home-3 new-product  js
+    ====================================*/
+    // new-product js
+    var swiper = new Swiper('.swiper#new-product3', {
+        loop: false,
+        rewind: true,
+        slidesPerView: 4,
+        grid: {
+            rows: 1,
+            fill: 'row' | 'column'
+        },
+        spaceBetween: 30,
+        observer: true,
+        observeParents: true,
+        watchSlidesProgress: true,
+        navigation: {
+            prevEl: '.swiper-prev-new3',
+            nextEl: '.swiper-next-new3'
+        },
+        pagination: {
+            el: ".swiper-pagination-new3",
+            clickable: true
+        },
+        autoplay: {
+            delay: 5000,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true
+        },
+        breakpoints: {
+            0: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            320: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            360: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            540: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            640: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            768: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1024: {
+                slidesPerView: 3,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1199: {
+                slidesPerView: 4,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1499: {
+                slidesPerView: 4,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            }
+        }
+    });
+
+    /*====================================
+       home-3 Fresh-product-tab  js
+    ====================================*/
+    // new-product tab js
+    var swiper = new Swiper('.swiper#new-offer3', {
+        loop: false,
+        rewind: true,
+        slidesPerView: 3,
+        grid: {
+            rows: 3,
+            fill: 'row' | 'column'
+        },
+        spaceBetween: 30,
+        observer: true,
+        observeParents: true,
+        watchSlidesProgress: true,
+        navigation: {
+            prevEl: '.swiper-prev-new-offer3',
+            nextEl: '.swiper-next-new-offer3'
+        },
+        pagination: {
+            el: ".swiper-pagination-new-offer3",
+            clickable: true
+        },
+        autoplay: {
+            delay: 5000,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true
+        },
+        breakpoints: {
+            0: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 3,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 12
+            },
+            320: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 3,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 12
+            },
+            360: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 3,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 12
+            },
+            540: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 3,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 12
+            },
+            640: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 3,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 12
+            },
+            768: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 3,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 30
+            },
+            1024: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 3,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 30
+            },
+            1199: {
+                slidesPerView: 3,
+                grid: {
+                    rows: 3,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 30
+            }
+        }
+    });
+
+    // best-product tab js
+    var swiper = new Swiper('.swiper#best-offer3', {
+        loop: false,
+        rewind: true,
+        slidesPerView: 3,
+        grid: {
+            rows: 3,
+            fill: 'row' | 'column'
+        },
+        spaceBetween: 30,
+        observer: true,
+        observeParents: true,
+        watchSlidesProgress: true,
+        navigation: {
+            prevEl: '.swiper-prev-best-offer3',
+            nextEl: '.swiper-next-best-offer3'
+        },
+        pagination: {
+            el: ".swiper-pagination-best-offer3",
+            clickable: true
+        },
+        autoplay: {
+            delay: 5000,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true
+        },
+        breakpoints: {
+            0: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 3,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 12
+            },
+            320: {
+                  slidesPerView: 1,
+                  grid: {
+                    rows: 3,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 12
+            },
+            360: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 3,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 12
+            },
+            540: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 3,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 12
+            },
+            640: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 3,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 12
+            },
+            768: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 3,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 30
+            },
+            1024: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 3,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 30
+            },
+            1199: {
+                slidesPerView: 3,
+                grid: {
+                    rows: 3,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 30
+            }
+        }
+    });
+
+    // feature-product tab js
+    var swiper = new Swiper('.swiper#feature-offer3', {
+        loop: false,
+        rewind: true,
+        slidesPerView: 3,
+        grid: {
+            rows: 3,
+            fill: 'row' | 'column'
+        },
+        spaceBetween: 30,
+        observer: true,
+        observeParents: true,
+        watchSlidesProgress: true,
+        navigation: {
+            prevEl: '.swiper-prev-feature-offer3',
+            nextEl: '.swiper-next-feature-offer3'
+        },
+        pagination: {
+            el: ".swiper-pagination-feature-offer3",
+            clickable: true
+        },
+        autoplay: {
+            delay: 5000,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true
+        },
+        breakpoints: {
+            0: {
+              slidesPerView: 1,
+              grid: {
+                rows: 3,
+                fill: 'row' | 'column',
+              },
+              spaceBetween: 12
+            },
+            320: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 3,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 12
+            },
+            360: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 3,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 12
+            },
+            540: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 3,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 12
+            },
+            640: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 3,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 12
+            },
+            768: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 3,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 30
+            },
+            1024: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 3,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 30
+            },
+            1199: {
+                slidesPerView: 3,
+                grid: {
+                    rows: 3,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 30
+            }
+        }
+    });
+
+    // advance-offer tab js
+    var swiper = new Swiper('.swiper#advance-offer3', {
+        loop: false,
+        rewind: true,
+        slidesPerView: 3,
+        grid: {
+            rows: 3,
+            fill: 'row' | 'column'
+        },
+        spaceBetween: 30,
+        observer: true,
+        observeParents: true,
+        watchSlidesProgress: true,
+        navigation: {
+            prevEl: '.swiper-prev-advance-offer3',
+            nextEl: '.swiper-next-advance-offer3'
+        },
+        pagination: {
+            el: ".swiper-pagination-advance-offer3",
+            clickable: true
+        },
+        autoplay: {
+            delay: 5000,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true
+        },
+        breakpoints: {
+            0: {
+              slidesPerView: 1,
+              grid: {
+                rows: 3,
+                fill: 'row' | 'column',
+              },
+              spaceBetween: 12
+            },
+            320: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 3,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 12
+            },
+            360: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 3,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 12
+            },
+            540: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 3,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 12
+            },
+            640: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 3,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 12
+            },
+            768: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 3,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 30
+            },
+            1024: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 3,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 30
+            },
+            1199: {
+                slidesPerView: 3,
+                grid: {
+                    rows: 3,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 30
+            }
+        }
+    });
+
+    /*====================================
+       home-4 new-product  js
+    ====================================*/
+    // new-product js
+    var swiper = new Swiper('.swiper#new-product4', {
+        loop: false,
+        rewind: true,
+        slidesPerView: 4,
+        grid: {
+            rows: 1,
+            fill: 'row' | 'column'
+        },
+        spaceBetween: 30,
+        observer: true,
+        observeParents: true,
+        watchSlidesProgress: true,
+        navigation: {
+            prevEl: '.swiper-prev-new4',
+            nextEl: '.swiper-next-new4'
+        },
+        pagination: {
+            el: ".swiper-pagination-new4",
+            clickable: true
+        },
+        autoplay: {
+            delay: 5000,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true
+        },
+        breakpoints: {
+            0: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            320: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            360: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            540: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            640: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            768: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1024: {
+                slidesPerView: 3,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1199: {
+                slidesPerView: 4,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1399: {
+                slidesPerView:4,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1499: {
+                slidesPerView: 4,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            }
+        }
+    });
+
+    /*====================================
+       home-5 new-product  js
+    ====================================*/
+    // new-product js
+    var swiper = new Swiper('.swiper#new-product5', {
+        loop: false,
+        rewind: true,
+        slidesPerView: 4,
+        grid: {
+            rows: 2,
+            fill: 'row' | 'column'
+        },
+        spaceBetween: 30,
+        observer: true,
+        observeParents: true,
+        watchSlidesProgress: true,
+        navigation: {
+            prevEl: '.swiper-prev-new5',
+            nextEl: '.swiper-next-new5'
+        },
+        pagination: {
+            el: ".swiper-pagination-new5",
+            clickable: true
+        },
+        autoplay: {
+        delay: 5000,
+        disableOnInteraction: false,
+        pauseOnMouseEnter: true
+        },
+        breakpoints: {
+            0: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            320: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            360: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            540: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            640: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            768: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1024: {
+                slidesPerView: 3,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1199: {
+                slidesPerView: 4,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1399: {
+                slidesPerView:4,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1499: {
+                slidesPerView: 4,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            }
+        }
+    });
+
+    /*====================================
+       home-6 tab-product  js
+    ====================================*/
+    // new-product tab js
+    var swiper = new Swiper('.swiper#new-product6', {
+        loop: false,
+        rewind: true,
+        slidesPerView: 3,
+        grid: {
+            rows: 2,
+            fill: 'row' | 'column'
+        },
+        spaceBetween: 30,
+        observer: true,
+        observeParents: true,
+        watchSlidesProgress: true,
+        navigation: {
+            prevEl: '.swiper-prev-new6',
+            nextEl: '.swiper-next-new6'
+        },
+        pagination: {
+            el: ".swiper-pagination-new6",
+            clickable: true
+        },
+        autoplay: {
+            delay: 5000,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true
+        },
+        breakpoints: {
+            0: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            320: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            360: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            540: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            640: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            768: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1024: {
+                slidesPerView: 3,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1199: {
+                slidesPerView: 3,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1399: {
+                slidesPerView:3,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1499: {
+                slidesPerView: 3,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            }
+        }
+    });
+
+    // best-product tab js
+    var swiper = new Swiper('.swiper#best-product6', {
+        loop: false,
+        rewind: true,
+        slidesPerView: 3,
+        grid: {
+            rows: 2,
+            fill: 'row' | 'column'
+        },
+        spaceBetween: 30,
+        observer: true,
+        observeParents: true,
+        watchSlidesProgress: true,
+        navigation: {
+            prevEl: '.swiper-prev-best6',
+            nextEl: '.swiper-next-best6'
+        },
+        pagination: {
+            el: ".swiper-pagination-best6",
+            clickable: true
+        },
+        autoplay: {
+            delay: 5000,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true
+        },
+        breakpoints: {
+            0: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            320: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            360: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            540: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            640: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            768: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1024: {
+                slidesPerView: 3,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1199: {
+                slidesPerView: 3,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1399: {
+                slidesPerView: 3,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1499: {
+                slidesPerView: 3,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            }
+        }
+    });
+
+    // feature-product tab js
+    var swiper = new Swiper('.swiper#feature-product6', {
+        loop: false,
+        rewind: true,
+        slidesPerView: 3,
+        grid: {
+            rows: 2,
+            fill: 'row' | 'column'
+        },
+        spaceBetween: 30,
+        observer: true,
+        observeParents: true,
+        watchSlidesProgress: true,
+        navigation: {
+            prevEl: '.swiper-prev-feature6',
+            nextEl: '.swiper-next-feature6'
+        },
+        pagination: {
+            el: ".swiper-pagination-feature6",
+            clickable: true
+        },
+        autoplay: {
+            delay: 5000,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true
+        },
+        breakpoints: {
+            0: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            320: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            360: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            540: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            640: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            768: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1024: {
+                slidesPerView: 3,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1199: {
+                slidesPerView: 3,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1399: {
+                slidesPerView: 3,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1499: {
+                slidesPerView: 3,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            }
+        }
+    });
+
+    // advance-tab tab js
+    var swiper = new Swiper('.swiper#advance-product6', {
+        loop: false,
+        rewind: true,
+        slidesPerView: 3,
+        grid: {
+            rows: 2,
+            fill: 'row' | 'column'
+        },
+        spaceBetween: 30,
+        observer: true,
+        observeParents: true,
+        watchSlidesProgress: true,
+        navigation: {
+            prevEl: '.swiper-prev-advance6',
+            nextEl: '.swiper-next-advance6'
+        },
+        pagination: {
+            el: ".swiper-pagination-advance6",
+            clickable: true
+        },
+        autoplay: {
+            delay: 5000,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true
+        },
+         breakpoints: {
+            0: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            320: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            360: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            540: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            640: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            768: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1024: {
+                slidesPerView: 3,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1199: {
+                slidesPerView: 3,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1399: {
+                slidesPerView: 3,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1499: {
+                slidesPerView: 3,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            }
+        }
+    });
+
+    /*====================================
+       home-7 tab-product  js
+    ====================================*/
+    // new-product tab js
+    var swiper = new Swiper('.swiper#new-product7', {
+        loop: false,
+        rewind: true,
+        slidesPerView: 3,
+        grid: {
+            rows: 2,
+            fill: 'row' | 'column'
+        },
+        spaceBetween: 30,
+        observer: true,
+        observeParents: true,
+        watchSlidesProgress: true,
+        navigation: {
+            prevEl: '.swiper-prev-new7',
+            nextEl: '.swiper-next-new7'
+        },
+        pagination: {
+            el: ".swiper-pagination-new7",
+            clickable: true
+        },
+        autoplay: {
+            delay: 5000,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true
+        },
+        breakpoints: {
+            0: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            320: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            360: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            540: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            640: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            768: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1024: {
+                slidesPerView: 3,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1199: {
+                slidesPerView: 3,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1399: {
+                slidesPerView: 3,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1499: {
+                slidesPerView: 3,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            }
+        }
+    });
+
+    // best-product tab js
+    var swiper = new Swiper('.swiper#best-product7', {
+        loop: false,
+        rewind: true,
+        slidesPerView: 3,
+        grid: {
+            rows: 2,
+            fill: 'row' | 'column'
+        },
+        spaceBetween: 30,
+        observer: true,
+        observeParents: true,
+        watchSlidesProgress: true,
+        navigation: {
+            prevEl: '.swiper-prev-best7',
+            nextEl: '.swiper-next-best7'
+        },
+        pagination: {
+            el: ".swiper-pagination-best7",
+            clickable: true
+        },
+        autoplay: {
+            delay: 5000,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true
+        },
+         breakpoints: {
+            0: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            320: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            360: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            540: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            640: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            768: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1024: {
+                slidesPerView: 3,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1199: {
+                slidesPerView: 3,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1399: {
+                slidesPerView: 3,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1499: {
+                slidesPerView: 3,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            }
+        }
+    });
+
+    // feature-product tab js
+    var swiper = new Swiper('.swiper#feature-product7', {
+        loop: false,
+        rewind: true,
+        slidesPerView: 3,
+        grid: {
+            rows: 2,
+            fill: 'row' | 'column'
+        },
+        spaceBetween: 30,
+        observer: true,
+        observeParents: true,
+        watchSlidesProgress: true,
+        navigation: {
+            prevEl: '.swiper-prev-feature7',
+            nextEl: '.swiper-next-feature7'
+        },
+        pagination: {
+            el: ".swiper-pagination-feature7",
+            clickable: true
+        },
+        autoplay: {
+            delay: 5000,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true
+        },
+         breakpoints: {
+            0: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            320: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            360: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            540: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            640: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            768: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1024: {
+                slidesPerView: 3,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1199: {
+                slidesPerView: 3,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1399: {
+                slidesPerView: 3,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1499: {
+                slidesPerView: 3,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            }
+        }
+    });
+
+    // advance-product tab js
+    var swiper = new Swiper('.swiper#advance-product7', {
+        loop: false,
+        rewind: true,
+        slidesPerView: 3,
+        grid: {
+            rows: 2,
+            fill: 'row' | 'column'
+        },
+        spaceBetween: 30,
+        observer: true,
+        observeParents: true,
+        watchSlidesProgress: true,
+        navigation: {
+            prevEl: '.swiper-prev-advance7',
+            nextEl: '.swiper-next-advance7'
+        },
+        pagination: {
+            el: ".swiper-pagination-advance7",
+            clickable: true
+        },
+        autoplay: {
+            delay: 5000,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true
+        },
+         breakpoints: {
+            0: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            320: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            360: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            540: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            640: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            768: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1024: {
+                slidesPerView: 3,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1199: {
+                slidesPerView: 3,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1399: {
+                slidesPerView: 3,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1499: {
+                slidesPerView: 3,
+                grid: {
+                    rows: 2,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            }
+        }
+    });
+
+    /*====================================
+       home-4 service-slider  js
+    ====================================*/
+    // new-product js
+    var swiper = new Swiper('.swiper#service-slider4', {
+        loop: false,
+        rewind: true,
+        slidesPerView: 3,
+        grid: {
+            rows: 1,
+            fill: 'row' | 'column'
+        },
+        spaceBetween: 30,
+        observer: true,
+        observeParents: true,
+        watchSlidesProgress: true,
+        navigation: {
+            prevEl: '.swiper-prev-service4',
+            nextEl: '.swiper-next-service4'
+        },
+        pagination: {
+            el: ".swiper-pagination-service4",
+            clickable: true
+        },
+        autoplay: {
+            delay: 5000,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true
+        },
+        breakpoints: {
+            0: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            320: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            360: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            540: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            640: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            768: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1024: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1199: {
+                slidesPerView: 3,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1399: {
+                slidesPerView: 3,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1499: {
+                slidesPerView: 3,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            }
+        }
+    });
+            
+    /*==============================
+        home-1 testimonial-slider js
+    ==============================*/
+    $('#testimonial-slider').slick({
+        dots: false,
+        arrows: false,
+        vertical: true,
+        slidesToShow: 3,
+        centerPadding: '0px',
+        slidesToScroll: 1,
+        centerMode: true,
+        verticalSwiping: true,
+        responsive: [
+            {
+              breakpoint: 480,
+              settings: {
+                slidesToShow: 1,
+                centerMode: false,
+                vertical: false,
+                autoplay: true,
+                speed: 1000,
+                autoplaySpeed: 1000
+              }
+            }
+        ]
+    });
+
+    /*====================================
+       home-2 test-slider  
+    ====================================*/
+    var swiper = new Swiper('.swiper#test-slider2', {
+        loop: false,
+        rewind: true,
+        slidesPerView: 1,
+        spaceBetween: 0,
+        observer: true,
+        observeParents: true,
+        watchSlidesProgress: true,
+        navigation: {
+            prevEl: '.swiper-prev-test',
+            nextEl: '.swiper-next-test'
+        },
+        pagination: {
+            el: ".swiper-pagination-test",
+            clickable: true
+        },
+        autoplay: {
+            delay: 5000,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true
+        }
+    });
+
+    /*==================================
+        home-3 testimonial js
+    ====================================*/
+    var swiper = new Swiper('.swiper#testi-slider3', {
+        loop: false,
+        rewind: true,
+        slidesPerView: 2,
+        grid: {
+            rows: 1,
+            fill: 'row' | 'column'
+        },
+        spaceBetween: 30,
+        observer: true,
+        observeParents: true,
+        watchSlidesProgress: true,
+        navigation: {
+            prevEl: '.swiper-prev-testi3',
+            nextEl: '.swiper-next-testi3'
+        },
+        pagination: {
+            el: ".swiper-pagination-testi3",
+            clickable: true
+        },
+        autoplay: {
+            delay: 5000,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true
+        },
+        breakpoints: {
+            0: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            320: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            360: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            540: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            640: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            768: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1024: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1199: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            }
+        }
+    });
+
+    function setSlideVisibility() {
+        var visibleSlides = $('.slick-slide[aria-hidden="false"]');
+        $(visibleSlides).each(function() {
+            $(this).css('opacity', 1);
+        });
+        $(visibleSlides).first().prev().css('opacity', 0);
+        $(visibleSlides).last().next().css('opacity', 0);
+        $('.slick-active').removeClass( "highlight" );
+        $('.slick-active').last().addClass( "highlight" ); 
+    }
+
+    $(setSlideVisibility());
+    $('.slider').on('beforeChange', function() {
+      $('.slick-slide').each(function() {
+        $(this).css('opacity', 1);
+      });
+    });
+    $('.slider-for').on('afterChange', function() {
+      setSlideVisibility();
+    });
+
+    /*====================================
+       home-4 test-slider  
+    ====================================*/
+    var swiper = new Swiper('.swiper#test-slider4', {
+        loop: false,
+        rewind: true,
+        slidesPerView: 2,
+        spaceBetween: 0,
+        observer: true,
+        observeParents: true,
+        watchSlidesProgress: true,
+        navigation: {
+            prevEl: '.swiper-prev-test4',
+            nextEl: '.swiper-next-test4'
+        },
+        pagination: {
+            el: ".swiper-pagination-test4",
+            clickable: true
+        },
+        autoplay: {
+        delay: 5000,
+        disableOnInteraction: false,
+        pauseOnMouseEnter: true
+        },
+        breakpoints: {
+            0: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            320: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            360: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            540: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            640: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 12
+            },
+            768: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1024: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            },
+            1199: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column'
+                },
+                spaceBetween: 30
+            }
+        }
+    });
+
+    /*====================================
+       home-5 test-slider  
+    ====================================*/
+    var swiper = new Swiper('.swiper#test-slider5', {
+        slidesPerView: 3,
+        grid: {
+            rows: 1,
+            fill: 'row' | 'column',
+        },
+        pagination: {
+            el: ".swiper-pagination-",
+            clickable: true
+        },
+        spaceBetween: 30,
+            loop: true,
+            observer: true,
+            observeParents: true,
+            watchSlidesProgress: true,
+            navigation: {
+                nextEl: '.swiper-next-test6',
+                prevEl: '.swiper-prev-test6',
+        },
+        pagination: {
+            el: ".swiper-pagination-test6",
+            clickable: true
+        },
+        autoplay: true,
+        autoplayTimeout: 5000,
+        autoplayHoverPause: true,
+        autoplaySpeed: 250,
+        breakpoints: {
+            0: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 12
+            },
+            320: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 12
+            },
+            360: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 12
+            },
+            540: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 12
+            },
+            640: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 12
+            },
+            768: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 30
+            },
+            1024: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 30
+            },
+            1199: {
+                slidesPerView: 3,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 30
+            }
+        }
+    });
+
+    /*====================================
+       home-6 test-slider  
+    ====================================*/
+    $('#test-slider6').owlCarousel({
+        loop: true,
+        rewind: true,
+        items: 1,
+        margin: 0,
+        nav: true,
+        dots: false,
+        navText: ['<i class="feather-arrow-left"></i>','<i class="feather-arrow-right"></i>'],
+        singleItem : true,
+        autoplay: true,
+        autoplayTimeout: 5000,
+        responsive:{
+        }     
+    });
+
+    /*====================================
+       home-7 test-slider  
+    ====================================*/
+    var swiper = new Swiper('.swiper#test7-slider', {
+        slidesPerView: 3,
+        grid: {
+            rows: 1,
+            fill: 'row' | 'column',
+        },
+        pagination: {
+            el: ".swiper-pagination-",
+            clickable: true
+        },
+          spaceBetween: 30,
+          loop: true,
+          observer: true,
+          observeParents: true,
+          watchSlidesProgress: true,
+          navigation: {
+            nextEl: '.swiper-next-testi7',
+            prevEl: '.swiper-prev-testi7',
+          },
+          pagination: {
+            el: ".swiper-pagination-testi7",
+            clickable: true
+        },
+        breakpoints: {
+            0: {
+            slidesPerView: 1,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 12
+            },
+            320: {
+                slidesPerView: 1,
+                    grid: {
+                        rows: 1,
+                        fill: 'row' | 'column',
+                    },
+                spaceBetween: 12
+            },
+            360: {
+                slidesPerView: 1,
+                    grid: {
+                        rows: 1,
+                        fill: 'row' | 'column',
+                    },
+                spaceBetween: 12
+            },
+            540: {
+              slidesPerView: 1,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column',
+                },
+              spaceBetween: 12
+            },
+            640: {
+              slidesPerView: 2,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column',
+                },
+              spaceBetween: 12
+            },
+            768: {
+              slidesPerView: 2,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column',
+                },
+              spaceBetween: 30
+            },
+            1024: {
+              slidesPerView: 2,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column',
+                },
+              spaceBetween: 30
+            },
+            1199: {
+              slidesPerView: 3,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column',
+                },
+              spaceBetween: 30
+            }
+        }
+    });
+
+    /*==================================== 
+        home-1 blog-template js
+    ====================================*/
+    var swiper = new Swiper('.swiper#home1-blog', {
+        slidesPerView: 3,
+        grid: {
+            rows: 1,
+            fill: 'row' | 'column',
+        },
+        pagination: {
+            el: ".swiper-pagination-blog1",
+            clickable: true
+        },
+        spaceBetween: 30,
+            loop: true,
+            observer: true,
+            observeParents: true,
+            watchSlidesProgress: true,
+            navigation: {
+                nextEl: '.swiper-next-blog1',
+                prevEl: '.swiper-prev-blog1',
+        },
+        pagination: {
+            el: ".swiper-pagination-blog1",
+            clickable: true
+        },
+        autoplay: {
+            delay: 5000,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true
+        },
+        breakpoints: {
+            0: {
+                slidesPerView: 1,
+                grid: {
+                  rows: 1,
+                  fill: 'row' | 'column',
+                },
+                spaceBetween: 12
+            },
+            320: {
+                slidesPerView: 1,
+                grid: {
+                  rows: 1,
+                  fill: 'row' | 'column',
+                },
+                spaceBetween: 12
+            },
+            360: {
+                slidesPerView: 1,
+                grid: {
+                  rows: 1,
+                  fill: 'row' | 'column',
+                },
+                spaceBetween: 12
+            },
+            540: {
+                slidesPerView: 1,
+                grid: {
+                  rows: 1,
+                  fill: 'row' | 'column',
+                },
+                spaceBetween: 12
+            },
+            640: {
+                slidesPerView: 2,
+                grid: {
+                  rows: 1,
+                  fill: 'row' | 'column',
+                },
+                spaceBetween: 12
+            },
+            768: {
+                slidesPerView: 2,
+                grid: {
+                  rows: 1,
+                  fill: 'row' | 'column',
+                },
+                spaceBetween: 30
+            },
+            1024: {
+                slidesPerView: 2,
+                grid: {
+                  rows: 1,
+                  fill: 'row' | 'column',
+                },
+                spaceBetween: 30
+            },
+            1199: {
+                slidesPerView: 3,
+                grid: {
+                  rows: 1,
+                  fill: 'row' | 'column',
+                },
+                spaceBetween: 30
+            }
+        }
+    });
+
+    /*====================================
+       home-2 / home-6 blog js
+    ====================================*/
+    $('#blog-slider2, #blog-slider6').owlCarousel({
+        loop: false,
+        items: 3,
+        margin: 30,
+        nav: false,
+        navText : ['<i class="fa-solid fa-chevron-left"></i>','<i class="fa-solid fa-chevron-right"></i>'],
+        dots: false,
+        responsive: {
+            0 : {
+                items: 1,
+                margin: 12
+            },
+            479 : {
+                items: 1,
+                margin: 12
+            },
+            540 : {
+                items: 1,
+                margin: 12
+            },
+            640 : {
+                items: 2,
+                margin: 12
+            },
+            768 : {
+                items: 2,
+                margin: 30
+            },
+            979 : {
+                items: 2,
+                margin: 30
+            },
+            1199 : {
+                items: 3,
+                margin: 30
+            }
+        }
+    });
+
+    /*====================================
+       home-3 blog js
+    ====================================*/
+    $('#blog-slider3').owlCarousel({
+        loop: false,
+        items: 4,
+        margin: 30,
+        nav: false,
+        navText : ['<i class="fa-solid fa-chevron-left"></i>','<i class="fa-solid fa-chevron-right"></i>'],
+        dots: false,
+        responsive: {
+            0 : {
+                items: 1,
+                margin: 12
+            },
+            479 : {
+                items: 1,
+                margin: 12
+            },
+            540 : {
+                items: 2,
+                margin: 12
+            },
+            640 : {
+                items: 2,
+                margin: 12
+            },
+            768 : {
+                items: 2,
+                margin: 30
+            },
+            979 : {
+                items: 2,
+                margin: 30
+            },
+            1199 : {
+                items: 3,
+                margin: 30
+            },
+            1499 : {
+                items: 4,
+                margin: 30
+            }
+        }
+    });
+
+    /*====================================
+       home-7 blog js
+    ====================================*/
+    var swiper = new Swiper('.swiper#brand-logo7', {
+        slidesPerView: 5,
+        grid: {
+            rows: 1,
+            fill: 'row' | 'column',
+        },
+          spaceBetween: 30,
+          observer: true,
+          observeParents: true,
+          watchSlidesProgress: true,
+          navigation: {
+            nextEl: '.swiper-next-blog7',
+            prevEl: '.swiper-prev-blog7',
+        },
+          pagination: {
+            el: ".swiper-pagination-blog7",
+            clickable: true
+        },
+        autoplay: true,
+        autoplayTimeout: 5000,
+        autoplayHoverPause: true,
+        autoplaySpeed: 250,
+        breakpoints: {
+            0: {
+              slidesPerView: 2,
+              grid: {
+                rows: 1,
+                fill: 'row' | 'column',
+              },
+              spaceBetween: 12
+            },
+            320: {
+              slidesPerView: 2,
+              grid: {
+                rows: 1,
+                fill: 'row' | 'column',
+              },
+              spaceBetween: 12
+            },
+            360: {
+              slidesPerView: 2,
+              grid: {
+                rows: 1,
+                fill: 'row' | 'column',
+              },
+              spaceBetween: 12
+            },
+            540: {
+              slidesPerView: 3,
+              grid: {
+                rows: 1,
+                fill: 'row' | 'column',
+              },
+              spaceBetween: 12
+            },
+            640: {
+              slidesPerView: 3,
+              grid: {
+                rows: 1,
+                fill: 'row' | 'column',
+              },
+              spaceBetween: 12
+            },
+            768: {
+              slidesPerView: 3,
+              grid: {
+                rows: 1,
+                fill: 'row' | 'column',
+              },
+              spaceBetween: 30
+            },
+            1024: {
+              slidesPerView: 4,
+              grid: {
+                rows: 1,
+                fill: 'row' | 'column',
+              },
+              spaceBetween: 30
+            },
+            1199: {
+              slidesPerView: 5,
+              grid: {
+                rows: 1,
+                fill: 'row' | 'column',
+              },
+              spaceBetween: 30
+            }
+        }
+    });
+
+    /*====================================
+       home-4 insta-slider  
+    ====================================*/
+    var swiper = new Swiper('.swiper#insta-slider4', {
+        loop: false,
+        rewind: true,
+        slidesPerView: 6,
+        grid: {
+            rows: 1,
+            fill: 'row' | 'column'
+        },
+        spaceBetween: 30,
+        observer: true,
+        observeParents: true,
+        watchSlidesProgress: true,
+        navigation: {
+            prevEl: '.swiper-prev-insta4',
+            nextEl: '.swiper-next-insta4'
+        },
+        pagination: {
+            el: ".swiper-pagination-insta4",
+            clickable: true
+        },
+        autoplay: {
+            delay: 5000,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true
+        },
+        breakpoints: {
+            0: {
+                slidesPerView: 1,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 12
+            },
+            320: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 12
+            },
+            360: {
+                slidesPerView: 2,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 12
+            },
+            540: {
+                slidesPerView: 3,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 12
+            },
+            640: {
+                slidesPerView: 3,
+                grid: {
+                rows: 1,
+                fill: 'row' | 'column',
+              },
+              spaceBetween: 12
+            },
+            768: {
+                slidesPerView: 3,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 30
+            },
+            1024: {
+                slidesPerView: 4,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 30
+            },
+            1199: {
+                slidesPerView: 5,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 30
+            },
+            1499: {
+                slidesPerView: 6,
+                grid: {
+                    rows: 1,
+                    fill: 'row' | 'column',
+                },
+                spaceBetween: 30
+            }
+        }
+    });
+
+    /*==============================
+        home-5 instagram-slider js
+    ==============================*/
+    $('#instagram-slider5').owlCarousel({
+        loop: false,
+        items: 6,
+        margin: 30,
+        rewind: true,
+        nav: false,
+        dots: false,
+        navText: ['<i class="bi bi-arrow-left-short"></i>','<i class="bi bi-arrow-right-short"></i>'],autoplay: true,
+        autoplay: true,
+        autoplayTimeout: 5000,
+        autoplayHoverPause: true,
+        responsive: {
+            0 : {
+                items: 2,
+                margin: 12
+            },
+            479 : {
+                items: 2,
+                margin: 12
+            },
+            540 : {
+                items: 3,
+                margin: 12
+            },
+            640 : {
+                items: 3,
+                margin: 12
+            },
+            768 : {
+                items: 3,
+                margin: 30
+            },
+            979 : {
+                items: 4,
+                margin: 30
+            },
+            1199 : {
+                items: 5,
+                margin: 30
+            },
+            1399 : {
+                items: 6,
+                margin: 30
+            }
+        }
+    });
+
+    /*==============================
+        home-7 instagram-slider js
+    ==============================*/
+    var swiper = new Swiper('.swiper#insta7-slider', {
+        slidesPerView: 6,
+        grid: {
+            rows: 1,
+            fill: 'row' | 'column',
+        },
+        spaceBetween: 30,
+        loop: true,
+        observer: true,
+        observeParents: true,
+        watchSlidesProgress: true,
+        navigation: {
+            nextEl: '.swiper-next-insta7',
+            prevEl: '.swiper-prev-insta7',
+        },
+        pagination: {
+            el: ".swiper-pagination-insta7",
+            clickable: true
+        },
+        autoplay: true,
+        autoplayTimeout: 5000,
+        autoplayHoverPause: true,
+        autoplaySpeed: 250,
+        breakpoints: {
+        0: {
+            slidesPerView: 1,
+            grid: {
+                rows: 1,
+                fill: 'row' | 'column',
+            },
+            spaceBetween: 12
+        },
+        320: {
+            slidesPerView: 2,
+            grid: {
+                rows: 1,
+                fill: 'row' | 'column',
+            },
+            spaceBetween: 12
+        },
+        360: {
+            slidesPerView: 2,
+            grid: {
+                rows: 1,
+                fill: 'row' | 'column',
+            },
+            spaceBetween: 12
+        },
+        540: {
+            slidesPerView: 3,
+            grid: {
+                rows: 1,
+                fill: 'row' | 'column',
+            },
+            spaceBetween: 12
+        },
+        640: {
+            slidesPerView: 3,
+            grid: {
+                rows: 1,
+                fill: 'row' | 'column',
+            },
+            spaceBetween: 12
+        },
+        768: {
+            slidesPerView: 3,
+            grid: {
+                rows: 1,
+                fill: 'row' | 'column',
+            },
+            spaceBetween: 30
+        },
+        1024: {
+            slidesPerView: 4,
+            grid: {
+                rows: 1,
+                fill: 'row' | 'column',
+            },
+            spaceBetween: 30
+        },
+        1199: {
+            slidesPerView: 5,
+            grid: {
+                rows: 1,
+                fill: 'row' | 'column',
+            },
+            spaceBetween: 30
+        },
+        1499: {
+            slidesPerView: 6,
+            grid: {
+                rows: 1,
+                fill: 'row' | 'column',
+            },
+            spaceBetween: 30
+            }
+        }
+    });
+
+    /*====================================
+        home-5 brand-logo js
+    ====================================*/
+    $('#brand-logo5').owlCarousel({
+        loop: true,
+        items: 5,
+        margin: 30,
+        nav: false,
+        navText : ['<i class="fa-solid fa-chevron-left"></i>','<i class="fa-solid fa-chevron-right"></i>'],
+        dots: false,
+        responsive: {
+            0 : {
+                items: 2,
+                margin: 12
+            },
+            479 : {
+                items: 2,
+                margin: 12
+            },
+            540 : {
+                items: 3,
+                margin: 12
+            },
+            640 : {
+                items: 3,
+                margin: 12
+            },
+            768 : {
+                items: 3,
+                margin: 30
+            },
+            979 : {
+                items: 4,
+                margin: 30
+            },
+            1199 : {
+                items: 5,
+                margin: 30
+            }
+        }
+    });
+
+    /*====================================
+        product-style-1 js  
+    ====================================*/
+    $('.slider-big').slick({
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        arrows: false,
+        centerMode: true,
+        centerPadding: '0px',
+        asNavFor: '.slider-small',
+        adaptiveHeight: true,
+    });
+    $('.slider-small').slick({
+        slidesToShow: 4,
+        slidesToScroll: 1,
+        arrows: true,
+        prevArrow: '<button class="slick-prev"><i class="bi bi-chevron-left"></i></button>',
+        nextArrow: '<button class="slick-next"><i class="bi bi-chevron-right"></i></button>',
+        dots: false,
+        centerMode: true,
+        centerPadding: '0px',
+        focusOnSelect: true,
+        asNavFor: '.slider-big',
+            responsive: [{
+              breakpoint: 480,
+              settings: {
+                slidesToShow: 3
+            }
+        }]
+    });
+
+    /*====================================
+        product-style-2 js  
+    ====================================*/
+    $('.style2-slider-big').slick({
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        arrows: false,
+        centerMode: true,
+        centerPadding: '0px',
+        asNavFor: '.style2-slider-small',
+        adaptiveHeight: true,
+    });
+    $('.style2-slider-small').slick({
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        arrows: true,
+        prevArrow: '<button class="slick-prev"><i class="bi bi-chevron-left"></i></button>',
+        nextArrow: '<button class="slick-next"><i class="bi bi-chevron-right"></i></button>',
+        dots: false,
+        centerMode: true,
+        centerPadding: '0px',
+        focusOnSelect: true,
+        asNavFor: '.style2-slider-big',
+        vertical: true,
+        verticalSwiping: true,
+        responsive: [
+            {
+                breakpoint: 480,
+                settings: {
+                  vertical: false,
+                  verticalSwiping: false
+                }
+            }
+        ]
+    });
+
+    /*====================================
+        product-style-3 js  
+    ====================================*/
+    $('.style3-slider-small').slick({
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        arrows: true,
+        prevArrow: '<button class="slick-prev"><i class="bi bi-arrow-left-short"></i></button>',
+        nextArrow: '<button class="slick-next"><i class="bi bi-arrow-right-short"></i></button>',
+        dots: false,
+        centerMode: true,
+        centerPadding: 'calc(33.33% - 30px)',
+        focusOnSelect: true,
+        responsive: [
+            {
+                breakpoint: 1199,
+                settings: {
+                    arrows: false,
+                    dots: true
+                }
+            },
+            {
+                breakpoint: 1024,
+                settings: {
+                    arrows: false,
+                    dots: true
+                }
+            },
+            {
+                breakpoint: 768,
+                settings: {
+                    arrows: false,
+                    dots: true,
+                    centerMode: true,
+                    centerPadding: '0px',
+                }
+            }
+        ]
+    });
+
+    /*====================================
+        product-style-4 js  
+    ====================================*/
+    $('.style4-slider-big').slick({
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        arrows: false,
+        centerMode: true,
+        centerPadding: '0px',
+        asNavFor: '.style4-slider-small',
+        adaptiveHeight: true,
+    });
+    $('.style4-slider-small').slick({
+        slidesToShow: 4,
+        slidesToScroll: 1,
+        arrows: true,
+        prevArrow: '<button class="slick-prev"><i class="bi bi-chevron-left"></i></button>',
+        nextArrow: '<button class="slick-next"><i class="bi bi-chevron-right"></i></button>',
+        dots: false,
+        centerMode: true,
+        centerPadding: '0px',
+        focusOnSelect: true,
+        asNavFor: '.style4-slider-big',
+        vertical: true,
+        verticalSwiping: true,
+        responsive: [
+            {
+                breakpoint: 480,
+                settings: {
+                  vertical: false,
+                  verticalSwiping: false
+                }
+            }
+        ]
+    });
+
+    /*====================================
+        product-style-5 js  
+    ====================================*/
+    $('.style5-slider-small').slick({
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        arrows: false,
+        prevArrow: '<button class="slick-prev"><i class="bi bi-chevron-left"></i></button>',
+        nextArrow: '<button class="slick-next"><i class="bi bi-chevron-right"></i></button>',
+        dots: true,
+        focusOnSelect: true,
+    });
+
+    /*====================================
+        product-style-6 js  
+    ====================================*/
+    $('.slider-big-6').slick({
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        arrows: false,
+        centerMode: true,
+        centerPadding: '0px',
+        asNavFor: '.slider-small-6',
+        adaptiveHeight: true,
+    });
+    $('.slider-small-6').slick({
+        slidesToShow: 4,
+        slidesToScroll: 1,
+        arrows: true,
+        prevArrow: '<button class="slick-prev"><i class="bi bi-chevron-left"></i></button>',
+        nextArrow: '<button class="slick-next"><i class="bi bi-chevron-right"></i></button>',
+        dots: false,
+        centerMode: true,
+        centerPadding: '0px',
+        focusOnSelect: true,
+        asNavFor: '.slider-big-6',
+        responsive: [{
+            breakpoint: 480,
+            settings: {
+                slidesToShow: 3
+            }
+        }]
+    });
+
+    /*====================================
+        product-style-7 js  
+    ====================================*/
+    $('.slider-big-7').slick({
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        arrows: false,
+        centerMode: true,
+        centerPadding: '0px',
+        asNavFor: '.slider-small-7',
+        adaptiveHeight: true,
+    });
+    $('.slider-small-7').slick({
+        slidesToShow: 4,
+        slidesToScroll: 1,
+        arrows: false,
+        prevArrow: '<button class="slick-prev"><i class="bi bi-chevron-left"></i></button>',
+        nextArrow: '<button class="slick-next"><i class="bi bi-chevron-right"></i></button>',
+        dots: false,
+        centerMode: true,
+        centerPadding: '0px',
+        focusOnSelect: true,
+        asNavFor: '.slider-big-7',
+            responsive: [{
+            breakpoint: 480,
+                settings: {
+                slidesToShow: 3
+            }
+        }]
+    });
+
+
+
+
+  const menuToggle = document.getElementById("menu-toggle");
+  const mobileMenu = document.getElementById("mobile-menu");
+  const menuCloseBtn = document.querySelector(".menu-close-btn");
+
+  // Show menu
+  menuToggle.addEventListener("click", () => {
+    mobileMenu.classList.add("active");
+  });
+
+  // Hide menu
+  menuCloseBtn.addEventListener("click", () => {
+    mobileMenu.classList.remove("active");
+  });
+
+  (function($) {
+    /* Gallery Isotope */
+    function GalleryIsotope() {
+        if ($('.gallery').length) {
+            $('.gallery').each(function(index, el) {
+                var $this = $(this),
+                    $isotope = $this.find('.gallery-isotope'),
+                    $filter = $this.find('.gallery-cat');
+
+                if ($isotope.length) {
+                    var isotope_run = function(filter) {
+                        $isotope.isotope({
+                            itemSelector: '.item-isotope',
+                            filter: filter,
+                            percentPosition: true,
+                            masonry: {
+                                columnWidth: '.item-size'
+                            },
+                            transitionDuration: '0.6s',
+                            hiddenStyle: {
+                                opacity: 0
+                            },
+                            visibleStyle: {
+                                opacity: 1
+                            }
+                        });
+                    }
+
+                    $filter.on('click', 'a', function(event) {
+                        event.preventDefault();
+                        $(this).parents('ul').find('.active').removeClass('active');
+                        $(this).parent('li').addClass('active');
+                        isotope_run($(this).attr('data-filter'));
+                    });
+
+                    isotope_run('*');
+                }
+            });
+        }
+    }
+
+    $(window).load(function() {
+        $('#preloader').delay(1000).fadeOut('400', function() {
+            $(this).fadeOut()
+        });
+        $('body').append('<div class="awe-popup-overlay" id="awe-popup-overlay"></div><div class="awe-popup-wrap" id="awe-popup-wrap"><div class="awe-popup-content"></div><span class="awe-popup-close" id="awe-popup-close"></div>');
+        GalleryIsotope();
+    });
+
+})(jQuery);
+
+
+$(document).ready(function() {
+    $(".remove-from-cart").click(function(e) {
+        e.preventDefault();  // Prevent the default link action (page reload)
+
+        // Get the product ID from the data attribute of the link
+        let itemId = $(this).data("item-id");
+        let removeUrl = "/remove-from-cart/" + itemId + "/";  // Define the URL
+
+        // Get the CSRF token from the HTML meta tag
+        let csrfToken = $("meta[name='csrf-token']").attr("content");
+
+        // Perform AJAX POST request
+        $.ajax({
+            url: removeUrl,
+            type: "POST",
+            data: {
+                csrfmiddlewaretoken: csrfToken  // Include the CSRF token
+            },
+            success: function(response) {
+                if (response.status === "success") {
+                    // Remove the item from the cart UI without reloading the page
+                    $("#cart-item-" + itemId).remove();  // Assuming you have an element with id cart-item-<itemId>
+                } else {
+                    alert("Failed to remove the item.");
+                }
+            },
+            error: function(xhr, status, error) {
+                alert("Error removing item from cart.");
+                console.log(xhr.responseText);  // Log error for debugging
+            }
+        });
+    });
+});
+
+$(document).ready(function() {
+    $(".qtybutton").click(function(e) {
+        e.preventDefault(); // Prevent form submission
+
+        let action = $(this).data("action");  // Get the action (increase or decrease)
+        let itemId = $(this).data("item-id"); // Get the item id
+        let quantityInput = $("#update-cart-form-" + itemId).find(".quantity-input");
+        let currentQuantity = parseInt(quantityInput.val(), 10);
+
+        // Adjust the quantity based on the action
+        if (action === "increase") {
+            currentQuantity += 1;
+        } else if (action === "decrease" && currentQuantity > 1) {
+            currentQuantity -= 1;
+        }
+
+        // Update the input field with the new quantity
+        quantityInput.val(currentQuantity);
+
+        // Submit the form via AJAX to update the cart
+        $.ajax({
+            url: "/update-cart-item/" + itemId + "/",  // Ensure this matches your URL pattern
+            type: "POST",
+            data: {
+                csrfmiddlewaretoken: $("meta[name='csrf-token']").attr("content"),
+                quantity: currentQuantity
+            },
+            success: function(response) {
+                // Check if the response is successful
+                if (response.status === "success") {
+                    // Update the displayed price
+                    let updatedPrice = response.updated_price;
+                    $("#item-price-" + itemId).text("₹" + updatedPrice);
+                }
+            },
+            error: function(xhr) {
+                alert("Error updating cart.");
+            }
+        });
+    });
+});
+$(document).ready(function() {
+    $(".remove-from-cart").click(function(e) {
+        e.preventDefault();
+        
+        let itemId = $(this).data("item-id"); // Get the item ID
+        
+        $.ajax({
+            url: "/remove-from-cart/" + itemId + "/",  // Ensure this matches your Django URL pattern
+            type: "POST",
+            data: {
+                csrfmiddlewaretoken: $("meta[name='csrf-token']").attr("content")
+            },
+            success: function(response) {
+                if (response.status === "success") {
+                    // Remove the cart item from the DOM
+                    $("#cart-item-" + itemId).remove();
+                } else {
+                    alert("Error removing item from cart.");
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+                alert("Error removing item from cart.");
+            }
+        });
+    });
+});
+document.addEventListener('DOMContentLoaded', function() {
+    // Get the required form inputs and the Place Order button
+    const fName = document.querySelector('input[name="f-name"]');
+    const lName = document.querySelector('input[name="l-name"]');
+    const email = document.querySelector('input[name="mail"]');
+    const phone = document.querySelector('input[name="phone"]');
+    const shippingCheckbox = document.querySelector('input.cust-checkbox');
+    const paymentMethods = document.querySelectorAll('input[name="payment-method"]');
+    const placeOrderButton = document.querySelector('.checkout-btn a');
+
+    // Function to check if all required fields are filled
+    function validateForm() {
+        const isFormValid = fName.value && lName.value && email.value && phone.value && isPaymentSelected();
+        placeOrderButton.classList.toggle('disabled', !isFormValid);
+    }
+
+    // Check if any payment method is selected
+    function isPaymentSelected() {
+        return Array.from(paymentMethods).some(input => input.checked);
+    }
+
+    // Add event listeners for input changes
+    fName.addEventListener('input', validateForm);
+    lName.addEventListener('input', validateForm);
+    email.addEventListener('input', validateForm);
+    phone.addEventListener('input', validateForm);
+    shippingCheckbox.addEventListener('change', validateForm);
+    paymentMethods.forEach(input => input.addEventListener('change', validateForm));
+
+    // Initial validation check on page load
+    validateForm();
+});
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".remove-from-cart").forEach(function (button) {
+        button.addEventListener("click", function (e) {
+            e.preventDefault();
+            const itemId = this.dataset.itemId;
+
+            fetch("/remove-from-cart/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    "X-CSRFToken": getCookie("csrftoken") // ✅ required
+                },
+                body: `item_id=${itemId}`
+            })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.success) {
+                    const itemDiv = document.getElementById(`cart-item-${itemId}`);
+                    if (itemDiv) {
+                        itemDiv.remove(); // ✅ remove from DOM
+                    }
+                } else {
+                    alert("Failed to remove item");
+                }
+            });
+        });
+    });
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== "") {
+            const cookies = document.cookie.split(";");
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === name + "=") {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+});
+
+document.querySelector('form').addEventListener('submit', function() {
+    console.log("Form submitted!");
+});
+document.querySelectorAll('.qtybutton').forEach(button => {
+    button.addEventListener('click', function () {
+        var action = this.getAttribute('data-action');
+        var itemId = this.getAttribute('data-item-id');
+        var quantityInput = document.querySelector(`.quantity-input[data-item-id="${itemId}"]`);
+        var currentQuantity = parseInt(quantityInput.value);
+
+        // Update quantity based on action (increase or decrease)
+        if (action === 'increase') {
+            currentQuantity += 1;
+        } else if (action === 'decrease' && currentQuantity > 1) {
+            currentQuantity -= 1;
+        }
+
+        // Update the quantity value in the input field
+        quantityInput.value = currentQuantity;
+
+        // Submit the form to update the cart (with AJAX)
+        var form = document.getElementById(`update-cart-form-${itemId}`);
+        var formData = new FormData(form);
+        formData.append('quantity', currentQuantity);
+
+        // AJAX request to update the cart
+        fetch(form.action, {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Update the total price for the item dynamically
+            document.getElementById(`item-price-${itemId}`).innerText = `₹${data.new_total_price}`;
+        })
+        .catch(error => console.error('Error updating cart:', error));
+    });
+});
+document.addEventListener('DOMContentLoaded', function () {
+    // Listen for changes in the quantity input
+    document.querySelectorAll('.quantity-input').forEach(input => {
+        input.addEventListener('change', function () {
+            const quantity = parseInt(this.value);
+            const itemId = this.dataset.itemId;
+
+            // Send the updated quantity to the server
+            fetch("{% url 'update_cart' item.product.id %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: `quantity=${quantity}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Update the total price on the page
+                const priceElement = document.getElementById('item-price-' + itemId);
+                if (priceElement) {
+                    priceElement.textContent = '₹' + data.total_price;
+                }
+                // You can also update the quantity value if needed
+                this.value = data.quantity;
+            });
+        });
+    });
+});

@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home - Little Forest{% endblock %}
+{% block content %}
+
+    <body>
+        <!-- header start -->
+       
+        <!-- header end -->
+        <!-- main section start-->
+        <main>
+            <!-- breadcrumb start -->
+         
+            <section id="breadcrumb">
+                <div class="container-fluid fluid____mobile">
+                    <div class="breadcrumb-content bg-breadcrumb-01">
+                        <div class="caption">
+                            <div class="title">Order complete </div>
+                            <ul>
+                                <li>Home</li>
+                                <li>Order complete </li>                    
+                            </ul>
+                        </div>                    
+                    </div>
+                </div>
+            </section>
+            <!-- breadcrumb end -->
+            <!-- order-complete start -->
+            <section class="order-complete section-ptb">
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <div class="order-area">
+
+                                <!-- order-price end -->
+                                <!-- order-details start -->
+                                <div class="order-details">
+                                    <span class="text-success order-i"><i class="fa fa-check-circle"></i></span>
+                                    <h4>Thank you for order</h4>
+                                    <span class="order-s">Your order will ship within few hours</span>
+                                   
+                                </div>
+                                <!-- order-details start -->
+                                <!-- order-delivery start -->
+                                <div class="order-delivery">
+                                    <ul class="delivery-payment">
+                                        <li class="delivery">
+                                            <h6>Delivery address</h6>
+                                            <p>{{address.first_name}} {{address.last_name}}</p>
+                                            <span class="order-span">{{address.street_address}}</span>
+                                            <span class="order-span">{{address.city}}</span>
+                                            <span class="order-span">{{address.state}}</span>
+                                            <span class="order-span">{{address.country}}</span>
+                                            <span class="order-span">Mobile No : {{address.phone}}</span>
+                                        </li>
+                                        <li class="pay">
+                                            <h6>Payment summary</h6>
+                                            <!-- <p class="transition">Transaction No : 66282856617</p> -->
+                                            <span class="order-span p-label">
+                                                <span class="n-price">Price</span>
+                                                <span class="o-price">Rs. {{total}}</span>
+                                            </span>
+                                            <span class="order-span p-label">
+                                                <span class="n-price">Shipping charge</span>
+                                                <span class="o-price">Rs. 0</span>
+                                            </span>
+                                            <span class="order-span p-label">
+                                                <span class="n-price">Order Total</span>
+                                                <span class="o-price">Rs. {{total}}</span>
+                                            </span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <!-- order-delivery start -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- order-complete end -->
+        </main>
+        <!-- main section end-->
+   
+        <!-- mobile-menu start -->
+       
+    
+      
+       
+    </body>
+
+    {% endblock %}
+</html>

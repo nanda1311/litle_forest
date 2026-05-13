@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home - Little Forest{% endblock %}
+{% block content %}
+    <body>
+        <!-- header start -->
+       
+        <!-- header end -->
+        <!-- main section start-->
+        <main>
+            <!-- breadcrumb start -->
+           
+            <section id="breadcrumb">
+                <div class="container-fluid fluid____mobile">
+                    <div class="breadcrumb-content bg-breadcrumb-05">
+                        <div class="caption">
+                            <div class="title">Create Account</div>
+                            <ul>
+                                <li>Home</li>
+                                <li>Create Account</li>                    
+                            </ul>
+                        </div>                    
+                    </div>
+                </div>
+            </section>
+            <!-- breadcrumb end -->
+            <!-- customer-page start -->
+            <section class="customer-page section-ptb">
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <!-- account login title start -->
+                            <div class="section-capture">
+                                <div class="">
+                                    <h2><span>Create account</span></h2>
+                                </div>
+                            </div>
+                            <!-- account login title end -->
+                            <!-- account login start  -->
+                            <div class="log-acc-page">
+                                <div class="contact-form-list">
+                                  <form method="post" enctype="multipart/form-data">
+                                                {% csrf_token %}
+
+                                                <ul class="form-fill">
+                                                    <li class="form-fill-li">
+                                                        <label>First Name</label>
+                                                        <input type="text" name="first_name" placeholder="Enter your first name" required>
+                                                    </li>
+                                                    <li class="form-fill-li Name">
+                                                        <label>Username</label>
+                                                        <input type="text" name="username" placeholder="Enter your username" required>
+                                                    </li>
+
+                                                    <li class="form-fill-li Email">
+                                                        <label>Email Address</label>
+                                                        <input type="email" name="email" placeholder="Enter your email address" required>
+                                                    </li>
+
+                                                    <li class="form-fill-li Phone">
+                                                        <label>Phone Number</label>
+                                                        <input type="tel" name="phone" placeholder="Enter your phone number" required>
+                                                    </li>
+
+                                                    <li class="form-fill-li Password">
+                                                        <label>Password</label>
+                                                        <input type="password" name="password" placeholder="Create a password" required>
+                                                    </li>
+                                                </ul>
+
+                                                <div class="form-action-button">
+                                                    <div class="read-agree">
+                                                        <label>
+                                                            <input type="checkbox" id="termsCheckbox" name="terms" class="cust-checkbox create-checkbox">
+                                                            <span class="agree-text">
+                                                                I have read and agree with the 
+                                                                <a href="{% url 'termscondition' %}">terms & condition</a>.
+                                                            </span>
+                                                            <span class="cust-check"></span>
+                                                        </label>
+
+                                                        <button type="submit" class="btn btn-style2 create">Create</button>
+                                                    </div>
+                                                </div>
+
+                                         </form>
+                                </div>
+                                
+                                
+                                <div class="acc-wrapper">
+                                    <h6>Already have an account?</h6>
+                                    <div class="account-optional">
+                                        <a href="{% url 'loginaccount' %}" style="color: white !important;">Log in</a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- account login start -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+              
+            <!-- customer-page end  -->
+        </main>
+        <!-- main section end-->
+     
+       
+
+
+        
+      
+
+        <script>
+document.getElementById("signupForm").addEventListener("submit", function(e) {
+
+    const terms = document.getElementById("termsCheckbox");
+
+    if(!terms.checked){
+        e.preventDefault();
+
+        Swal.fire({
+            icon: "warning",
+            title: "Terms Required",
+            text: "Please agree to the Privacy Policy & Terms to create an account.",
+            confirmButtonText: "OK"
+        });
+    }
+
+});
+</script>
+    </body>
+    {% endblock %}
+<!-- Mirrored from spacingtech.com/html/panno/panno/create-account.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 24 Feb 2025 05:32:20 GMT -->
+</html>

@@ -1,0 +1,337 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="utf-8" />
+    <title>{% block title %}Little Forest — Founder Dashboard{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="{% static 'img/favicon/favicon.png' %}">
+
+    <!-- Your existing CSS files -->
+    <link href="{% static 'assets/css/vendor.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'assets/css/icons.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'assets/css/app.min.css' %}" rel="stylesheet" />
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        :root {
+            --sidebar-bg: #0f172a;
+            --sidebar-text: #e2e8f0;
+            --sidebar-hover: #1e293b;
+            --sidebar-active: #334155;
+            --primary: #10b981;
+            --primary-dark: #059669;
+        }
+
+        body {
+            background: #f8fafc;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            color: #1e293b;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        .sidebar {
+            width: 280px;
+            min-height: 100vh;
+            background: var(--sidebar-bg);
+            color: var(--sidebar-text);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            border-right: 1px solid #1e293b;
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Desktop: always visible, fixed */
+        @media (min-width: 992px) {
+            .sidebar {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 280px;
+            }
+        }
+
+        /* Mobile: hidden by default, slides in */
+        @media (max-width: 991px) {
+            .sidebar {
+                transform: translateX(-100%);
+                width: 85vw;
+                max-width: 320px;
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0 !important;
+                transition: filter 0.35s ease;
+            }
+            .sidebar.open ~ .main-content {
+                filter: brightness(0.85) blur(1.5px);
+            }
+            .header {
+                padding: 1rem 1.25rem;
+                border-radius: 0;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            }
+        }
+
+        .sidebar-header {
+            padding: 1.75rem 1.25rem 1.25rem;
+            border-bottom: 1px solid #1e293b;
+        }
+
+        .sidebar-menu {
+            padding: 1.5rem 1rem;
+        }
+
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--sidebar-text);
+            padding: 14px 16px;
+            border-radius: 8px;
+            margin-bottom: 4px;
+            text-decoration: none;
+            font-size: 0.98rem;
+            font-weight: 500;
+            transition: all 0.18s ease;
+        }
+
+        .sidebar a:hover,
+        .sidebar a:focus {
+            background: var(--sidebar-hover);
+            color: white;
+            transform: translateX(4px);
+        }
+
+        .sidebar a.active {
+            background: var(--sidebar-active);
+            color: white;
+            font-weight: 600;
+            border-left: 4px solid var(--primary);
+        }
+
+        .sidebar .section-title {
+            font-size: 0.78rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: #64748b;
+            margin: 24px 16px 12px;
+            padding-top: 8px;
+        }
+
+        .header {
+            background: white;
+            border-radius: 12px;
+            padding: 1.25rem 1.75rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 900;
+        }
+
+        .sidebar-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.35s ease;
+            z-index: 900;
+            pointer-events: none;
+        }
+        /* Hamburger button visibility */
+#menu-toggle {
+    display: none;              /* hidden by default (desktop) */
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+/* Show on mobile only */
+@media (max-width: 991px) {
+    #menu-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+        @media (max-width: 991px) {
+            .sidebar.open ~ .sidebar-backdrop {
+                opacity: 1;
+                visibility: visible;
+                pointer-events: auto;
+            }
+        }
+
+        /* Dark mode */
+        @media (prefers-color-scheme: dark) {
+            body { background: #0f172a; color: #e2e8f0; }
+            .header { background: #1e293b; color: white; }
+        }
+    </style>
+
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+
+<div class="dashboard-wrapper relative">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h4 class="text-xl font-bold tracking-tight flex items-center gap-3 text-white">
+                <i data-lucide="leaf" class="w-7 h-7 text-[var(--primary)]"></i>
+                Little Forest
+            </h4>
+            <p class="text-xs text-slate-400 mt-1">Founder Dashboard</p>
+        </div>
+
+        <div class="sidebar-menu">
+            <a href="{% url 'dashboard' %}" class="{% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
+                <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                Dashboard
+            </a>
+
+            {% if request.user.is_superuser %}
+                <div class="section-title">Founder Controls</div>
+
+                <a href="{% url 'product_list' %}" class="{% if 'product' in request.path %}active{% endif %}">
+                    <i data-lucide="boxes" class="w-5 h-5"></i>
+                    Products
+                </a>
+
+                <a href="{% url 'blog_list' %}" class="{% if 'blog' in request.path %}active{% endif %}">
+                    <i data-lucide="newspaper" class="w-5 h-5"></i>
+                    Blog Posts
+                </a>
+                <a href="{% url 'category_list' %}" class="{% if 'category' in request.path %}active{% endif %}">
+                    <i data-lucide="tags" class="w-5 h-5"></i>
+                    Categories
+                </a>
+                <a href="{% url 'product_list_terrarium' %}" class="{% if 'upload_terrarium' in request.path %}active{% endif %}">
+                    <i data-lucide="sprout" class="w-5 h-5"></i>
+                    Terrarium
+                </a>
+                <a href="{% url 'order_list' %}" class="{% if 'order' in request.path %}active{% endif %}">
+                    <i data-lucide="shopping-cart" class="w-5 h-5"></i>
+                    Orders
+                </a>
+                <a href="{% url 'customer_list' %}" class="{% if 'customer' in request.path %}active{% endif %}">
+                    <i data-lucide="users" class="w-5 h-5"></i>
+                    Customers
+                </a>
+            {% endif %}
+
+            <hr class="my-6 border-slate-700" />
+
+            <a href="{% url 'logout' %}" class="text-rose-400 hover:text-rose-300">
+                <i data-lucide="log-out" class="w-5 h-5"></i>
+                Logout
+            </a>
+        </div>
+    </aside>
+
+    <!-- Backdrop (only visible on mobile when sidebar open) -->
+    <div class="sidebar-backdrop" id="backdrop" onclick="closeSidebar()"></div>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+        <!-- HEADER -->
+       <!-- HEADER -->
+<header class="header" id="header-area">
+    <div class="flex items-center gap-4">
+        <!-- Hamburger button - only visible on mobile -->
+        <button id="menu-toggle" class="text-slate-700 focus:outline-none">
+            <i data-lucide="menu" class="w-7 h-7"></i>
+        </button>
+        <h5>{% block page_title %}Dashboard{% endblock %}</h5>
+    </div>
+
+    <div>
+        <small class="text-slate-500">
+            Welcome back, <strong>{{ request.user.username }}</strong>
+        </small>
+    </div>
+</header>
+        <!-- PAGE CONTENT -->
+        <div class="content-area">
+            {% block content %}{% endblock %}
+        </div>
+
+    </main>
+
+</div>
+<!-- Mobile sidebar + header click to close JavaScript -->
+<script>
+    lucide.createIcons();
+
+    const sidebar = document.getElementById('sidebar');
+    const backdrop = document.getElementById('backdrop');
+    const menuToggle = document.getElementById('menu-toggle');
+    const headerArea = document.getElementById('header-area');
+
+    function openSidebar() {
+        sidebar.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeSidebar() {
+        sidebar.classList.remove('open');
+        document.body.style.overflow = '';
+    }
+
+    // Hamburger click → open
+    if (menuToggle) {
+        menuToggle.addEventListener('click', openSidebar);
+    }
+
+    // Backdrop click → close
+    if (backdrop) {
+        backdrop.addEventListener('click', closeSidebar);
+    }
+
+    // Header click → close sidebar (only on mobile)
+    if (headerArea) {
+        headerArea.addEventListener('click', (e) => {
+            // Only run on mobile
+            if (window.innerWidth <= 991) {
+                // Prevent closing when clicking the hamburger itself
+                if (!e.target.closest('#menu-toggle')) {
+                    closeSidebar();
+                }
+            }
+        });
+    }
+
+    // Close on ESC key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && sidebar.classList.contains('open')) {
+            closeSidebar();
+        }
+    });
+</script>
+
+<!-- Your scripts -->
+<script src="{% static 'assets/js/vendor.js' %}"></script>
+<script src="{% static 'assets/js/app.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+{% block extra_js %}{% endblock %}
+
+</body>
+</html>
