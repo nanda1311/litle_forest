@@ -7,7 +7,6 @@ admin.site.register(BlogPost)
 admin.site.register(MyCart)
 admin.site.register(Order)
 admin.site.register(OrderItem)
-admin.site.register(TerrariumProduct)
 admin.site.register(ContactMessage)
 
 admin.site.register(Product)

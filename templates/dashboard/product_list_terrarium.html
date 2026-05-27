@@ -16,10 +16,12 @@
         <table class="product-table">
             <thead>
                 <tr>
+                    <th>ID</th>
                     <th>Image</th>
                     <th>Name</th>
                     <th>Price</th>
-                    <th>Description</th>
+                    <th>Stock</th>
+                    <th>Status</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -27,13 +29,28 @@
             <tbody>
                 {% for product in products %}
                 <tr>
+                    <td class="fw-medium text-muted">
+                        LFT{{ product.id }}
                     <td>
                         <img src="{{ product.image.url }}" alt="{{ product.name }}">
                     </td>
 
                     <td>{{ product.name }}</td>
                     <td>₹{{ product.price }}</td>
-                    <td>{{ product.description|truncatechars:60 }}</td>
+                    <td>{{ product.stock_quantity }}</td>
+                        <td>
+                            {% if product.availability %}
+                            <span class="badge bg-success-subtle text-success px-3 py-2">
+                                Available
+                            </span>
+                            {% else %}
+                            <span class="badge bg-secondary-subtle text-secondary px-3 py-2">
+                                Out of Stock
+                            </span>
+                            {% endif %}
+                        </td>
+
+                        
 
                     <td>
                         <a href="{% url 'edit_product_terrarium' product.id %}" class="edit-btn">Edit</a>

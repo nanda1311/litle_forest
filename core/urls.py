@@ -16,7 +16,6 @@ urlpatterns = [
     path('blog/', blog, name='blog'),
     path('contact/', contact, name='contact'),
     path('terrarium/', views.terrarium_page, name='terrarium_page'),
-    path('terrarium/<int:product_id>/', views.terrarium_product_detail, name='terrarium_product_detail'),
     path('base/', base, name='base'),
     path('check-delivery/',views.check_delivery,name='check_delivery'),
 
@@ -29,7 +28,6 @@ urlpatterns = [
     # ================= CART =================
     path('cart/', cart, name='cart'),
     path('add-to-cart/<int:product_id>/', add_to_cart, name='add_to_cart'),
-    path('add-to-cart-terrarium/<int:product_id>/', add_to_cart_terrarium, name='add_to_cart_terrarium'),
     path('remove-from-cart/<int:pk>/', remove_from_cart, name='remove_from_cart'),
     path('cart/increase/<str:pk>/', increase_quantity, name='increase_quantity'),
     path('cart/decrease/<str:pk>/', decrease_quantity, name='decrease_quantity'),
@@ -39,7 +37,6 @@ urlpatterns = [
     # ================= WISHLIST =================
     path('wishlist/', wishlistproduct, name='wishlistproduct'),
     path('add-to-wishlist/<int:product_id>/', add_to_wishlist, name='add_to_wishlist'),
-    path('add-to-wishlist-terrarium/<int:product_id>/', add_to_wishlist_terrarium, name='add_to_wishlist_terrarium'),
     path('wishlist/remove/<int:product_id>/', remove_from_wishlist, name='remove_from_wishlist'),
     path('clear_wishlist/', clear_wishlist, name='clear_wishlist'),
     path("move-to-cart/<int:product_id>/", move_to_cart, name="move_to_cart"),
@@ -102,13 +99,6 @@ urlpatterns = [
     path('dashboard/categories/add/', category_create, name='category_create'),
     path('dashboard/categories/edit/<int:pk>/', category_update, name='category_update'),
     path('dashboard/categories/delete/<int:pk>/', category_delete, name='category_delete'),
-
-
-    # terrarium
-    path('dashboard/terrarium/upload/', views.upload_terrarium, name='upload_terrarium'),
-    path('dashboard/terrarium/products/', views.product_list_terrarium, name='product_list_terrarium'),
-    path('dashboard/terrarium/product/delete/<int:pk>/', views.delete_product_terrarium, name='delete_product_terrarium'),
-    path('dashboard/terrarium/product/edit/<int:pk>/', views.edit_product_terrarium, name='edit_product_terrarium'),
 
     # ORDERS
     path('dashboard/orders/', order_list, name='order_list'),

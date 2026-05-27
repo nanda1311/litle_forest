@@ -223,6 +223,7 @@
 ==============================*/
 .article-blog-post .blog-image {
     position: relative;
+    text-align: center;
 }
 .article-blog-post .blog-image a.banner-img img {
     width: 100%;

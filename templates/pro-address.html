@@ -11,7 +11,19 @@
         <main>
             
             <!-- breadcrumb start -->
-          
+            <section id="breadcrumb">
+                <div class="container-fluid fluid____mobile">
+                    <div class="breadcrumb-content bg-breadcrumb-01">
+                        <div class="caption">
+                            <div class="title">Address</div>
+                            <ul>
+                                <li>Home</li>
+                                <li>Address</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
             <!-- breadcrumb end -->
             <!-- order history start -->
             <section class="pro-address-area section-ptb">
@@ -79,8 +91,8 @@
                                         {% if addresses %}
                                         {% for address in addresses %}
                                             <div class="address-box">
-                                                <h5>{{ address.first_name }} {{ address.last_name }}</h5>
-                                                <p>{{ address.street_address }} {{ address.apartment_suite_unit }}</p>
+                                                <h5>{{ address.first_name }} {{ address.last_name }} ,{{address.phone}}</h5>
+                                                <p>{{address.company_name}} , {{ address.street_address }} {{ address.apartment_suite_unit }}</p>
                                                 <p>{{ address.city }}, {{ address.state }} - {{ address.postcode }}</p>
                                     
                                                 <!-- Edit and Delete Buttons -->

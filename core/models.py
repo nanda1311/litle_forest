@@ -52,12 +52,28 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
-
 class Product(models.Model):
+
+    PRODUCT_TYPES = (
+        ('bonsai', 'Bonsai'),
+        ('terrarium', 'Terrarium'),
+    )
+
     name = models.CharField(max_length=200)
 
+    product_type = models.CharField(
+        max_length=20,
+        choices=PRODUCT_TYPES,
+        default='bonsai'
+    )
+
     # Rich text description
-    description = CKEditor5Field('Description', config_name='extends', blank=True, null=True)
+    description = CKEditor5Field(
+        'Description',
+        config_name='extends',
+        blank=True,
+        null=True
+    )
 
     price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     discounted_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
@@ -97,8 +113,8 @@ class Product(models.Model):
             self.discount_percentage = self.calculate_discount_percentage()
         else:
             self.discount_percentage = 0
-        super().save(*args, **kwargs)
 
+        super().save(*args, **kwargs)
 
 class ProductImage(models.Model):
     image = models.ImageField()
@@ -110,72 +126,6 @@ class ProductImage(models.Model):
         return "Orphan Thumbnail"
 
 
-# ================== Terrarium Product==================
-
-class TerrariumProduct(models.Model):
-
-    CATEGORY_CHOICES = (
-        ('Succulent', 'Succulent'),
-        ('Moss', 'Moss'),
-        ('Closed', 'Closed Terrarium'),
-        ('Open', 'Open Terrarium'),
-        ('Mini', 'Mini Terrarium'),
-    )
-
-    AVAILABILITY_CHOICES = (
-        ('in_stock', 'In Stock'),
-        ('out_of_stock', 'Out of Stock'),
-        ('pre_order', 'Pre Order'),
-    )
-
-    name = models.CharField(max_length=200)
-
-    sku = models.CharField(
-        max_length=100,
-        blank=True,
-        null=True
-    )
-
-    category = models.CharField(
-        max_length=100,
-        choices=CATEGORY_CHOICES,
-        default='succulent'
-    )
-
-    height = models.CharField(
-        max_length=100,
-        blank=True,
-        null=True
-    )
-
-    price = models.DecimalField(
-        max_digits=10,
-        decimal_places=2
-    )
-
-    discounted_price = models.DecimalField(
-        max_digits=10,
-        decimal_places=2,
-        blank=True,
-        null=True
-    )
-
-    stock_quantity = models.PositiveIntegerField(default=0)
-
-    availability = models.CharField(
-        max_length=50,
-        choices=AVAILABILITY_CHOICES,
-        default='in_stock'
-    )
-
-    description = models.TextField(blank=True)
-
-    image = models.ImageField(upload_to='terrarium/')
-
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return self.name
 
 # ================== CART & WISHLIST ==================
 class MyCart(models.Model):
@@ -204,6 +154,7 @@ class Order(models.Model):
     total_amount = models.DecimalField(max_digits=10, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=20, default='Pending')  # Pending, Completed, Canceled
+    payment_status = models.CharField(max_length=20, default='Unpaid')  # Unpaid, Paid, Refunded
     payment_method = models.CharField(max_length=50, null=True, blank=True)
     items = models.ManyToManyField('Product', through='OrderItem', related_name='orders')
     address = models.ForeignKey('Address', on_delete=models.CASCADE, null=True, blank=True)

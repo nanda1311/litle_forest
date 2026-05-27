@@ -211,6 +211,8 @@
                     <thead>
                         <tr>
                             <th>Product</th>
+                            <th>Product ID</th>
+                            <th>Category</th>
                             <th>Quantity</th>
                             <th>Unit Price</th>
                             
@@ -220,6 +222,8 @@
                         {% for item in order.order_items.all %}
                         <tr>
                             <td>{{ item.product.name }}</td>
+                            <td>LFB{{ item.product.id }}</td>
+                            <td>{{ item.product.category.name|default:"—" }}</td>
                             <td>{{ item.quantity }}</td>
                             <td>₹{{ item.price|floatformat:2 }}</td>
                            

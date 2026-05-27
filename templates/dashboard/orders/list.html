@@ -165,13 +165,13 @@
                     <tr>
                         <th>#</th>
                         <th>User</th>
-                        <th>Products</th>
                         <th>Total</th>
                         <th>Status</th>
+                        <th>Payment Status</th>
                         <th>Payment</th>
                         <th>Payment ID</th>
                         <th>Date</th>
-                        <th>Address</th>
+                        <th>Detail page</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -186,13 +186,7 @@
     <td>
         <span class="user-name">{{ order.user.username|default:"—" }}</span>
     </td>
-    <td>
-        {% for item in order.order_items.all %}
-            {{ item.product.name }} (Qty: {{ item.quantity }})<br>
-        {% empty %}
-            <span class="text-muted">No products</span>
-        {% endfor %}
-    </td>
+
     <td>
         <strong>₹{{ order.total_amount }}</strong>
     </td>
@@ -203,6 +197,13 @@
             <span class="badge badge-canceled px-3 py-2">Canceled</span>
         {% else %}
             <span class="badge badge-pending px-3 py-2">Pending</span>
+        {% endif %}
+    </td>
+    <td>
+        {% if order.payment_status|lower == "Paid" %}
+            <span class="badge badge-completed px-3 py-2">Paid</span>
+        {% else %}
+            <span class="badge badge-pending px-3 py-2">Unpaid</span>
         {% endif %}
     </td>
     <td>
@@ -228,7 +229,9 @@
         <small class="text-muted">{{ order.created_at|date:"h:i A" }}</small>
     </td>
     <td>
-        {{ order.address|default:"—" }}
+        <a href="{% url 'order_detail' order.id %}" class="btn btn-sm btn-outline-primary">
+            View Details
+        </a>
     </td>
 </tr>
                     {% empty %}

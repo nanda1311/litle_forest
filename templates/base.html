@@ -18,7 +18,7 @@
         <!-- favicon -->
         <link rel="icon" type="image/x-icon" href="{% static 'img/favicon/favicon.png' %}">
 
-        
+
         <!-- bootstrap css -->
         <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
         <link rel="stylesheet" href="{% static 'css/bootstrap-icons.css' %}">
@@ -125,7 +125,7 @@
           
 
         <!-- header start -->
-        <header id="mainHeader"  class="main-header">
+        <header id="mainHeader"  class="main-header d-md-block d-none">
             <div class="header-top-area">
                 <div class="container">
                     <div class="row">
@@ -150,97 +150,95 @@
                                     <li><a href="{% url 'contact' %}">Contact</a></li>
                                 </ul>
                             </div>
-                                    <!-- header-bottam start -->
-                                    <div class="header-bottom-area" id="stickyheader">
-                                        <div class="container">
-                                            <div class="row">
-                                                <div class="col">
-                                                    <div class="header-bottam-block">
-                                                        <div class="bottom-block header-menu">
-                                                            <!-- header-menu start -->
-                                                            <div class="mainmenu-content collapse show" id="main-collapse">
-                                                                <div class="main-wrap">
-                                                                    <ul class="main-menu">
-                                                                        <li class="menu-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}">
-                                                                            <a href="{% url 'home' %}" class="link-title">
-                                                                                <span class="sp-link-title">Home</span>
-                                                                            </a>
-                                                                        </li>
-                                                                        <li class="menu-link {% if request.resolver_match.url_name == 'about' %}active{% endif %}">
-                                                                            <a href="{% url 'about' %}" class="link-title">
-                                                                                <span class="sp-link-title">About Us</span>
-                                                                            </a>
-                                                                        </li>
-                                                                        <li class="menu-link {% if request.resolver_match.url_name == 'collection' %}active{% endif %}">
-                                                                            <a href="{% url 'collection' %}" class="link-title">
-                                                                                <span class="sp-link-title">Bonsai</span>
-                                                                            </a>
-                                                                        </li>
-                                                                        <li class="menu-link {% if request.resolver_match.url_name == 'terrarium_page' %}active{% endif %}">
-                                                                            <a href="{% url 'terrarium_page' %}" class="link-title">
-                                                                                <span class="sp-link-title">Terrarium</span>
-                                                                            </a>
-                                                                        </li>
-                                                                        <li class="menu-link {% if request.resolver_match.url_name == 'blog' %}active{% endif %}">
-                                                                            <a href="{% url 'blog' %}" class="link-title">
-                                                                                <span class="sp-link-title">Blogs</span>
-                                                                            </a>
-                                                                        </li>
-                                                                        <li class="menu-link {% if request.resolver_match.url_name == 'contact' %}active{% endif %}">
-                                                                            <a href="{% url 'contact' %}" class="link-title">
-                                                                                <span class="sp-link-title">Contact</span>
-                                                                            </a>
-                                                                        </li>
-                                                                        
-                                                                    
-                                                                    </ul>
+                            <!-- header-bottam start -->
+                            <div class="header-bottom-area" id="stickyheader">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="header-bottam-block">
+                                                <div class="bottom-block header-menu">
+                                                    <!-- header-menu start -->
+                                                    <div class="mainmenu-content collapse show" id="main-collapse">
+                                                        <div class="main-wrap">
+                                                            <ul class="main-menu">
+                                                                <li class="menu-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}">
+                                                                    <a href="{% url 'home' %}" class="link-title">
+                                                                        <span class="sp-link-title">Home</span>
+                                                                    </a>
+                                                                </li>
+                                                                <li class="menu-link {% if request.resolver_match.url_name == 'about' %}active{% endif %}">
+                                                                    <a href="{% url 'about' %}" class="link-title">
+                                                                        <span class="sp-link-title">About Us</span>
+                                                                    </a>
+                                                                </li>
+                                                                <li class="menu-link {% if request.resolver_match.url_name == 'collection' %}active{% endif %}">
+                                                                    <a href="{% url 'collection' %}" class="link-title">
+                                                                        <span class="sp-link-title">Bonsai</span>
+                                                                    </a>
+                                                                </li>
+                                                                <li class="menu-link {% if request.resolver_match.url_name == 'terrarium_page' %}active{% endif %}">
+                                                                    <a href="{% url 'terrarium_page' %}" class="link-title">
+                                                                        <span class="sp-link-title">Terrarium</span>
+                                                                    </a>
+                                                                </li>
+                                                                <li class="menu-link {% if request.resolver_match.url_name == 'blog' %}active{% endif %}">
+                                                                    <a href="{% url 'blog' %}" class="link-title">
+                                                                        <span class="sp-link-title">Blogs</span>
+                                                                    </a>
+                                                                </li>
+                                                                <li class="menu-link {% if request.resolver_match.url_name == 'contact' %}active{% endif %}">
+                                                                    <a href="{% url 'contact' %}" class="link-title">
+                                                                        <span class="sp-link-title">Contact</span>
+                                                                    </a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <!-- header-menu end -->
+                                                </li>
+                                                <li class="header-element header-icon">
+                                                    <div class="header-icon-block">
+                                                        <ul class="shop-element">
+                                                            <li class="side-wrap user-wrap">
+                                                                <div class="user-wrapper">
+                                                                <div class="shopping-cart">
+                                                                    <a class="add-to-cart" href="{% url 'wishlistproduct' %}">
+                                                                        <div class="icon-box">
+                                                                            <i class="ri-heart-line"></i>
+                                                                        </div>
+                                                                    </a>
                                                                 </div>
+                                                                <div class="shopping-cart">
+                                                                <a class="add-to-cart" href="{% url 'cart' %}">
+                                                                    <span class="icon">
+                                                                    <i class="ri-shopping-bag-line"></i>
+                                                                    </span>
+                                                                </a>
                                                             </div>
-                                                            <!-- header-menu end -->
-                                                        </li>
-                                                        <li class="header-element header-icon">
-                                                            <div class="header-icon-block">
-                                                                <ul class="shop-element">
-                                                                    <li class="side-wrap user-wrap">
-                                                                        <div class="user-wrapper">
-                                                                        <div class="shopping-cart">
-                                                                            <a class="add-to-cart" href="{% url 'wishlistproduct' %}">
-                                                                               <div class="icon-box">
-                                                                                    <i class="ri-heart-line"></i>
-                                                                                </div>
-                                                                            </a>
-                                                                        </div>
-                                                                        <div class="shopping-cart">
-                                                                        <a class="add-to-cart" href="{% url 'cart' %}">
-                                                                            <span class="icon">
-                                                                            <i class="ri-shopping-bag-line"></i>
-                                                                            </span>
+                                                                    {% if user.is_authenticated %}
+                                                                        <a href="{% url 'profile' %}" class="menusup-title d-flex align-items-center">
+                                                                            <i class="ri-user-3-line"></i>
                                                                         </a>
-                                                                    </div>
-                                                                            {% if user.is_authenticated %}
-                                                                                <a href="{% url 'profile' %}" class="menusup-title d-flex align-items-center">
-                                                                                    <i class="ri-user-3-line"></i>
-                                                                                </a>
-                                                                            {% else %}
-                                                                                <a href="#store-account" class="collapsed d-flex align-items-center    " data-bs-toggle="collapse" aria-expanded="false">
-                                                                                    
-                                                                                    <span class="user-title">Login</span>
-                                                                                </a>
-                                                                                <div class="user-drower collapse" id="store-account">
-                                                                                    <a href="{% url 'loginaccount' %}">Login</a>
-                                                                                    <a href="{% url 'createaccount' %}">Register</a>
-                                                                                </div>
-                                                                            {% endif %}
+                                                                    {% else %}
+                                                                        <a href="#store-account" class="collapsed d-flex align-items-center    " data-bs-toggle="collapse" aria-expanded="false">
+                                                                            
+                                                                            <span class="user-title">Login</span>
+                                                                        </a>
+                                                                        <div class="user-drower collapse" id="store-account">
+                                                                            <a href="{% url 'loginaccount' %}">Login</a>
+                                                                            <a href="{% url 'createaccount' %}">Register</a>
                                                                         </div>
-                                                            </div>
-                                                        
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
+                                                                    {% endif %}
+                                                                </div>
+                                                    </div>
+                                                
+                                                </li>
+                                            </ul>
                                         </div>
                                     </div>
-            
+                                </div>
+                            </div>
+    
                                 </div>
                                 
                             </div>
@@ -249,6 +247,75 @@
                 </div>
             </div>
         </header>
+
+        <header class="d-md-none d-block">
+            <div class="container">
+                <div class="d-flex">
+                    <div class="header-theme-logo">
+                        <a href="{% url 'home' %}" class="theme-logo">
+                            <img src="{% static 'img/logo/logofinal.png' %}" class="img-fluid" alt="logo">
+                        </a>
+                    </div>
+                    <button class=" menu-button ms-auto" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
+                        <i class="ri-menu-line"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+                
+        <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">
+                    <div class="header-theme-logo">
+                        <a href="{% url 'home' %}" class="theme-logo">
+                            <img src="{% static 'img/logo/logofinal.png' %}" class="img-fluid" alt="logo">
+                        </a>
+                    </div></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <a href="{% url 'home' %}">Home</a></br>
+            <a href="{% url 'about' %}">About Us</a></br>
+            <a href="{% url 'collection' %}">Bonsai</a></br>
+            <a href="{% url 'terrarium_page' %}">Terrarium</a></br>
+            <a href="{% url 'blog' %}">Blogs</a></br>
+            <a href="{% url 'contact' %}">Contact</a></br>
+            <a href="{% url 'wishlistproduct' %}">Wishlist</a></br>
+            <a href="{% url 'cart' %}">Cart</a></br>
+            {% if user.is_authenticated %}
+                <a href="{% url 'profile' %}">Profile</a></br>
+            {% else %}
+                <a href="{% url 'loginaccount' %}">Login</a></br>
+                <a href="{% url 'createaccount' %}">Register</a></br>
+            {% endif %}
+        </div>
+        </div>
+
+        <script>
+            const menuToggle = document.getElementById("menuToggle");
+            const closeMenu = document.getElementById("closeMenu");
+            const mobileMenu = document.getElementById("mobileMenu");
+            const sidebarOverlay = document.getElementById("sidebarOverlay");
+
+            // Open Menu
+            menuToggle.addEventListener("click", () => {
+                mobileMenu.classList.add("active");
+                sidebarOverlay.classList.add("active");
+            });
+
+            // Close Menu
+            closeMenu.addEventListener("click", () => {
+                mobileMenu.classList.remove("active");
+                sidebarOverlay.classList.remove("active");
+            });
+
+            // Close on Overlay Click
+            sidebarOverlay.addEventListener("click", () => {
+                mobileMenu.classList.remove("active");
+                sidebarOverlay.classList.remove("active");
+            });
+        </script>
         <!-- header end -->
 <script>
     const header = document.getElementById("mainHeader");
@@ -262,6 +329,48 @@
     });
 </script>
 <style>
+.whatsapp-float {
+    position: fixed;
+    bottom: 75px;
+    right: 20px;
+    background-color: #25d366;
+    color: white;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    z-index: 1000;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.whatsapp-float:hover {
+    background-color: #128c7e;
+    transform: scale(1.1);
+}
+
+@media (max-width: 768px) {
+    .whatsapp-float {
+        bottom: 140px;
+        right: 15px;
+        width: 45px;
+        height: 45px;
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .whatsapp-float {
+        bottom: 140px;
+        right: 19px;
+        width: 40px;
+        height: 42px;
+        font-size: 18px;
+    }
+}
 
 </style>
      
@@ -270,57 +379,13 @@
 
 
 
-{% comment %} <audio id="myAudio" src="{% static 'img/video/audio.mp3' %}" loop></audio>
-
-<!-- Fixed volume icon -->
-<div class="fixed-icon" id="toggleIcon" title="Play/Pause Music">
-  <img src="{% static 'img/bonsaiimgs/Speaker-On.svg' %}" alt="Volume Icon" class="muit__icon" />
-</div>
-
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-    const audio = document.getElementById("myAudio");
-    const iconBox = document.getElementById("toggleIcon");
-    const volumeImg = iconBox.querySelector("img");
-
-    audio.volume = 0.5; // default volume
-
-    // Delay autoplay by 5 seconds
-    setTimeout(() => {
-        audio.play().catch(err => {
-            console.log("Autoplay blocked by browser. Will start on user interaction.", err);
-        });
-    }, 1000); // 5000ms = 5 seconds
-
-    // Toggle play/pause on icon click
-    iconBox.addEventListener("click", () => {
-        if (audio.paused) {
-            audio.play().then(() => {
-                volumeImg.src = "{% static 'img/bonsaiimgs/Speaker-On.svg' %}";
-            }).catch(err => console.log(err));
-        } else {
-            audio.pause();
-            volumeImg.src = "{% static 'img/bonsaiimgs/Speaker-Mute.svg' %}";
-        }
-    });
-
-    // Save playback state
-    window.addEventListener("beforeunload", () => {
-        localStorage.setItem("musicTime", audio.currentTime);
-        localStorage.setItem("musicPaused", audio.paused);
-    });
-
-    // Restore playback position and paused state
-    const savedTime = localStorage.getItem("musicTime");
-    const wasPaused = localStorage.getItem("musicPaused") === "true";
-
-    if (savedTime) audio.currentTime = parseFloat(savedTime);
-    if (wasPaused) audio.pause();
-});
-</script> {% endcomment %}
 
 
-
+            <!-- whatsapp icon integration-->
+            <a href="https://wa.me/917780250502" class="whatsapp-float" target="_blank" rel="noopener noreferrer" title="Chat on WhatsApp">
+                <i class="fab fa-whatsapp"></i>
+            </a>
+            <!-- scroll to top -->
         <a href="#" class="scroll-to-top " title="Go to top">
             <i class="fas fa-arrow-up scroll__button"></i>
         </a>
@@ -388,8 +453,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 </a>
 
                 <!-- LinkedIn -->
-                <a href="/" aria-label="LinkedIn">
+                <a href="#" target="_blank" aria-label="LinkedIn">
                 <i class="fab fa-linkedin-in"></i>
+                </a>
+
+                <!-- Youtube -->
+                <a href="https://www.youtube.com/@litleforest" target="_blank" aria-label="YouTube">
+                <i class="fab fa-youtube"></i>
                 </a>
 
             
@@ -727,7 +797,7 @@ document.addEventListener("DOMContentLoaded", function () {
         
 
         <!-- Include your toast notification JS -->
-       <script>
+<script>
     const notifications = document.querySelector(".notifications");
 
     // Toast message details for different types
@@ -815,29 +885,29 @@ if (window.history.replaceState) {
 
 {% if messages %}
 <script>
-{% for message in messages %}
-Swal.fire({
-    icon: "{{ message.tags }}",
-    title: "{{ message }}",
-    confirmButtonColor: '#0b4423',
-    backdrop: 'rgba(11,68,35,0.4)'
-});
-{% endfor %}
+    {% for message in messages %}
+    Swal.fire({
+        icon: "{{ message.tags }}",
+        title: "{{ message }}",
+        confirmButtonColor: '#0b4423',
+        backdrop: 'rgba(11,68,35,0.4)'
+    });
+    {% endfor %}
 </script>
 {% endif %}
 
 
 {% if messages %}
 <script>
-{% for message in messages|slice:":1" %}
-Swal.fire({
-    icon: "{{ message.tags }}",
-    title: "{{ message }}",
-    confirmButtonColor: '#0b4423',
-    background: '#f0fff4',
-    color: '#0b4423'
-});
-{% endfor %}
+    {% for message in messages|slice:":1" %}
+    Swal.fire({
+        icon: "{{ message.tags }}",
+        title: "{{ message }}",
+        confirmButtonColor: '#0b4423',
+        background: '#f0fff4',
+        color: '#0b4423'
+    });
+    {% endfor %}
 </script>
 {% endif %}
 
@@ -979,6 +1049,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
             const isAuthenticated = this.getAttribute("data-auth") === "true";
             const url = this.getAttribute("data-url");
+
+
+            console.log(isAuthenticated, url);
 
             if (!isAuthenticated) {
                 showLoginAlert();

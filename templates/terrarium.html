@@ -14,8 +14,7 @@
     </video>
 
     <div class="overlay">
-        <h1>Terrarium Collection</h1>
-        <p>Discover premium products crafted for you</p>
+        <h1>Life Inside the <span class="head-color">Glass</span></h1>
     </div>
 </section>
 <section class="main-content-wrap shop-page section-ptb">
@@ -41,8 +40,8 @@
                                                 <!-- Product Image -->
                                                 <div class="terr product-image banner-hover">
                                                     <!-- Hover Actions -->
-                                                    <a href="{% url 'terrarium_product_detail' product.id %}">
-                                                        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                                                    <a href="{% url 'product_detail' product.id %}">
+                                                        <img src="{{ product.main_image.url }}" alt="{{ product.name }}">
                                                     </a>
 
                                                     <!-- Hover Actions -->
@@ -67,7 +66,6 @@
                                                                 <i class="feather-heart"></i>
                                                             </span>
                                                         </a>
-
                                                     </div>
                                                 </div>
 
@@ -92,7 +90,7 @@
                                                             </div>
 
                                                             <div class="product-name">
-                                                                <span class="product-type">{{ product.category }} Terrarium</span>
+                                                                <span class="product-type">{{ x.category.name|default:"Terrarium" }}</span>
                                                                 <span class="product-vendor">Height : {{ product.height }} Inches</span>
                                                                 <span class="product-vendor">Age : 2 - 3 years</span>
                                                             </div>
@@ -108,27 +106,28 @@
                                                                 <i class="fa-regular fa-star"></i>
                                                             </span>
                                                         </div>
-
-                                                        <!-- Bottom Actions -->
-                                                        <div class="product-action">
-                                                            <a href="{% url 'add_to_cart' product.id %}" class="wishlist add-to-cart-btn">
-                                                                <span class="tooltip-text">Cart</span>
-                                                                <span class="pro-action-icon">
-                                                                    <i class="feather-shopping-cart"></i>
-                                                                </span>
-                                                            </a>
-
-                                                            <a href="{% url 'add_to_wishlist' product.id %}" class="wishlist">
-                                                                <span class="tooltip-text">Wishlist</span>
-                                                                <span class="pro-action-icon">
-                                                                    <i class="feather-heart"></i>
-                                                                </span>
-                                                            </a>
-                                                        </div>
-
+                                    <!-- Bottom Actions -->
+                                    <div class="product-action">
+                                        <a href="#" class="wishlist add-to-cart-btn" data-url="{% url 'add_to_cart' product.id %}" data-auth="{% if request.user.is_authenticated %}true{% else %}false{% endif %}">
+                                            <span class="tooltip-text">Cart</span>
+                                            <span class="pro-action-icon">
+                                                <i class="feather-shopping-cart"></i>
+                                            </span>
+                                        </a>
+                                            
+                                        
+                                        <a href="#"
+                                            class="wishlist wishlist-btn"
+                                            data-url="{% url 'add_to_wishlist' product.id %}"
+                                            data-auth="{% if request.user.is_authenticated %}true{% else %}false{% endif %}">
+                                            <span class="tooltip-text">Wishlist</span>
+                                            <span class="pro-action-icon">
+                                                <i class="feather-heart"></i>
+                                            </span>
+                                        </a>
+                                    </div>
                                                     </div>
                                                 </div>
-
                                             </div>
 
                                         </li>

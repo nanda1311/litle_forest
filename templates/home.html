@@ -138,7 +138,7 @@
             <!-- SMALL CATEGORY CARDS -->
 <div class="plant-cards">
 
-    {% for category in categories|slice:"1:6" %}
+    {% for category in categories|slice:"1:5" %}
     <a href="{% url 'collection_by_category' category.id %}"
        style="text-decoration: none; color: inherit;">
         <div class="card1">
@@ -175,14 +175,54 @@
                         </span>
                     </label>
                             {% endfor %}
-                            <!-- View All Products -->
-                            <li class=" text-center">
-                                <div class="all-products" >
-                                    <a href="{% url 'collection' %}">All Products</a>
-                                </div>
-                            </li>
                         </ul>
                     </div>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    // Run only on mobile
+    if (window.innerWidth <= 768) {
+
+        const slider = document.querySelector(".filter-buttons");
+
+        // Duplicate items for infinite loop
+        slider.innerHTML += slider.innerHTML;
+
+        let autoScroll = true;
+        let speed = 1;
+
+        function autoSlide() {
+
+            if (!autoScroll) return;
+
+            slider.scrollLeft += speed;
+
+            // Smooth infinite loop
+            if (slider.scrollLeft >= slider.scrollWidth / 2) {
+                slider.scrollLeft = 0;
+            }
+
+            requestAnimationFrame(autoSlide);
+        }
+
+        autoSlide();
+
+        // Stop when user interacts
+        slider.addEventListener("touchstart", () => {
+            autoScroll = false;
+        });
+
+        slider.addEventListener("mousedown", () => {
+            autoScroll = false;
+        });
+
+        slider.addEventListener("wheel", () => {
+            autoScroll = false;
+        });
+    }
+
+});
+</script>
                     <!-- END FILTER BUTTONS -->
                     
                     <!-- PRODUCTS SECTION -->
@@ -203,10 +243,7 @@
                                         <!-- Hover Actions -->
                                         <div class="product-action">
                                             
-                                            <a href="#"
-                                            class="wishlist add-to-cart-btn"
-                                            data-url="{% url 'add_to_cart' x.id %}"
-                                            data-auth="{% if request.user.is_authenticated %}true{% else %}false{% endif %}">
+                                            <a href="#" class="wishlist add-to-cart-btn" data-url="{% url 'add_to_cart' x.id %}" data-auth="{% if request.user.is_authenticated %}true{% else %}false{% endif %}">
                                             <span class="tooltip-text">Cart</span>
                                             <span class="pro-action-icon">
                                                 <i class="feather-shopping-cart"></i>
@@ -214,15 +251,15 @@
                                         </a>
                                         
                                         <a href="#"
-                                        class="wishlist wishlist-btn"
-                                        data-url="{% url 'add_to_wishlist' x.id %}"
-                                        data-auth="{% if request.user.is_authenticated %}true{% else %}false{% endif %}">
-                                        <span class="tooltip-text">Wishlist</span>
-                                        <span class="pro-action-icon">
-                                            <i class="feather-heart"></i>
-                                        </span>
-                                    </a>
-                                    
+                                            class="wishlist wishlist-btn"
+                                            data-url="{% url 'add_to_wishlist' x.id %}"
+                                            data-auth="{% if request.user.is_authenticated %}true{% else %}false{% endif %}">
+                                            <span class="tooltip-text">Wishlist</span>
+                                            <span class="pro-action-icon">
+                                                <i class="feather-heart"></i>
+                                            </span>
+                                        </a>
+                                        
                                 </div>
                             </div>
                             
@@ -266,14 +303,18 @@
                                     
                                     <!-- Bottom Actions -->
                                     <div class="product-action">
-                                        <a href="{% url 'add_to_cart' x.id %}" class="wishlist add-to-cart-btn">
-                                            <span class="tooltip-text">Cart</span>
+                                        <a href="#" class="wishlist add-to-cart-btn" data-url="{% url 'add_to_cart' x.id %}" data-auth="{% if request.user.is_authenticated %}true{% else %}false{% endif %}">
+                                                                                        <span class="tooltip-text">Cart</span>
                                             <span class="pro-action-icon">
                                                 <i class="feather-shopping-cart"></i>
                                             </span>
                                         </a>
+                                            
                                         
-                                        <a href="{% url 'add_to_wishlist' x.id %}" class="wishlist">
+                                        <a href="#"
+                                            class="wishlist wishlist-btn"
+                                            data-url="{% url 'add_to_wishlist' x.id %}"
+                                            data-auth="{% if request.user.is_authenticated %}true{% else %}false{% endif %}">
                                             <span class="tooltip-text">Wishlist</span>
                                             <span class="pro-action-icon">
                                                 <i class="feather-heart"></i>
@@ -454,7 +495,7 @@
 <section class="terrarium-home">
     <div class="container">
         <div class="product-grid-terrarium">
-            {% for product in terrarium_products|slice:"1:4" %}
+            {% for product in terrarium_products|slice:":3" %}
                             <li class="pro-item-liter">
                                 
                                 <div class="single-product-wrap">
@@ -462,13 +503,16 @@
                                     <!-- Product Image -->
                                     <div class="product-image banner-hover">
                                         <a href="{% url 'product_detail' product.id %}" class="pro-img">
-                                            <img src="{{ product.image.url }}" class="img-fluid img1 mobile-img1">
+                                            {% if product.main_image %}
+                                                <img src="{{product.main_image.url}}" class="img-fluid img1 mobile-img1" alt="product">
+                                                <img src="{{product.main_image.url}}" class="img-fluid img2 mobile-img2">
+                                            {% endif %}
                                         </a>
                                         
                                         <!-- Hover Actions -->
                                         <div class="product-action">
                                             
-                                            <a href="#"
+                                        <a href="#"
                                             class="wishlist add-to-cart-btn"
                                             data-url="{% url 'add_to_cart' product.id %}"
                                             data-auth="{% if request.user.is_authenticated %}true{% else %}false{% endif %}">
@@ -512,7 +556,7 @@
                                         </div>
                                         
                                         <div class="product-name">
-                                            <span class="product-type">{{ product.category }} Terrarium</span>
+                                            <span class="product-type">{{ x.category.name|default:"Terrarium" }}</span>
                                             <span class="product-vendor">Height : {{ product.height }} Inches</span>
                                             <span class="product-vendor">Age : 2 - 3 years</span>
                                         </div>
@@ -531,14 +575,18 @@
                                     
                                     <!-- Bottom Actions -->
                                     <div class="product-action">
-                                        <a href="{% url 'add_to_cart' product.id %}" class="wishlist add-to-cart-btn">
-                                            <span class="tooltip-text">Cart</span>
+                                        <a href="#" class="wishlist add-to-cart-btn" data-url="{% url 'add_to_cart' product.id %}" data-auth="{% if request.user.is_authenticated %}true{% else %}false{% endif %}">
+                                                                                        <span class="tooltip-text">Cart</span>
                                             <span class="pro-action-icon">
                                                 <i class="feather-shopping-cart"></i>
                                             </span>
                                         </a>
+                                            
                                         
-                                        <a href="{% url 'add_to_wishlist' product.id %}" class="wishlist">
+                                        <a href="#"
+                                            class="wishlist wishlist-btn"
+                                            data-url="{% url 'add_to_wishlist' product.id %}"
+                                            data-auth="{% if request.user.is_authenticated %}true{% else %}false{% endif %}">
                                             <span class="tooltip-text">Wishlist</span>
                                             <span class="pro-action-icon">
                                                 <i class="feather-heart"></i>
@@ -745,6 +793,7 @@
 </div>
 
 
+
 <section class="blog-section">
     <div class="container">
         <div class="blog-section-title">
@@ -756,31 +805,18 @@
             
             <!-- Card 1 -->
             <div class="blog-card">
-                <img src="{% static 'images/image_28_11.png' %}" alt="Eco Home">
-                <h3>Weell Eco-Friendly Homes</h3>
-                <p>Energy initiatives and eco comfort that promote healthier living spaces.</p>
-                <a href="#" class="btn">Learn More</a>
-            </div>
-            
-            <!-- Card 2 -->
-            <div class="blog-card">
-                <img src="{% static 'images/image_29_26.png' %}" alt="Sustainable Home">
-                <h3>Sustainability Living Homes</h3>
-                <p>Practical solutions that help reduce energy usage while enhancing lifestyle.</p>
-                <a href="#" class="btn">Learn More</a>
-            </div>
-            
-            <!-- Card 3 -->
-            <div class="blog-card">
-                <img src="{% static 'images/image_29_27.png' %}" alt="Comfort Home">
-                <h3>Comfortable Living</h3>
-                <p>Designed spaces that ensure comfort and modern living solutions.</p>
-                <a href="#" class="btn">Learn More</a>
+                {% for post in posts %}
+                <a href="{% url 'blog_detail' slug=post.slug %}">
+                    <img src="{{ post.image.url }}" class="img-responsive" alt="{{ post.title }}" title="{{ post.title }}" onerror="this.onerror=null; this.src='/static/img/default-image.jpg';">
+                </a>
+                <h3>{{ post.title }}</h3>
+                <p>{{ post.content|safe|truncatewords:20 }}</p>
+                <a href="{% url 'blog_detail' slug=post.slug %}" class="btn">Learn More</a>
+                {% endfor %}
             </div>
         </div>
     </div>
 </section>
-
 
 
 

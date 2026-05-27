@@ -154,21 +154,6 @@ def add_to_wishlist(request, product_id):
         return JsonResponse({"status": "added"})
     else:
         return JsonResponse({"status": "exists"})
-@login_required(login_url='loginaccount')
-def add_to_wishlist_terrarium(request, product_id):
-
-    product = get_object_or_404(TerrariumProduct, id=product_id)
-
-    wishlist_item, created = Wishlist.objects.get_or_create(
-        user=request.user,
-        product=product
-    )
-
-    if created:
-        return JsonResponse({"status": "added"})
-    else:
-        return JsonResponse({"status": "exists"})
-
 
 @login_required(login_url='loginaccount')
 def buy_now(request, product_id):
@@ -203,49 +188,55 @@ def remove_from_wishlist(request, product_id):
     return redirect('wishlistproduct')
 
 
-from .models import Product, Category, MyCart, TerrariumProduct
-
 def home(request):
-    # Main products
-    products = Product.objects.filter(availability=True)
-    # Category from URL
+
     category_id = request.GET.get('category_id')
+    selected_categories = request.GET.getlist('category')
+
     if category_id:
-        products = Product.objects.filter(category_id=category_id, availability=True)
+        products = Product.objects.filter(
+            category_id=category_id,
+            availability=True,
+            product_type='bonsai'
+        )
         selected_categories = [category_id]
+
+    elif selected_categories:
+        products = Product.objects.filter(
+            category__id__in=selected_categories,
+            availability=True,
+            product_type='bonsai'
+        )
     else:
-        selected_categories = request.GET.getlist('category')
+        products = Product.objects.filter(
+            availability=True,
+            product_type='bonsai'
+        )
 
-        if selected_categories:
-            products = Product.objects.filter(category__id__in=selected_categories, availability=True)
-        else:
-            products = Product.objects.filter(availability=True)  # Only active products
+    terrarium_products = Product.objects.filter(
+        product_type='terrarium',
+        availability=True
+    )
 
-    # Terrarium products (NEW)
-    terrarium_products = TerrariumProduct.objects.all().order_by('-id')[:6]
-
-    # Categories
     categories = Category.objects.all()
 
-    show_login_alert = False
-    
+    cart_items = (
+        MyCart.objects.filter(user=request.user)
+        if request.user.is_authenticated else []
+    )
+    posts = BlogPost.objects.all().order_by('-date')
 
-    if request.user.is_authenticated:
-        cart_items = MyCart.objects.filter(user=request.user)
-    else:
-        cart_items = []
-        show_login_alert = True
 
     return render(request, 'home.html', {
         'categories': categories,
         'products': products,
         'terrarium_products': terrarium_products,
         'cart_items': cart_items,
-        'show_login_alert': show_login_alert,
+        'posts': posts,  # Correct variable name
+        'page_title': 'Our Blog',  # Optional metadata
         'selected_categories': list(map(int, selected_categories)) if selected_categories else [],
-        'cart_items': cart_items,
+        'show_login_alert': not request.user.is_authenticated,
     })
-
     
 @login_required(login_url='loginaccount')
 def move_to_cart(request, product_id):
@@ -293,17 +284,10 @@ def product_detail(request, product_id):
     categories = Category.objects.all()
     
     # Get related products (4 products from the same category, excluding current product)
+    print(product.product_type)
     related_products = Product.objects.filter(
-        category=product.category
-    ).exclude(id=product.id).order_by('?')[:4]  # Random order for variety
-    
-    # If not enough products in same category, fill with random products
-    if len(related_products) < 4:
-        remaining = 4 - len(related_products)
-        additional_products = Product.objects.exclude(
-            id__in=[p.id for p in related_products] + [product.id]
-        ).order_by('?')[:remaining]
-        related_products = list(related_products) + list(additional_products)
+        product_type=product.product_type
+    ).exclude(id=product.id)[:4]  # Random order for variety
 
     context = {
         'product': product,
@@ -313,15 +297,6 @@ def product_detail(request, product_id):
     }
 
     return render(request, 'product-template.html', context)
-
-@csrf_exempt
-def update_cart(request, product_id):
-    if request.method == "POST":
-        quantity = int(request.POST.get('quantity', 1))
-        cart_item = get_object_or_404(MyCart, user=request.user, product_id=product_id)
-        cart_item.quantity = quantity
-        cart_item.save()
-    return redirect('cart_view')  
 
 def remove_from_cart(request, product_id):
     cart = request.session.get('cart', {})
@@ -495,7 +470,7 @@ def payment_verify(request):
             order = Order.objects.filter(payment_id=params_dict['razorpay_order_id']).first()
             print(order)
             order.payment_id = params_dict['razorpay_payment_id']
-            order.status = 'Placed'
+            order.payment_status = 'Paid'
             order.save()
 
             return redirect('order_complete')
@@ -851,96 +826,64 @@ def blog(request):
 
     return render(request, 'blog-grid.html', context)
 
-# FRONTEND PAGE
-def terrarium_page(request):
-    products = TerrariumProduct.objects.all().order_by('-id')
-    return render(request, 'terrarium.html', {'products': products})
+# FRONTEND PAGE for terrariums.
+def terrarium_page(request, category_id=None):
 
+    # Cart items for logged in user
+    if request.user.is_authenticated:
+        cart_items = MyCart.objects.filter(user=request.user)
+    else:
+        cart_items = []
 
-# DASHBOARD UPLOAD PAGE
-def upload_terrarium(request):
+    categories = Category.objects.all()
 
-    if request.method == 'POST':
-
-        TerrariumProduct.objects.create(
-            name=request.POST.get('name'),
-            sku=request.POST.get('sku'),
-            category=request.POST.get('category'),
-            height=request.POST.get('height'),
-            price=request.POST.get('price'),
-            discounted_price=request.POST.get('discounted_price'),
-            stock_quantity=request.POST.get('stock_quantity'),
-            availability=request.POST.get('availability'),
-            description=request.POST.get('description'),
-            image=request.FILES.get('image')
+    # Category filter
+    if category_id:
+        products = Product.objects.filter(
+            category_id=category_id,
+            availability=True,
+            product_type='terrarium'
         )
 
-        return redirect('product_list_terrarium')
+        selected_categories = [category_id]
 
-    return render(request, 'dashboard/upload_terrarium.html')
- 
+    else:
+        selected_categories = request.GET.getlist('category')
 
-# LIST VIEW
-def product_list_terrarium(request):
-    products = TerrariumProduct.objects.all().order_by('-id')
-    return render(request, 'dashboard/product_list_terrarium.html', {'products': products})
+        if selected_categories:
+            products = Product.objects.filter(
+                category__id__in=selected_categories,
+                availability=True,
+                product_type='terrarium'
+            )
 
+        else:
+            products = Product.objects.filter(
+                availability=True,
+                product_type='terrarium'
+            )
 
-# DELETE VIEW
-def delete_product_terrarium(request, pk):
-    product = get_object_or_404(TerrariumProduct, pk=pk)
-    product.delete()
-    return redirect('product_list_terrarium')
-
-
-# EDIT VIEW
-def edit_product_terrarium(request, pk):
-
-    product = get_object_or_404(TerrariumProduct, pk=pk)
-
-    if request.method == 'POST':
-
-        product.name = request.POST.get('name')
-        product.sku = request.POST.get('sku')
-        product.category = request.POST.get('category')
-        product.height = request.POST.get('height')
-        product.price = request.POST.get('price')
-        product.discounted_price = request.POST.get('discounted_price')
-        product.stock_quantity = request.POST.get('stock_quantity')
-        product.availability = request.POST.get('availability')
-        product.description = request.POST.get('description')
-
-        if request.FILES.get('image'):
-            product.image = request.FILES.get('image')
-
-        product.save()
-
-        return redirect('product_list_terrarium')
-
-    return render(
-        request,
-        'dashboard/edit_product_terrarium.html',
-        {'product': product}
-    )
-
-def terrarium_product_detail(request, product_id):
-
-    product = get_object_or_404(TerrariumProduct, pk=product_id)
-
-    related_products = TerrariumProduct.objects.exclude(
-        id=product.id
-    ).order_by('?')[:4]
+    # Session cart
+    cart = request.session.get('cart', {})
+    cart_count = sum(cart.values())
 
     context = {
-        'product': product,
-        'related_products': related_products,
+        'products': products,
+        'categories': categories,
+        'selected_categories': list(map(int, selected_categories)) if selected_categories else [],
+        'product_count': products.count(),
+
+        'total_count': Product.objects.filter(
+            availability=True,
+            product_type='terrarium'
+        ).count(),
+
+        'cart_count': cart_count,
+        'cart_items': cart_items,
     }
 
-    return render(
-        request,
-        'terrarium_product_detail.html',
-        context
-    )
+    return render(request, 'terrarium.html', context)
+
 
 def contact(request):
     categories = Category.objects.all()
@@ -961,7 +904,7 @@ def contact(request):
             message=message
         )
 
-        messages.success(request, '✅ Thank you! Your message has been sent.')
+        messages.success(request, ' Thank you! Your message has been sent.')
 
     return render(request, 'contact-us.html', {
         'categories': categories,
@@ -1075,23 +1018,7 @@ def add_to_cart(request, product_id):
         return JsonResponse({"status": "added"})
     else:
         return JsonResponse({"status": "exists"})
-    
-@login_required(login_url='loginaccount')
-def add_to_cart_terrarium(request, product_id):
 
-    product = get_object_or_404(TerrariumProduct, id=product_id)
-
-    cart_item, created = MyCart.objects.get_or_create(
-        user=request.user,
-        product=product
-    )
-
-    if created:
-        cart_item.quantity = 1
-        cart_item.save()
-        return JsonResponse({"status": "added"})
-    else:
-        return JsonResponse({"status": "exists"})
 
 def Faq(request):
     categories = Category.objects.all()
@@ -1208,6 +1135,7 @@ from django.shortcuts import render
 from .models import Product, Category, MyCart
 
 def collection(request, category_id=None):
+
     # Cart items for logged in user
     if request.user.is_authenticated:
         cart_items = MyCart.objects.filter(user=request.user)
@@ -1218,15 +1146,29 @@ def collection(request, category_id=None):
 
     # Category from URL
     if category_id:
-        products = Product.objects.filter(category_id=category_id, availability=True)
+        products = Product.objects.filter(
+            category_id=category_id,
+            availability=True,
+            product_type='bonsai'
+        )
+
         selected_categories = [category_id]
+
     else:
         selected_categories = request.GET.getlist('category')
 
         if selected_categories:
-            products = Product.objects.filter(category__id__in=selected_categories, availability=True)
+            products = Product.objects.filter(
+                category__id__in=selected_categories,
+                availability=True,
+                product_type='bonsai'
+            )
+
         else:
-            products = Product.objects.filter(availability=True)  # Only active products
+            products = Product.objects.filter(
+                availability=True,
+                product_type='bonsai'
+            )
 
     # Session cart
     cart = request.session.get('cart', {})
@@ -1237,13 +1179,17 @@ def collection(request, category_id=None):
         'categories': categories,
         'selected_categories': list(map(int, selected_categories)) if selected_categories else [],
         'product_count': products.count(),
-        'total_count': Product.objects.filter(availability=True).count(),  # Only active
+
+        'total_count': Product.objects.filter(
+            availability=True,
+            product_type='bonsai'
+        ).count(),
+
         'cart_count': cart_count,
         'cart_items': cart_items,
     }
 
     return render(request, 'collection.html', context)
-
 
 
 

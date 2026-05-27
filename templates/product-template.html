@@ -25,7 +25,7 @@
                             <div class="title">{{ product.name }}</div>
                             <ul>
                                 <li>Litle Forest</li>
-                                <li>{{ product.category.name }}</li>
+                                <li>{{ product.category.name|default:"Terrarium" }}</li>
                             </ul>
                         </div>
                     </div>
@@ -47,7 +47,9 @@
                                 <div>
                                     <div class="product-info">
                                     <h3 class="product__name">{{ product.name }}</h3>
-                                    <h5 class="product__cateoryname">{{ product.category.name }}</h5>
+                                    <h5 class="product__cateoryname">
+                                        {{ product.category.name|default:"Terrarium" }}
+                                    </h5>
                                         <div class="pro-prlb pro-sale">
                                             <div class="price-box">
                                                 <span class="new-price">₹ {{product.discounted_price}}</span>
@@ -95,13 +97,8 @@
                                         </div>
                                         <!-- Deliver Location Section -->
                                         <div class="custom-container-product1">
-
-
                                             <div class="delivery-content1">
-
-
                                                 <div class="custom-element1">
-
                                                     <input 
                                                         type="text" 
                                                         id="pincodeInput" 
@@ -197,7 +194,8 @@
                                                 </div>
                                             </div>
                                         
-                                        <section class="care-guide py-2">
+                                    {% if product.product_type|default:""|lower == "bonsai" or product.category.name|default:""|lower == "bonsai" %}
+                                    <section class="care-guide py-2">
                                         <div class="container-10">
                                             <h2 class="mb-4">Care Guide & Ideal Setting</h2>
 
@@ -226,7 +224,71 @@
 
                                             </div>
                                         </div>
-                                        </section>
+                                    </section>
+                                    {% elif product.product_type|default:""|lower == "terrarium" or product.category.name|default:""|lower == "terrarium" %}
+                                    <section class="care-guide py-2">
+                                        <div class="container-10">
+                                            <h2 class="mb-4">Care Guide & Ideal Setting</h2>
+
+                                            <div class="light justify-content-center">
+
+                                            <div class="col-md-4 mb-4">
+                                                <div class="care-item">
+                                                <i class="bi bi-sun icon-care"></i>
+                                                <h5 class="mt-3"><span class="fw-bold">Light</span> Prefers bright, indirect light. Avoid direct harsh sunlight, as it can overheat the terrarium and damage moisture-loving plants.</h5>
+                                                </div>
+                                            </div>
+
+                                            <div class="watering col-md-4 mb-4">
+                                                <div class="care-item">
+                                                <i class="bi bi-droplet icon-care"></i>
+                                                <h5 class="mt-3"><span class="fw-bold">Watering</span> Keep the soil slightly moist but not waterlogged. Mist occasionally if the terrarium is open. Closed terrariums require very little watering.</h5>
+                                                </div>
+                                            </div>
+
+                                            <div class="temperature col-md-4 mb-4">
+                                                <div class="care-item">
+                                                <i class="bi bi-thermometer-half icon-care"></i>
+                                                <h5 class="mt-3"><span class="fw-bold">Temperature</span> Thrives in 18°C–27°C (65°F–80°F). Keep away from extreme heat, cold drafts, and frost.</h5>
+                                                </div>
+                                            </div>
+
+                                            </div>
+                                        </div>
+                                    </section>
+                                    {% else %}
+                                    <!-- Default care guide (Bonsai-like) -->
+                                    <section class="care-guide py-2">
+                                        <div class="container-10">
+                                            <h2 class="mb-4">Care Guide & Ideal Setting</h2>
+
+                                            <div class="light justify-content-center">
+
+                                            <div class="col-md-4 mb-4">
+                                                <div class="care-item">
+                                                <i class="bi bi-sun icon-care"></i>
+                                                <h5 class="mt-3"><span class="fw-bold">Light</span> Prefers bright, indirect light. Can tolerate some full sun.</h5>
+                                                </div>
+                                            </div>
+
+                                            <div class="watering col-md-4 mb-4">
+                                                <div class="care-item">
+                                                <i class="bi bi-droplet icon-care"></i>
+                                                <h5 class="mt-3"><span class="fw-bold">Watering</span> Allow soil to dry completely between thorough waterings.</h5>
+                                                </div>
+                                            </div>
+
+                                            <div class="temperature col-md-4 mb-4">
+                                                <div class="care-item">
+                                                <i class="bi bi-thermometer-half icon-care"></i>
+                                                <h5 class="mt-3"><span class="fw-bold">Temperature</span> Thrives in 65°F-80°F (18°C-27°C). Protect from frost.</h5>
+                                                </div>
+                                            </div>
+
+                                            </div>
+                                        </div>
+                                    </section>
+                                    {% endif %}
                                     </div>
                                 </div>
                             </div>
@@ -247,7 +309,10 @@
                                     <div class="pro-grli-wrap product-grid">
                                         <div class="collection-img-wrap">
                                             <div class="section-capture tab">
-                                                <h2><span>You May Also Like</span></h2>
+                                                <div class="blog-section-title">
+                                                    <h2>Other Plants Looking <span class="head-color">For a Home</span></h2>
+                                                    <h6>Handpicked favorites from the Little Forest collection.</h6>
+                                                </div>
                                             </div>
                                         </div>
                                         
@@ -321,19 +386,12 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <!-- End Scrollable Product Section -->
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </section>
-                
-  
-        
-        
-       
-
         <script>
             console.log("HEHEH");
             console.log(document.querySelector("#product-quantity"));
@@ -371,7 +429,7 @@
                 asNavFor: '.slider-big',  // Sync with the big slider
                 dots: false,           // No dots navigation
                 centerMode: false,     // Don't center thumbnails
-                focusOnSelect: true    // Select thumbnail on click
+                focusOnSelect: true
               });
           
               // Optional: Add click event to fullscreen button for a full-screen view

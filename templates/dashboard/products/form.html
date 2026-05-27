@@ -192,6 +192,20 @@
                     {{ form.sku }}
                     {% if form.sku.errors %}<div class="form-error">{{ form.sku.errors|join:", " }}</div>{% endif %}
                 </div>
+                <!-- Product Type -->
+                <div class="col-lg-6 form-group">
+                    <label class="form-label">
+                        Product Type <span class="text-danger">*</span>
+                    </label>
+
+                    {{ form.product_type }}
+
+                    {% if form.product_type.errors %}
+                        <div class="form-error">
+                            {{ form.product_type.errors|join:", " }}
+                        </div>
+                    {% endif %}
+                </div>
 
                 <!-- Category -->
                 <div class="col-lg-6 form-group">

@@ -158,7 +158,7 @@
 
                 <thead>
                     <tr>
-                        <th>#</th>
+                        <th>ID</th>
                         <th>Image</th>
                         <th>Name</th>
                         <th>Category</th>
@@ -173,7 +173,7 @@
                     {% for product in products %}
                     <tr>
                         <td class="fw-medium text-muted">
-                            {{ forloop.counter0|add:products.start_index }}
+                            LFB{{ product.id }}
                         </td>
 
                         <td>

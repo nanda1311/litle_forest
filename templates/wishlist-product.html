@@ -5,13 +5,27 @@
 {% block content %}
     <body>
         <!-- header start -->
-      
+        <section id="breadcrumb">
+            <div class="container-fluid fluid____mobile">
+                <div class="breadcrumb-content bg-breadcrumb-07">
+                    <div class="caption">
+                        <div class="title">My Wishlist</div>
+                        <ul>
+                            {% if wishlist_items|length == 0 %}
+                            <li>Home</li>
+                            <li>My Wishlist</li>
+                            {% else %}
+                            <li>There is always room for one more.</li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
         <!-- main section start-->
         <main>
             <section class="section-pt">
-                <div class="container">
-                    <h6 class="cart-mainheading" style="padding-bottom: 20px;">My Wishlist</h6>
-                    
+                <div class="container">                    
                     {% if wishlist_items %}
                     <div class="g-4">
                         {% for item in wishlist_items %}

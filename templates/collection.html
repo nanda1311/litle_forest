@@ -19,8 +19,7 @@
     </video>
 
     <div class="overlay">
-        <h1>Bonsai Collection</h1>
-        <p>Discover premium products crafted for you</p>
+        <h1>The Art of <span class="head-color">Bonsai</span></h1>
     </div>
 </section>
 
@@ -185,14 +184,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
                                                         <!-- Bottom Actions -->
                                                         <div class="product-action">
-                                                            <a href="{% url 'add_to_cart' x.id %}" class="wishlist add-to-cart-btn">
-                                                                <span class="tooltip-text">Cart</span>
+                                                            <a href="#" class="wishlist add-to-cart-btn" data-url="{% url 'add_to_cart' x.id %}" data-auth="{% if request.user.is_authenticated %}true{% else %}false{% endif %}">
+                                                                                                            <span class="tooltip-text">Cart</span>
                                                                 <span class="pro-action-icon">
                                                                     <i class="feather-shopping-cart"></i>
                                                                 </span>
                                                             </a>
-
-                                                            <a href="{% url 'add_to_wishlist' x.id %}" class="wishlist">
+                                                                
+                                                            
+                                                            <a href="#"
+                                                                class="wishlist wishlist-btn"
+                                                                data-url="{% url 'add_to_wishlist' x.id %}"
+                                                                data-auth="{% if request.user.is_authenticated %}true{% else %}false{% endif %}">
                                                                 <span class="tooltip-text">Wishlist</span>
                                                                 <span class="pro-action-icon">
                                                                     <i class="feather-heart"></i>

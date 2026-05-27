@@ -929,7 +929,8 @@
 .special-product ul.product-view-ul {
     display: flex;
     flex-wrap: wrap;
-    gap: 6px;
+    gap: 26px;
+    margin-left: 73px;
 
 }
 
