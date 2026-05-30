@@ -1725,7 +1725,7 @@ textarea:active {
     right: 0;
     top: calc(100% + 19px);
     width: 150px;
-    background-color: var(--body-bgcolor);
+    background-color:#3c3c3c;
     box-shadow: var(--box-shadow-outer);
     z-index: 2;
 }
@@ -1740,7 +1740,7 @@ textarea:active {
     border-top: none;
 }
 .user-wrap .user-wrapper .user-drower a:hover {
-    background-color: #f5f5f5;
+    background-color: #000000;
 }
 @media (max-width: 1199px) {
     .user-wrap .user-wrapper a span.user-title {
