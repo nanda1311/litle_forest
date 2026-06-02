@@ -102,12 +102,7 @@
     <body>
         
         
-      
-      </head>
-      <body>
-      
-       
-      
+
         
 
    <!-- <audio id="audioPlayer" autoplay loop style="display:none;">
@@ -762,8 +757,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 </script>
+<script>
+/* JS */
+document.addEventListener('mousemove', e => {
+  const dot = document.createElement('div');
+  dot.className = 'dot';
+  dot.style.left = e.clientX + 'px';
+  dot.style.top  = e.clientY + 'px';
+  document.body.appendChild(dot);
+  setTimeout(() => dot.remove(), 500);
+});
+
+</script>
+
 <script src="{% static 'js/jquery.js' %}"></script>
 <script src="{% static 'js/ja.js' %}"></script>
+<script src="{% static 'js/cursor.js' %}"></script>
 
 <!-- Bootstrap JS -->
 <script src="{% static 'js/popper.min.js' %}"></script>

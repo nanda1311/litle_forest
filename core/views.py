@@ -447,45 +447,27 @@ def remove_from_cart(request, pk):
 
 
 
-
 @csrf_exempt
 def payment_verify(request):
-    print("Coming Here")
     razorpay_client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
     
-    if request.method == 'POST':
+    # Handle both GET (from handler redirect) and POST (from callback_url)
+    if request.method in ['POST', 'GET']:
+        params = request.POST if request.method == 'POST' else request.GET
         try:
-            # Get payment details from Razorpay
             params_dict = {
-                'razorpay_order_id': request.POST.get('razorpay_order_id'),
-                'razorpay_payment_id': request.POST.get('razorpay_payment_id'),
-                'razorpay_signature': request.POST.get('razorpay_signature')
+                'razorpay_order_id': params.get('razorpay_order_id'),
+                'razorpay_payment_id': params.get('razorpay_payment_id'),
+                'razorpay_signature': params.get('razorpay_signature')
             }
-
-            # Verify the payment signature
             razorpay_client.utility.verify_payment_signature(params_dict)
-            
-            # Update order status
-            print(params_dict['razorpay_order_id'])
             order = Order.objects.filter(payment_id=params_dict['razorpay_order_id']).first()
-            print(order)
             order.payment_id = params_dict['razorpay_payment_id']
             order.payment_status = 'Paid'
             order.save()
-
             return redirect('order_complete')
-
-        except Order.DoesNotExist:
-            return JsonResponse({'error': 'Order not found.'}, status=400)
-        except razorpay.errors.SignatureVerificationError:
+        except:
             return redirect('order_failure')
-        except Exception as e:
-            return redirect('order_failure')
-
-
-    return JsonResponse({'error': 'Invalid request.'}, status=400)
-
-
 
 @login_required
 def order_complete(request):
@@ -587,7 +569,7 @@ def checklist(request):
                         'razorpay_amount': int(total * 100),
                         'razorpay_currency': 'INR',
                         'order_id': order.id,
-                        'callback_url': "https://" + "litleforest.com" + "/payment/verify/",
+                        'callback_url': request.build_absolute_uri('/payment/verify/'),
                     })
 
                 elif payment_method == 'cod':
