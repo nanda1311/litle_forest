@@ -30,20 +30,22 @@
             <h2>The Art and Soul of <span class="head-color">Bonsai</span></h2>
             <h6>Explore the world of bonsai with expert tips, inspiring stories, and deep-rooted traditions.</h6>
         </div>
-        
+
         <div class="blog-cards">
-            
-            <!-- Card 1 -->
+            {% for post in posts %}
             <div class="blog-card">
-                {% for post in posts %}
                 <a href="{% url 'blog_detail' slug=post.slug %}">
-                    <img src="{{ post.image.url }}" class="img-responsive" alt="{{ post.title }}" title="{{ post.title }}" onerror="this.onerror=null; this.src='/static/img/default-image.jpg';">
+                    <img src="{{ post.image.url }}" alt="{{ post.title }}">
                 </a>
-                <h3>{{ post.title }}</h3>
-                <p>{{ post.content|safe|truncatewords:20 }}</p>
-                <a href="{% url 'blog_detail' slug=post.slug %}" class="btn">Learn More</a>
-                {% endfor %}
+
+                <h3>{{ post.title|truncatewords:5 }}</h3>
+                <p>{{ post.content|safe|truncatewords:10 }}</p>
+
+                <a href="{% url 'blog_detail' slug=post.slug %}" class="btn">
+                    Learn More
+                </a>
             </div>
+            {% endfor %}
         </div>
     </div>
 </section>

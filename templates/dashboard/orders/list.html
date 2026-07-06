@@ -200,7 +200,7 @@
         {% endif %}
     </td>
     <td>
-        {% if order.payment_status|lower == "Paid" %}
+        {% if order.payment_status == "Paid" %}
             <span class="badge badge-completed px-3 py-2">Paid</span>
         {% else %}
             <span class="badge badge-pending px-3 py-2">Unpaid</span>

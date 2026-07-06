@@ -124,6 +124,12 @@
         flex-direction: row;
         justify-content: flex-start;
     }
+    .top-filter-bar {
+    background: #ececec;
+    padding: 15px 1px;
+    margin-bottom: 1px;
+
+}
 }
 /* side-sidebar css */
 .shop-sidebar-inner form .shop-sidebar {
@@ -760,6 +766,10 @@
         padding: 0px;
         border-right: none;
     }
+    .shop-page {
+        background-color: #ececec;
+        padding: 0px 0px 0px 0px;
+    }
 }
 
 /* product-view-mode  css */
@@ -930,7 +940,8 @@
     display: flex;
     flex-wrap: wrap;
     gap: 26px;
-    margin-left: 73px;
+    padding-left: 0px;
+    justify-content: center;
 
 }
 
@@ -939,7 +950,7 @@
         margin: 0px 0px 0px 0px;
     }
     .special-product ul.product-view-ul li.pro-item-li {
-        margin: 30px 0px 0px 12px;
+        margin: 0px 0px 0px 12px;
     } 
 } 
 
@@ -1076,4 +1087,114 @@
     .filter-chip{
         flex: 0 0 auto;
     }
+}/* ===================================
+   SOLD OUT PRODUCT
+=================================== */
+
+.product-sold-out .product-image img {
+    opacity: 0.75;
+    filter: grayscale(20%);
+    transition: opacity 0.3s ease;
+}
+
+.product-sold-out .product-image {
+    position: relative;
+}
+
+/* ---- Sold Out Badge ---- */
+.soldout-badge {
+    position: absolute;
+    top: 0px;
+    left: 14px;
+    background-color: #c0392b;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 10px 20px;
+    border-radius: 0px 0px 10px 10px;
+    z-index: 10;
+    text-transform: lowercase;
+    letter-spacing: 0.4px;
+}
+
+/* ---- Sold Out Popup Tab ---- */
+.soldout-tab {
+    display: none;
+    position: absolute;
+    bottom: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #ffffff;
+    color: #000000;
+    border-radius: 12px;
+    z-index: 20;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    min-width: 250px;
+    max-width: 280px;
+    animation: fadeInUp 0.25s ease;
+}
+
+.soldout-tab.active {
+    display: block;
+}
+
+.soldout-tab-inner {
+    padding: 16px 20px;
+    text-align: center;
+}
+
+.soldout-tab-icon {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.soldout-line1 {
+    font-size: 13px;
+    font-weight: 600;
+    color: #000000;
+    margin-bottom: 6px;
+    line-height: 1.5;
+}
+
+.soldout-line2 {
+    font-size: 11.5px;
+    color: #000000;
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* ---- Fade In Animation ---- */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+/* ---- Sold Out Title Cursor ---- */
+.product-sold-out h6 a {
+    cursor: not-allowed;
+    color: inherit;
+}
+
+/* ---- Sold Out Hint Text ---- */
+.soldout-hint {
+    color: #1d1d1d;
+    font-size: 14px;
+    line-height: 2.5;
+    display: block;
+    margin-top: 2px;
+}
+
+/* ---- Remove hover effects for sold out ---- */
+.product-sold-out .product-image:hover img {
+    opacity: 0.75;
+}
+
+.product-sold-out .banner-hover:hover .product-action {
+    display: none;
 }

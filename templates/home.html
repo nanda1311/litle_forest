@@ -16,7 +16,7 @@
             
             <!-- Background Image -->
             <div class="hero-bg">
-                <img src="{% static 'img/slider/home6-slider-1.jpg' %}" alt="Bonsai Banner" class="hero-desktop">
+                <img src="{% static 'img/slider/home6-slider-1.png' %}" alt="Bonsai Banner" class="hero-desktop">
                 <img src="{% static 'img/slider/BannerA-MOB.jpg' %}" alt="Bonsai Mobile" class="hero-mobile">
             </div>
             
@@ -36,10 +36,6 @@
                         <a href="/collection/" class="bonsai-btn btn-theme">
                             <span class="shop-now">Shop Now</span>
                             <span class="icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
-                                    <path fill="currentColor" d="M6.505 2h11a1 1 0 0 1 .8.4l2.7 3.6v15a1 1 0 0 1-1 1h-16a1 1 0 0 1-1-1V6l2.7-3.6a1 1 0 0 1 .8-.4m12.5 6h-14v12h14zm-.5-2l-1.5-2h-10l-1.5 2zm-9.5 4v2a3 3 0 1 0 6 0v-2h2v2a5 5 0 0 1-10 0v-2z"></path>
-                                </svg>
-                            </span>
                         </a>
                     </div>
                 </div>
@@ -155,142 +151,75 @@
 </section>
 
 
-
 <!-- ===== Main Section ===== -->
 <section class="main-content-wrap shop-page section-ptb">
     <div class="container">
 
-        <!-- ===== TOP FILTER BAR (NEW) ===== -->
+        <!-- ===== TOP FILTER BAR ===== -->
         <div class="top-filter-bar">
             <form method="get" class="top-filter-form">
-
                 <h2 data-aos="fade-up" data-aos-anchor-placement="center-bottom" data-aos-delay="300" class="heading text-center mb-4">
-                    Newly Awakened: <span class="head-color">The Latest Collection </span>
+                    Newly Awakened: <span class="head-color">The Latest Collection</span>
                 </h2>
-                <div class="filter-buttons">
-                    {% for category in categories %}
-                    <label class="filter-chip">
-                        <input type="checkbox" name="category" value="{{ category.id }}"
-                        {% if category.id in selected_categories %}checked{% endif %}
-                        onchange="this.form.submit()">
-                        
-                        <span>
-                            {{ category.name }}
-                        </span>
-                    </label>
-                    {% endfor %}
-                </div>
 
             </form>
         </div>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-
-        // Run only on mobile
-        if (window.innerWidth <= 768) {
-
-            const slider = document.querySelector(".filter-buttons");
-
-            // Duplicate items for infinite loop
-            slider.innerHTML += slider.innerHTML;
-
-            let autoScroll = true;
-            let speed = 1;
-
-            function autoSlide() {
-
-                if (!autoScroll) return;
-
-                slider.scrollLeft += speed;
-
-                // Smooth infinite loop
-                if (slider.scrollLeft >= slider.scrollWidth / 2) {
-                    slider.scrollLeft = 0;
-                }
-
-                requestAnimationFrame(autoSlide);
-            }
-
-            autoSlide();
-
-            // Stop when user interacts
-            slider.addEventListener("touchstart", () => {
-                autoScroll = false;
-            });
-
-            slider.addEventListener("mousedown", () => {
-                autoScroll = false;
-            });
-
-            slider.addEventListener("wheel", () => {
-                autoScroll = false;
-            });
-        }
-
-    });
-</script>
         <!-- ===== PRODUCT SECTION ===== -->
         <div class="row">
             <div class="pro-grli-wrapper">
-
                 <div class="pro-grli-wrap product-grid">
-                    <!-- Product Grid -->
                     <div class="special-product grid-3">
                         <div class="collection-category">
                             <div class="row">
                                 <div>
                                     <ul class="product-view-ul">
 
-                                        {% for x in products|slice:":6" %}
+                                        {% for x in featured_products %}
+                                        {% if x.availability %}
+                                        <!-- AVAILABLE PRODUCT -->
                                         <li class="pro-item-li">
-
                                             <div class="single-product-wrap">
 
                                                 <!-- Product Image -->
                                                 <div class="product-image banner-hover">
                                                     <a href="{% url 'product_detail' x.id %}" class="pro-img">
-                                                        <img src="{{x.main_image.url}}" class="img-fluid img1 mobile-img1" alt="product">
-                                                        <img src="{{x.main_image.url}}" class="img-fluid img2 mobile-img2" alt="product">
+                                                        <img src="{{ x.main_image.url }}" class="img-fluid img1 mobile-img1" alt="product">
+                                                        <img src="{{ x.main_image.url }}" class="img-fluid img2 mobile-img2" alt="product">
                                                     </a>
 
                                                     <!-- Hover Actions -->
                                                     <div class="product-action">
-
                                                         <a href="#"
-                                                        class="wishlist add-to-cart-btn"
-                                                        data-url="{% url 'add_to_cart' x.id %}"
-                                                        data-auth="{% if request.user.is_authenticated %}true{% else %}false{% endif %}">
+                                                            class="wishlist add-to-cart-btn"
+                                                            data-url="{% url 'add_to_cart' x.id %}"
+                                                            data-auth="{% if request.user.is_authenticated %}true{% else %}false{% endif %}">
                                                             <span class="tooltip-text">Cart</span>
                                                             <span class="pro-action-icon">
                                                                 <i class="feather-shopping-cart"></i>
                                                             </span>
                                                         </a>
-
                                                         <a href="#"
-                                                        class="wishlist wishlist-btn"
-                                                        data-url="{% url 'add_to_wishlist' x.id %}"
-                                                        data-auth="{% if request.user.is_authenticated %}true{% else %}false{% endif %}">
+                                                            class="wishlist wishlist-btn"
+                                                            data-url="{% url 'add_to_wishlist' x.id %}"
+                                                            data-auth="{% if request.user.is_authenticated %}true{% else %}false{% endif %}">
                                                             <span class="tooltip-text">Wishlist</span>
                                                             <span class="pro-action-icon">
                                                                 <i class="feather-heart"></i>
                                                             </span>
                                                         </a>
-
                                                     </div>
                                                 </div>
 
                                                 <!-- Product Details -->
                                                 <div class="product-caption">
                                                     <div class="product-content">
-
                                                         <div class="product-title">
                                                             <div class="pro-title-price">
                                                                 <h6>
                                                                     <a href="{% url 'product_detail' x.id %}">
-                                                                        {{x.name}}
+                                                                        {{ x.name }}
                                                                     </a>
                                                                 </h6>
-
                                                                 <div class="product-price">
                                                                     <span class="price">₹{{ x.discounted_price }}</span>
                                                                     <span class="old-price">
@@ -298,7 +227,6 @@
                                                                     </span>
                                                                 </div>
                                                             </div>
-
                                                             <div class="product-name">
                                                                 <span class="product-type">{{ x.category.name }}</span>
                                                                 <span class="product-vendor">Height : {{ x.height }} Inches</span>
@@ -319,16 +247,15 @@
 
                                                         <!-- Bottom Actions -->
                                                         <div class="product-action">
-                                                            <a href="#" class="wishlist add-to-cart-btn" data-url="{% url 'add_to_cart' x.id %}" data-auth="{% if request.user.is_authenticated %}true{% else %}false{% endif %}">
-                                                                                                            <span class="tooltip-text">Cart</span>
+                                                            <a href="#" class="wishlist add-to-cart-btn"
+                                                                data-url="{% url 'add_to_cart' x.id %}"
+                                                                data-auth="{% if request.user.is_authenticated %}true{% else %}false{% endif %}">
+                                                                <span class="tooltip-text">Cart</span>
                                                                 <span class="pro-action-icon">
                                                                     <i class="feather-shopping-cart"></i>
                                                                 </span>
                                                             </a>
-                                                                
-                                                            
-                                                            <a href="#"
-                                                                class="wishlist wishlist-btn"
+                                                            <a href="#" class="wishlist wishlist-btn"
                                                                 data-url="{% url 'add_to_wishlist' x.id %}"
                                                                 data-auth="{% if request.user.is_authenticated %}true{% else %}false{% endif %}">
                                                                 <span class="tooltip-text">Wishlist</span>
@@ -337,13 +264,13 @@
                                                                 </span>
                                                             </a>
                                                         </div>
-
                                                     </div>
                                                 </div>
 
                                             </div>
-
                                         </li>
+                                        {% endif %}
+                                        <!-- SOLD OUT products are completely skipped here -->
                                         {% endfor %}
 
                                     </ul>
@@ -351,7 +278,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -562,7 +488,7 @@
                                         <div class="pro-title-price">
                                             <h6>
                                                 <a href="{% url 'product_detail' product.id %}">
-                                                    {{ product.name }}
+                                                    {{ product.name|truncatewords:3 }}
                                                 </a>
                                             </h6>
                                             
@@ -812,27 +738,29 @@
 </div>
 
 
-
 <section class="blog-section">
     <div class="container">
         <div class="blog-section-title">
-            <h2>Why Choose <span class="head-color">Little Forest?</span></h2>
-            <h6>Discover the reasons why Little Forest is the best choice for your bonsai needs.</h6>
+            <h2>The Art and Soul of <span class="head-color">Bonsai</span></h2>
+            <h6>Explore the world of bonsai with expert tips, inspiring stories, and deep-rooted traditions.</h6>
         </div>
-        
+
         <div class="blog-cards">
-            
-            <!-- Card 1 -->
+            {% for post in posts %}
             <div class="blog-card">
-                {% for post in posts %}
                 <a href="{% url 'blog_detail' slug=post.slug %}">
-                    <img src="{{ post.image.url }}" class="img-responsive" alt="{{ post.title }}" title="{{ post.title }}" onerror="this.onerror=null; this.src='/static/img/default-image.jpg';">
+                    <img src="{{ post.image.url }}" alt="{{ post.title }}">
                 </a>
-                <h3>{{ post.title }}</h3>
-                <p>{{ post.content|safe|truncatewords:20 }}</p>
-                <a href="{% url 'blog_detail' slug=post.slug %}" class="btn">Learn More</a>
-                {% endfor %}
+
+                <h3>{{ post.title|truncatewords:3 }}</h3>
+                <div>
+                    {{ post.content|safe|truncatewords:15 }}
+                </div>
+                <a href="{% url 'blog_detail' slug=post.slug %}" class="btn">
+                    Learn More
+                </a>
             </div>
+            {% endfor %}
         </div>
     </div>
 </section>

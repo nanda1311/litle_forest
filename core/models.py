@@ -51,7 +51,6 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
-
 class Product(models.Model):
 
     PRODUCT_TYPES = (
@@ -67,7 +66,6 @@ class Product(models.Model):
         default='bonsai'
     )
 
-    # Rich text description
     description = CKEditor5Field(
         'Description',
         config_name='extends',
@@ -88,7 +86,10 @@ class Product(models.Model):
 
     discount_percentage = models.PositiveIntegerField(blank=True, null=True)
     stock_quantity = models.PositiveIntegerField(default=0)
-    availability = models.BooleanField(default=True)
+    
+    availability = models.BooleanField(default=True)   # False = sold out (shown faded)
+    is_active = models.BooleanField(default=True)      # False = completely hidden from site
+    
     delivery_date = models.DateField(blank=True, null=True)
     sku = models.CharField(max_length=100, blank=True, null=True)
     main_image = models.ImageField(upload_to='product_images/', blank=True, null=True)
@@ -103,6 +104,9 @@ class Product(models.Model):
     def is_low_stock(self):
         return self.stock_quantity <= 5
 
+    def is_sold_out(self):
+        return not self.availability   # sold out when availability is False
+
     def calculate_discount_percentage(self):
         if self.price and self.discounted_price:
             return int(100 - ((self.discounted_price / self.price) * 100))
@@ -113,8 +117,49 @@ class Product(models.Model):
             self.discount_percentage = self.calculate_discount_percentage()
         else:
             self.discount_percentage = 0
+        super().save(*args, **kwargs)
+
+    
+    is_featured = models.BooleanField(
+        default=False,
+        help_text="Show this product in the 'Latest Products' section on the homepage"
+    )
+    featured_at = models.DateTimeField(blank=True, null=True)
+
+
+    def save(self, *args, **kwargs):
+        if self.price and self.discounted_price:
+            self.discount_percentage = self.calculate_discount_percentage()
+        else:
+            self.discount_percentage = 0
+
+        # Stamp/clear featured_at based on the flag
+        if self.is_featured:
+            if not self.featured_at:
+                self.featured_at = timezone.now()
+        else:
+            self.featured_at = None
 
         super().save(*args, **kwargs)
+
+        if self.is_featured and self.category_id:
+            self._enforce_featured_limit()
+
+    def _enforce_featured_limit(self, limit=6):
+        """Keep at most `limit` featured products per category.
+        If exceeded, un-feature the oldest ones first."""
+        others = Product.objects.filter(
+            category_id=self.category_id,
+            is_featured=True
+        ).exclude(pk=self.pk).order_by('featured_at')
+
+        excess = others.count() - (limit - 1)
+        if excess > 0:
+            oldest_ids = list(others.values_list('pk', flat=True)[:excess])
+            Product.objects.filter(pk__in=oldest_ids).update(
+                is_featured=False, featured_at=None
+            )
+
 
 class ProductImage(models.Model):
     image = models.ImageField()

@@ -128,9 +128,12 @@ def check_delivery(request):
         })
 
     else:
+        
+        delivery_date = today + timedelta(days=5)
 
         return JsonResponse({
-            "status": "unavailable"
+            "status": "rural",
+            "delivery_date": delivery_date.strftime("%A, %d %B")
         })
 
 
@@ -187,57 +190,50 @@ def remove_from_wishlist(request, product_id):
         Wishlist.objects.filter(user=request.user, product_id=product_id).delete()
     return redirect('wishlistproduct')
 
-
 def home(request):
-
     category_id = request.GET.get('category_id')
     selected_categories = request.GET.getlist('category')
 
     if category_id:
         products = Product.objects.filter(
-            category_id=category_id,
-            availability=True,
-            product_type='bonsai'
+            category_id=category_id, is_active=True, product_type='bonsai'
         )
         selected_categories = [category_id]
-
     elif selected_categories:
         products = Product.objects.filter(
-            category__id__in=selected_categories,
-            availability=True,
-            product_type='bonsai'
+            category__id__in=selected_categories, is_active=True, product_type='bonsai'
         )
     else:
-        products = Product.objects.filter(
-            availability=True,
-            product_type='bonsai'
-        )
+        products = Product.objects.filter(is_active=True, product_type='bonsai')
 
-    terrarium_products = Product.objects.filter(
-        product_type='terrarium',
-        availability=True
-    )
+    terrarium_products = Product.objects.filter(product_type='terrarium', is_active=True)
+
+    # NEW: featured products for the "Latest Collection" homepage section
+    featured_products = Product.objects.filter(
+        is_featured=True, is_active=True, product_type='bonsai'
+    ).order_by('-featured_at')
+
+    featured_terrarium_products = Product.objects.filter(
+        is_featured=True, is_active=True, product_type='terrarium'
+    ).order_by('-featured_at')
 
     categories = Category.objects.all()
-
-    cart_items = (
-        MyCart.objects.filter(user=request.user)
-        if request.user.is_authenticated else []
-    )
+    cart_items = MyCart.objects.filter(user=request.user) if request.user.is_authenticated else []
     posts = BlogPost.objects.all().order_by('-date')
-
 
     return render(request, 'home.html', {
         'categories': categories,
         'products': products,
         'terrarium_products': terrarium_products,
+        'featured_products': featured_products,
+        'featured_terrarium_products': featured_terrarium_products,
         'cart_items': cart_items,
-        'posts': posts,  # Correct variable name
-        'page_title': 'Our Blog',  # Optional metadata
+        'posts': posts,
+        'page_title': 'Our Blog',
         'selected_categories': list(map(int, selected_categories)) if selected_categories else [],
         'show_login_alert': not request.user.is_authenticated,
     })
-    
+
 @login_required(login_url='loginaccount')
 def move_to_cart(request, product_id):
     product = get_object_or_404(Product, id=product_id)
@@ -447,27 +443,116 @@ def remove_from_cart(request, pk):
 
 
 
+
+
+import logging
+
+logger = logging.getLogger(__name__)
+
+# Console logger
+if not logger.handlers:
+    logger.setLevel(logging.DEBUG)
+
+    console_handler = logging.StreamHandler()
+    console_handler.setLevel(logging.DEBUG)
+
+    formatter = logging.Formatter(
+        '[%(asctime)s] %(levelname)s - %(message)s'
+    )
+
+    console_handler.setFormatter(formatter)
+    logger.addHandler(console_handler)
+
+
+
+
+
+
 @csrf_exempt
 def payment_verify(request):
-    razorpay_client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
-    
-    # Handle both GET (from handler redirect) and POST (from callback_url)
+
+    logger.info("========== PAYMENT VERIFY HIT ==========")
+    logger.info(f"METHOD: {request.method}")
+
+    razorpay_client = razorpay.Client(
+        auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET)
+    )
+
     if request.method in ['POST', 'GET']:
+
         params = request.POST if request.method == 'POST' else request.GET
+
+        logger.info(f"RAW PARAMS: {dict(params)}")
+
         try:
+
             params_dict = {
                 'razorpay_order_id': params.get('razorpay_order_id'),
                 'razorpay_payment_id': params.get('razorpay_payment_id'),
                 'razorpay_signature': params.get('razorpay_signature')
             }
+
+            logger.info(f"PAYMENT PARAMS: {params_dict}")
+
             razorpay_client.utility.verify_payment_signature(params_dict)
-            order = Order.objects.filter(payment_id=params_dict['razorpay_order_id']).first()
-            order.payment_id = params_dict['razorpay_payment_id']
-            order.payment_status = 'Paid'
-            order.save()
+
+            logger.info("SIGNATURE VERIFIED SUCCESSFULLY")
+
+            logger.info(
+                f"Searching Order with payment_id={params_dict['razorpay_order_id']}"
+            )
+
+            order = Order.objects.filter(
+                payment_id=params_dict['razorpay_order_id']
+            ).first()
+
+            logger.info(f"ORDER FOUND: {order}")
+
+            if order:
+
+                logger.info(
+                    f"Before Update => Status={order.payment_status}, Payment ID={order.payment_id}"
+                )
+
+                order.payment_id = params_dict['razorpay_payment_id']
+                order.payment_status = 'Paid'
+                order.status = 'Completed'
+
+                order.save()
+
+                logger.info(
+                    f"After Update => Status={order.payment_status}, Payment ID={order.payment_id}"
+                )
+
+                order.refresh_from_db()
+
+                logger.info(
+                    f"Database Check => Status={order.payment_status}, Payment ID={order.payment_id}"
+                )
+
+            else:
+                logger.error(
+                    f"No Order Found for Razorpay Order ID {params_dict['razorpay_order_id']}"
+                )
+
+            logger.info("Redirecting to order_complete")
+
             return redirect('order_complete')
-        except:
+
+        except Exception as e:
+
+            logger.exception("PAYMENT VERIFY ERROR")
+
             return redirect('order_failure')
+
+    logger.warning("Invalid request method")
+
+    return redirect('home')
+
+
+
+
+
 
 @login_required
 def order_complete(request):
@@ -552,11 +637,13 @@ def checklist(request):
 
                     # Create Razorpay order
                     razorpay_order = client.order.create({
-                        'amount': int(total * 100),  # Amount in paise
+                        'amount': int(total * 100),
                         'currency': 'INR',
                         'payment_capture': '1'
                     })
 
+                    print("RAZORPAY ORDER CREATED")
+                    print(razorpay_order)
 
                     # Update order with Razorpay order ID
                     order.payment_id = razorpay_order['id']
@@ -808,10 +895,7 @@ def blog(request):
 
     return render(request, 'blog-grid.html', context)
 
-# FRONTEND PAGE for terrariums.
 def terrarium_page(request, category_id=None):
-
-    # Cart items for logged in user
     if request.user.is_authenticated:
         cart_items = MyCart.objects.filter(user=request.user)
     else:
@@ -819,33 +903,27 @@ def terrarium_page(request, category_id=None):
 
     categories = Category.objects.all()
 
-    # Category filter
     if category_id:
         products = Product.objects.filter(
             category_id=category_id,
-            availability=True,
+            is_active=True,          # ← changed
             product_type='terrarium'
         )
-
         selected_categories = [category_id]
-
     else:
         selected_categories = request.GET.getlist('category')
-
         if selected_categories:
             products = Product.objects.filter(
                 category__id__in=selected_categories,
-                availability=True,
+                is_active=True,      # ← changed
                 product_type='terrarium'
             )
-
         else:
             products = Product.objects.filter(
-                availability=True,
+                is_active=True,      # ← changed
                 product_type='terrarium'
             )
 
-    # Session cart
     cart = request.session.get('cart', {})
     cart_count = sum(cart.values())
 
@@ -854,18 +932,15 @@ def terrarium_page(request, category_id=None):
         'categories': categories,
         'selected_categories': list(map(int, selected_categories)) if selected_categories else [],
         'product_count': products.count(),
-
         'total_count': Product.objects.filter(
-            availability=True,
+            is_active=True,          # ← changed
             product_type='terrarium'
         ).count(),
-
         'cart_count': cart_count,
         'cart_items': cart_items,
     }
 
     return render(request, 'terrarium.html', context)
-
 
 def contact(request):
     categories = Category.objects.all()
@@ -1011,7 +1086,6 @@ def Faq(request):
         'categories': categories,
     })
 
-@login_required
 def privacypolicy(request):
     categories = Category.objects.all()
     
@@ -1050,7 +1124,6 @@ def blog_detail(request, slug):  # ✅ add slug parameter
     return render(request, 'article-post.html', {'post': post, 'categories': categories})
 
 
-@login_required
 def termscondition(request):
     categories = Category.objects.all()
 
@@ -1115,10 +1188,7 @@ def createaccount(request):
 
 from django.shortcuts import render
 from .models import Product, Category, MyCart
-
 def collection(request, category_id=None):
-
-    # Cart items for logged in user
     if request.user.is_authenticated:
         cart_items = MyCart.objects.filter(user=request.user)
     else:
@@ -1126,33 +1196,27 @@ def collection(request, category_id=None):
 
     categories = Category.objects.all()
 
-    # Category from URL
     if category_id:
         products = Product.objects.filter(
             category_id=category_id,
-            availability=True,
+            is_active=True,          # ← changed
             product_type='bonsai'
         )
-
         selected_categories = [category_id]
-
     else:
         selected_categories = request.GET.getlist('category')
-
         if selected_categories:
             products = Product.objects.filter(
                 category__id__in=selected_categories,
-                availability=True,
+                is_active=True,      # ← changed
                 product_type='bonsai'
             )
-
         else:
             products = Product.objects.filter(
-                availability=True,
+                is_active=True,      # ← changed
                 product_type='bonsai'
             )
 
-    # Session cart
     cart = request.session.get('cart', {})
     cart_count = sum(cart.values())
 
@@ -1161,12 +1225,10 @@ def collection(request, category_id=None):
         'categories': categories,
         'selected_categories': list(map(int, selected_categories)) if selected_categories else [],
         'product_count': products.count(),
-
         'total_count': Product.objects.filter(
-            availability=True,
+            is_active=True,          # ← changed
             product_type='bonsai'
         ).count(),
-
         'cart_count': cart_count,
         'cart_items': cart_items,
     }
@@ -1177,19 +1239,15 @@ def collection(request, category_id=None):
 
 def categories(request, pk):
     category = get_object_or_404(Category, id=pk)
-    
-    # Only active products in this category
-    products = Product.objects.filter(category=category, availability=True)
-    
+    products = Product.objects.filter(
+        category=category,
+        is_active=True               # ← changed
+    )
     context = {
         'category': category,
         'products': products
     }
     return render(request, 'collection.html', context)
-
-
-
-
 
 
 
@@ -1579,7 +1637,7 @@ def order_list(request):
     List all orders - only visible to founders/admins
     """
     orders = (
-        Order.objects
+        Order.objects.filter(payment_status = "Paid", status="Completed")
         .select_related("user", "address")           # 1 query for user + address
         .prefetch_related("order_items__product")    # 1 query for all items + products
         .order_by("-created_at")                     # newest first

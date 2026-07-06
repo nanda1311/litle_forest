@@ -77,7 +77,16 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'litleproject.wsgi.application'
-
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'APP': {
+            'client_id': 'your-client-id',
+            'secret': 'your-client-secret'
+        },
+        'SCOPE': ['profile', 'email'],
+        'OAUTH_PKCE_ENABLED': True,
+    }
+}
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases

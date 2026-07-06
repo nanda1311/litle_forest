@@ -9,97 +9,66 @@
 
 <main>
 
-
 <!-- ===== Breadcrumb ===== -->
-
 <section class="video-banner">
     <video autoplay muted loop playsinline>
         <source src="{% static 'images/bonsai-video.mp4' %}" type="video/mp4">
         Your browser does not support the video tag.
     </video>
-
     <div class="overlay">
         <h1>The Art of <span class="head-color">Bonsai</span></h1>
     </div>
 </section>
 
-
 <!-- ===== Main Section ===== -->
 <section class="main-content-wrap shop-page section-ptb">
     <div class="container">
 
-        <!-- ===== TOP FILTER BAR (NEW) ===== -->
+        <!-- ===== TOP FILTER BAR ===== -->
         <div class="top-filter-bar">
             <form method="get" class="top-filter-form">
-
                 <div class="filter-buttons">
                     {% for category in categories %}
                     <label class="filter-chip">
                         <input type="checkbox" name="category" value="{{ category.id }}"
                         {% if category.id in selected_categories %}checked{% endif %}
                         onchange="this.form.submit()">
-                        
-                        <span>
-                            {{ category.name }}
-                        </span>
+                        <span>{{ category.name }}</span>
                     </label>
+                    {% empty %}
+                    <p>explore the <a href="{% url 'terrarium' %}">terrarium</a></p>
                     {% endfor %}
                 </div>
-
             </form>
         </div>
-<script>
-document.addEventListener("DOMContentLoaded", function () {
 
-    // Run only on mobile
-    if (window.innerWidth <= 768) {
-
-        const slider = document.querySelector(".filter-buttons");
-
-        // Duplicate items for infinite loop
-        slider.innerHTML += slider.innerHTML;
-
-        let autoScroll = true;
-        let speed = 1;
-
-        function autoSlide() {
-
-            if (!autoScroll) return;
-
-            slider.scrollLeft += speed;
-
-            // Smooth infinite loop
-            if (slider.scrollLeft >= slider.scrollWidth / 2) {
-                slider.scrollLeft = 0;
+        <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            if (window.innerWidth <= 768) {
+                const slider = document.querySelector(".filter-buttons");
+                slider.innerHTML += slider.innerHTML;
+                let autoScroll = true;
+                let speed = 1;
+                function autoSlide() {
+                    if (!autoScroll) return;
+                    slider.scrollLeft += speed;
+                    if (slider.scrollLeft >= slider.scrollWidth / 2) {
+                        slider.scrollLeft = 0;
+                    }
+                    requestAnimationFrame(autoSlide);
+                }
+                autoSlide();
+                slider.addEventListener("touchstart", () => { autoScroll = false; });
+                slider.addEventListener("mousedown", () => { autoScroll = false; });
+                slider.addEventListener("wheel", () => { autoScroll = false; });
             }
-
-            requestAnimationFrame(autoSlide);
-        }
-
-        autoSlide();
-
-        // Stop when user interacts
-        slider.addEventListener("touchstart", () => {
-            autoScroll = false;
         });
+        </script>
 
-        slider.addEventListener("mousedown", () => {
-            autoScroll = false;
-        });
-
-        slider.addEventListener("wheel", () => {
-            autoScroll = false;
-        });
-    }
-
-});
-</script>
         <!-- ===== PRODUCT SECTION ===== -->
         <div class="row">
             <div class="pro-grli-wrapper">
-
                 <div class="pro-grli-wrap product-grid">
-                    <!-- Product Grid -->
                     <div class="special-product grid-3">
                         <div class="collection-category">
                             <div class="row">
@@ -107,70 +76,91 @@ document.addEventListener("DOMContentLoaded", function () {
                                     <ul class="product-view-ul">
 
                                         {% for x in products %}
-                                        <li class="pro-item-li">
-
+                                        <li class="pro-item-li {% if not x.availability %}product-sold-out{% endif %}">
                                             <div class="single-product-wrap">
 
                                                 <!-- Product Image -->
                                                 <div class="product-image banner-hover">
-                                                    <a href="{% url 'product_detail' x.id %}" class="pro-img">
-                                                        <img src="{{x.main_image.url}}" class="img-fluid img1 mobile-img1" alt="product">
-                                                        <img src="{{x.main_image.url}}" class="img-fluid img2 mobile-img2" alt="product">
-                                                    </a>
 
+                                                    {% if not x.availability %}
+                                                    <!-- SOLD OUT IMAGE BLOCK -->
+                                                    <a href="#" class="pro-img soldout-click" data-id="{{ x.id }}">
+                                                        <img src="{{ x.main_image.url }}" class="img-fluid img1 mobile-img1" alt="product">
+                                                        <img src="{{ x.main_image.url }}" class="img-fluid img2 mobile-img2" alt="product">
+                                                    </a>
+                                                    <div class="soldout-badge">sold out</div>
+
+                                                    <!-- Sold out popup tab -->
+                                                    <div class="soldout-tab" id="soldout-tab-{{ x.id }}">
+                                                        <div class="soldout-tab-inner">
+                                                            <div class="soldout-tab-icon">🪴</div>
+                                                            <p class="soldout-line1">The Plant wont come back once it is Sold</p>
+                                                            <p class="soldout-line2">Once sold, the plant cannot be returned.</p>
+                                                        </div>
+                                                    </div>
+
+                                                    {% else %}
+                                                    <!-- AVAILABLE IMAGE BLOCK -->
+                                                    <a href="{% url 'product_detail' x.id %}" class="pro-img">
+                                                        <img src="{{ x.main_image.url }}" class="img-fluid img1 mobile-img1" alt="product">
+                                                        <img src="{{ x.main_image.url }}" class="img-fluid img2 mobile-img2" alt="product">
+                                                    </a>
                                                     <!-- Hover Actions -->
                                                     <div class="product-action">
-
-                                                        <a href="#"
-                                                        class="wishlist add-to-cart-btn"
-                                                        data-url="{% url 'add_to_cart' x.id %}"
-                                                        data-auth="{% if request.user.is_authenticated %}true{% else %}false{% endif %}">
+                                                        <a href="#" class="wishlist add-to-cart-btn"
+                                                            data-url="{% url 'add_to_cart' x.id %}"
+                                                            data-auth="{% if request.user.is_authenticated %}true{% else %}false{% endif %}">
                                                             <span class="tooltip-text">Cart</span>
-                                                            <span class="pro-action-icon">
-                                                                <i class="feather-shopping-cart"></i>
-                                                            </span>
+                                                            <span class="pro-action-icon"><i class="feather-shopping-cart"></i></span>
                                                         </a>
-
-                                                        <a href="#"
-                                                        class="wishlist wishlist-btn"
-                                                        data-url="{% url 'add_to_wishlist' x.id %}"
-                                                        data-auth="{% if request.user.is_authenticated %}true{% else %}false{% endif %}">
+                                                        <a href="#" class="wishlist wishlist-btn"
+                                                            data-url="{% url 'add_to_wishlist' x.id %}"
+                                                            data-auth="{% if request.user.is_authenticated %}true{% else %}false{% endif %}">
                                                             <span class="tooltip-text">Wishlist</span>
-                                                            <span class="pro-action-icon">
-                                                                <i class="feather-heart"></i>
-                                                            </span>
+                                                            <span class="pro-action-icon"><i class="feather-heart"></i></span>
                                                         </a>
-
                                                     </div>
+                                                    {% endif %}
+
                                                 </div>
 
                                                 <!-- Product Details -->
                                                 <div class="product-caption">
                                                     <div class="product-content">
-
                                                         <div class="product-title">
                                                             <div class="pro-title-price">
                                                                 <h6>
-                                                                    <a href="{% url 'product_detail' x.id %}">
-                                                                        {{x.name}}
+                                                                    {% if not x.availability %}
+                                                                    <a href="#" class="soldout-click" data-id="{{ x.id }}">
+                                                                        {{ x.name|truncatewords:2 }}
                                                                     </a>
+                                                                    {% else %}
+                                                                    <a href="{% url 'product_detail' x.id %}">
+                                                                        {{ x.name|truncatewords:2 }}
+                                                                    </a>
+                                                                    {% endif %}
                                                                 </h6>
 
+                                                                {% if x.availability %}
                                                                 <div class="product-price">
                                                                     <span class="price">₹{{ x.discounted_price }}</span>
-                                                                    <span class="old-price">
-                                                                        <del>₹{{ x.price }}</del>
-                                                                    </span>
+                                                                    <span class="old-price"><del>₹{{ x.price }}</del></span>
                                                                 </div>
+                                                                {% endif %}
                                                             </div>
 
                                                             <div class="product-name">
                                                                 <span class="product-type">{{ x.category.name }}</span>
+                                                                {% if x.availability %}
                                                                 <span class="product-vendor">Height : {{ x.height }} Inches</span>
                                                                 <span class="product-vendor">Age : 2 - 3 years</span>
+                                                                {% else %}
                                                             </div>
                                                         </div>
+                                                        <span class="product-vendor soldout-hint">When a plant is sold, it does not come back.</span>
+                                                        {% endif %}
 
+                                                        {% if x.availability %}
                                                         <!-- Rating -->
                                                         <div class="product-ratting">
                                                             <span class="pro-ratting">
@@ -184,30 +174,25 @@ document.addEventListener("DOMContentLoaded", function () {
 
                                                         <!-- Bottom Actions -->
                                                         <div class="product-action">
-                                                            <a href="#" class="wishlist add-to-cart-btn" data-url="{% url 'add_to_cart' x.id %}" data-auth="{% if request.user.is_authenticated %}true{% else %}false{% endif %}">
-                                                                                                            <span class="tooltip-text">Cart</span>
-                                                                <span class="pro-action-icon">
-                                                                    <i class="feather-shopping-cart"></i>
-                                                                </span>
+                                                            <a href="#" class="wishlist add-to-cart-btn"
+                                                                data-url="{% url 'add_to_cart' x.id %}"
+                                                                data-auth="{% if request.user.is_authenticated %}true{% else %}false{% endif %}">
+                                                                <span class="tooltip-text">Cart</span>
+                                                                <span class="pro-action-icon"><i class="feather-shopping-cart"></i></span>
                                                             </a>
-                                                                
-                                                            
-                                                            <a href="#"
-                                                                class="wishlist wishlist-btn"
+                                                            <a href="#" class="wishlist wishlist-btn"
                                                                 data-url="{% url 'add_to_wishlist' x.id %}"
                                                                 data-auth="{% if request.user.is_authenticated %}true{% else %}false{% endif %}">
                                                                 <span class="tooltip-text">Wishlist</span>
-                                                                <span class="pro-action-icon">
-                                                                    <i class="feather-heart"></i>
-                                                                </span>
+                                                                <span class="pro-action-icon"><i class="feather-heart"></i></span>
                                                             </a>
                                                         </div>
+                                                        {% endif %}
 
                                                     </div>
                                                 </div>
 
                                             </div>
-
                                         </li>
                                         {% endfor %}
 
@@ -216,7 +201,6 @@ document.addEventListener("DOMContentLoaded", function () {
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -224,7 +208,44 @@ document.addEventListener("DOMContentLoaded", function () {
     </div>
 </section>
 
-</main>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
 
+    document.querySelectorAll(".soldout-click").forEach(function (el) {
+        el.addEventListener("click", function (e) {
+            e.preventDefault();
+
+            const id = this.getAttribute("data-id");
+            const tab = document.getElementById("soldout-tab-" + id);
+
+            if (!tab) return;
+
+            const isActive = tab.classList.contains("active");
+
+            // Close all open tabs first
+            document.querySelectorAll(".soldout-tab.active").forEach(t => t.classList.remove("active"));
+
+            if (!isActive) {
+                tab.classList.add("active");
+
+                // Auto hide after 3 seconds
+                setTimeout(() => {
+                    tab.classList.remove("active");
+                }, 3000);
+            }
+        });
+    });
+
+    // Click anywhere else → close all tabs
+    document.addEventListener("click", function (e) {
+        if (!e.target.closest(".soldout-click")) {
+            document.querySelectorAll(".soldout-tab.active").forEach(t => t.classList.remove("active"));
+        }
+    });
+
+});
+</script>
+
+</main>
 </body>
 {% endblock %}

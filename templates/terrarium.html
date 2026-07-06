@@ -2,100 +2,271 @@
 {% load static %}
 {% block title %}Terrarium - Little Forest{% endblock %}
 
-
 {% block content %}
-
-
 
 <section class="video-banner">
     <video autoplay muted loop playsinline>
         <source src="{% static 'images/terrarium.mp4' %}" type="video/mp4">
         Your browser does not support the video tag.
     </video>
-
     <div class="overlay">
         <h1>Life Inside the <span class="head-color">Glass</span></h1>
     </div>
 </section>
+
+
+<section class="founder-terrarium">
+  <style>
+    .founder-terrarium {
+      --moss: #4a6b3d;
+      --moss-deep: #2f4527;
+      --stone: #dedad2;
+      --ink: #2a2b26;
+      --paper: #f6f4ee;
+      --pine-shadow: rgba(42, 43, 38, 0.08);
+ 
+      font-family: 'Georgia', 'Iowan Old Style', serif;
+      background: var(--paper);
+      color: var(--ink);
+      padding: 6rem 1.5rem;
+      display: flex;
+      justify-content: center;
+    }
+ 
+    .founder-terrarium .ft-wrap {
+      max-width: 1100px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 0.85fr 1.15fr;
+      gap: 4rem;
+      align-items: center;
+    }
+ 
+    .founder-terrarium .ft-image {
+      position: relative;
+      border-radius: 70px;
+      overflow: hidden;
+      box-shadow: 0 30px 60px -20px var(--pine-shadow);
+    }
+ 
+    .founder-terrarium .ft-image img {
+      display: block;
+      width: 88%;
+      height: auto;
+    }
+ 
+    .founder-terrarium .ft-image::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.15);
+    }
+ 
+    .founder-terrarium .ft-eyebrow {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: 1.0rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--moss);
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+ 
+    .founder-terrarium .ft-eyebrow::before {
+      content: "";
+      width: 22px;
+      height: 1px;
+      background: var(--moss);
+      display: inline-block;
+    }
+ 
+    .founder-terrarium h2 {
+      font-size: 40px;
+      line-height: 1.15;
+      font-weight: 400;
+      margin: 0 0 1.5rem;
+      color: var(--moss-deep);
+    }
+ 
+    .founder-terrarium p {
+        color: #111111;
+        font-family: "Archivo";
+        font-size: 18px;
+        font-weight: 300;
+        margin-top: 20px;
+        opacity: 0.7;
+        line-height: 30px;
+    }
+ 
+    .founder-terrarium .ft-signature {
+      margin-top: 2rem;
+      border-top: 1px solid var(--stone);
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+    }
+ 
+    .founder-terrarium .ft-signature .name {
+      font-family: 'Georgia', serif;
+      font-size: 2.05rem;
+      color: var(--ink);
+      display: block;
+    }
+ 
+    .founder-terrarium .ft-signature .role {
+      font-size: 1.0rem;
+      letter-spacing: 0.05em;
+      color: var(--moss);
+      text-transform: uppercase;
+      display: block;
+      margin-top: 0.2rem;
+    }
+ 
+    @media (max-width: 800px) {
+      .founder-terrarium .ft-wrap {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+      }
+      .founder-terrarium {
+        padding: 4rem 1.25rem;
+      }
+    }
+  </style>
+ 
+  <div class="ft-wrap">
+    <div class="ft-image">
+      <img src="{% static 'images/founder-terrarium.jpeg' %}" alt="Sagar Varma standing beside a terrarium">
+    </div>
+ 
+    <div class="ft-content">
+      <span class="ft-eyebrow">A Living Centerpiece</span>
+      <h2>The Founder's Terrarium</h2>
+      <p>
+        Standing over six feet tall, this floor-to-ceiling glass terrarium is one of our
+        signature installations — a striking example of how we bring nature into
+        architectural spaces. Housed in a seamless glass enclosure, the piece centers
+        around a dramatic niwaki-style pine, its cascading branches trained into elegant
+        horizontal tiers reminiscent of traditional Japanese garden design.
+      </p>
+      <p>
+        The tree rises from a sculpted mound of dense, textured moss, accented with
+        natural stone and delicate white blooms — a miniature landscape that feels both
+        wild and meticulously composed. Soft overhead lighting built into the glass
+        canopy highlights the sculptural form of the pine against a clean, minimalist
+        backdrop.
+      </p>
+      <div class="ft-signature">
+        <span class="name">Sagar Varma</span>
+        <span class="role">Founder</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
 <section class="main-content-wrap shop-page section-ptb">
     <div class="container">
         <div class="row">
             <div class="pro-grli-wrapper">
-
                 <div class="pro-grli-wrap product-grid">
-                    <!-- Product Grid -->
                     <div class="special-product grid-3">
                         <div class="collection-category">
                             <div class="row">
                                 <div>
                                     <ul class="product-view-ul">
 
-
-            {% for product in products %}
-
-            <li class="pro-item-li">
-
+                                        {% for product in products %}
+                                        <li class="pro-item-li {% if not product.availability %}product-sold-out{% endif %}">
                                             <div class="single-product-wrap">
 
                                                 <!-- Product Image -->
                                                 <div class="terr product-image banner-hover">
-                                                    <!-- Hover Actions -->
+
+                                                    {% if not product.availability %}
+                                                    <!-- SOLD OUT IMAGE BLOCK -->
+                                                    <a href="#" class="pro-img soldout-click" data-id="{{ product.id }}">
+                                                        <img src="{{ product.main_image.url }}" alt="{{ product.name }}">
+                                                    </a>
+                                                    <div class="soldout-badge">sold out</div>
+
+                                                    <!-- Sold out popup tab -->
+                                                    <div class="soldout-tab" id="soldout-tab-{{ product.id }}">
+                                                        <div class="soldout-tab-inner">
+                                                            <div class="soldout-tab-icon">🪴</div>
+                                                            <p class="soldout-line1">The Plant wont come back once it is Sold</p>
+                                                            <p class="soldout-line2">Once sold, the plant cannot be returned.</p>
+                                                        </div>
+                                                    </div>
+
+                                                    {% else %}
+                                                    <!-- AVAILABLE IMAGE BLOCK -->
                                                     <a href="{% url 'product_detail' product.id %}">
                                                         <img src="{{ product.main_image.url }}" alt="{{ product.name }}">
                                                     </a>
-
                                                     <!-- Hover Actions -->
                                                     <div class="product-action">
-
                                                         <a href="#"
-                                                        class="wishlist add-to-cart-btn"
-                                                        data-url="{% url 'add_to_cart' product.id %}"
-                                                        data-auth="{% if request.user.is_authenticated %}true{% else %}false{% endif %}">
+                                                            class="wishlist add-to-cart-btn"
+                                                            data-url="{% url 'add_to_cart' product.id %}"
+                                                            data-auth="{% if request.user.is_authenticated %}true{% else %}false{% endif %}">
                                                             <span class="tooltip-text">Cart</span>
                                                             <span class="pro-action-icon">
                                                                 <i class="feather-shopping-cart"></i>
                                                             </span>
                                                         </a>
-
                                                         <a href="#"
-                                                        class="wishlist wishlist-btn"
-                                                        data-url="{% url 'add_to_wishlist' product.id %}"
-                                                        data-auth="{% if request.user.is_authenticated %}true{% else %}false{% endif %}">
+                                                            class="wishlist wishlist-btn"
+                                                            data-url="{% url 'add_to_wishlist' product.id %}"
+                                                            data-auth="{% if request.user.is_authenticated %}true{% else %}false{% endif %}">
                                                             <span class="tooltip-text">Wishlist</span>
                                                             <span class="pro-action-icon">
                                                                 <i class="feather-heart"></i>
                                                             </span>
                                                         </a>
                                                     </div>
+                                                    {% endif %}
+
                                                 </div>
 
                                                 <!-- Product Details -->
                                                 <div class="product-caption">
                                                     <div class="product-content">
-
                                                         <div class="product-title">
                                                             <div class="pro-title-price">
                                                                 <h6>
-                                                                    <a href="{% url 'product_detail' product.id %}">
-                                                                        {{product.name}}
+                                                                    {% if not product.availability %}
+                                                                    <a href="#" class="soldout-click" data-id="{{ product.id }}">
+                                                                        {{ product.name|truncatewords:2 }}
                                                                     </a>
+                                                                    {% else %}
+                                                                    <a href="{% url 'product_detail' product.id %}">
+                                                                        {{ product.name|truncatewords:2 }}
+                                                                    </a>
+                                                                    {% endif %}
                                                                 </h6>
 
+                                                                {% if product.availability %}
                                                                 <div class="product-price">
                                                                     <span class="price">₹{{ product.discounted_price }}</span>
                                                                     <span class="old-price">
                                                                         <del>₹{{ product.price }}</del>
                                                                     </span>
                                                                 </div>
+                                                                {% endif %}
                                                             </div>
 
                                                             <div class="product-name">
-                                                                <span class="product-type">{{ x.category.name|default:"Terrarium" }}</span>
+                                                                <span class="product-type">{{ product.category.name|default:"Terrarium" }}</span>
+                                                                {% if product.availability %}
                                                                 <span class="product-vendor">Height : {{ product.height }} Inches</span>
                                                                 <span class="product-vendor">Age : 2 - 3 years</span>
+                                                                {% else %}
                                                             </div>
                                                         </div>
+                                                        <span class="product-vendor soldout-hint">When a plant is sold, it does not come back.</span>
+                                                        {% endif %}
 
+                                                        {% if product.availability %}
                                                         <!-- Rating -->
                                                         <div class="product-ratting">
                                                             <span class="pro-ratting">
@@ -106,43 +277,83 @@
                                                                 <i class="fa-regular fa-star"></i>
                                                             </span>
                                                         </div>
-                                    <!-- Bottom Actions -->
-                                    <div class="product-action">
-                                        <a href="#" class="wishlist add-to-cart-btn" data-url="{% url 'add_to_cart' product.id %}" data-auth="{% if request.user.is_authenticated %}true{% else %}false{% endif %}">
-                                            <span class="tooltip-text">Cart</span>
-                                            <span class="pro-action-icon">
-                                                <i class="feather-shopping-cart"></i>
-                                            </span>
-                                        </a>
-                                            
-                                        
-                                        <a href="#"
-                                            class="wishlist wishlist-btn"
-                                            data-url="{% url 'add_to_wishlist' product.id %}"
-                                            data-auth="{% if request.user.is_authenticated %}true{% else %}false{% endif %}">
-                                            <span class="tooltip-text">Wishlist</span>
-                                            <span class="pro-action-icon">
-                                                <i class="feather-heart"></i>
-                                            </span>
-                                        </a>
-                                    </div>
+
+                                                        <!-- Bottom Actions -->
+                                                        <div class="product-action">
+                                                            <a href="#" class="wishlist add-to-cart-btn"
+                                                                data-url="{% url 'add_to_cart' product.id %}"
+                                                                data-auth="{% if request.user.is_authenticated %}true{% else %}false{% endif %}">
+                                                                <span class="tooltip-text">Cart</span>
+                                                                <span class="pro-action-icon">
+                                                                    <i class="feather-shopping-cart"></i>
+                                                                </span>
+                                                            </a>
+                                                            <a href="#"
+                                                                class="wishlist wishlist-btn"
+                                                                data-url="{% url 'add_to_wishlist' product.id %}"
+                                                                data-auth="{% if request.user.is_authenticated %}true{% else %}false{% endif %}">
+                                                                <span class="tooltip-text">Wishlist</span>
+                                                                <span class="pro-action-icon">
+                                                                    <i class="feather-heart"></i>
+                                                                </span>
+                                                            </a>
+                                                        </div>
+                                                        {% endif %}
+
                                                     </div>
                                                 </div>
+
                                             </div>
-
                                         </li>
+                                        {% endfor %}
 
-            {% endfor %}
+                                    </ul>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
-
     </div>
 </section>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    document.querySelectorAll(".soldout-click").forEach(function (el) {
+        el.addEventListener("click", function (e) {
+            e.preventDefault();
+
+            const id = this.getAttribute("data-id");
+            const tab = document.getElementById("soldout-tab-" + id);
+
+            if (!tab) return;
+
+            const isActive = tab.classList.contains("active");
+
+            // Close all open tabs first
+            document.querySelectorAll(".soldout-tab.active").forEach(t => t.classList.remove("active"));
+
+            if (!isActive) {
+                tab.classList.add("active");
+
+                // Auto hide after 3 seconds
+                setTimeout(() => {
+                    tab.classList.remove("active");
+                }, 3000);
+            }
+        });
+    });
+
+    // Click anywhere else → close all tabs
+    document.addEventListener("click", function (e) {
+        if (!e.target.closest(".soldout-click")) {
+            document.querySelectorAll(".soldout-tab.active").forEach(t => t.classList.remove("active"));
+        }
+    });
+
+});
+</script>
 
 {% endblock %}

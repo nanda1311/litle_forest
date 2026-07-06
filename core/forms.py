@@ -16,14 +16,20 @@ class ProductForm(forms.ModelForm):
 
     class Meta:
         model = Product
-        exclude = ['reviews_count']   # 🔥 remove from form
+        exclude = ['reviews_count', 'discount_percentage', 'rating','featured_at']
         widgets = {
-            'delivery_date': forms.DateInput(
-                attrs={
-                    'type': 'date',
-                    'class': 'form-control'
-                }
-            ),
+            'delivery_date': forms.DateInput(attrs={'type': 'date','class': 'form-control'}),
+            'is_featured': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'sku': forms.TextInput(attrs={'class': 'form-control'}),
+            'height': forms.TextInput(attrs={'class': 'form-control'}),
+            'price': forms.NumberInput(attrs={'class': 'form-control'}),
+            'discounted_price': forms.NumberInput(attrs={'class': 'form-control'}),
+            'stock_quantity': forms.NumberInput(attrs={'class': 'form-control'}),
+            'product_type': forms.Select(attrs={'class': 'form-select'}),
+            'category': forms.Select(attrs={'class': 'form-select'}),
+            'availability': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            'is_active': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
         }
 # BLOG FORM
 # =============================
