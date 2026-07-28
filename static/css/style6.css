@@ -7401,9 +7401,8 @@ img {
     background-size: cover;
     background-repeat: no-repeat;
     width: 111%;
-    min-height: 525px;
+    min-height: 573px;
     margin-top: 40px;
-
 }
 .desc-about{
     margin-top: 123px;
@@ -7427,7 +7426,7 @@ img {
     color: #232323;
     margin-top: 27px;
     font-size: 40px;
-    font-weight: 600; 
+    font-weight: 600;
 }
 .desc-about p {
     color: #111111;
@@ -8585,7 +8584,7 @@ gallery_1 .wrap-blog:hover .box-img img {
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
-    padding: 160px 20px;
+    padding: 219px 0px 58px 20px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -8631,6 +8630,17 @@ gallery_1 .wrap-blog:hover .box-img img {
 
 /* --- Mobile Responsiveness --- */
 @media (max-width: 768px) {
+    .founder-banner {
+    background-image: url("../images/about-founder-bg-mobile.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    padding: 5px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
     .desc-about{
         text-align: left;
     }
@@ -8641,13 +8651,16 @@ gallery_1 .wrap-blog:hover .box-img img {
   }
 
   .founder-banner-content h1 {
-      text-align: left;
+    text-align: left;
     font-size: 22px;
+    margin-bottom: 300px;
+
   }
 
   .founder-banner-content p {
     text-align: left;
-    font-size: 16px;
+    font-size: 14px;
+
   }
 }
 /* about page media query  */

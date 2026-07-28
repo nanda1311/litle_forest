@@ -3,77 +3,88 @@
 
 {% block title %}Home - Little Forest{% endblock %}
 {% block content %}
-    <body>
-        <!-- header end -->
-        <!-- main section start-->
-        <main>
-            <!-- breadcrumb start -->
-            <section id="breadcrumb">
-                <div class="container-fluid fluid____mobile">
-                    <div class="breadcrumb-content bg-breadcrumb-01">
-                        <div class="caption">
-                            <div class="title">Account</div>
-                            <ul>
-                                <li>Home</li>
-                                <li>Account</li>
-                            </ul>
-                        </div>
+
+<!-- 1. LOAD GOOGLE IDENTITY SERVICE SCRIPT -->
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+
+<body>
+    <!-- header end -->
+    <!-- main section start-->
+    <main>
+        <!-- breadcrumb start -->
+        <section id="breadcrumb">
+            <div class="container-fluid fluid____mobile">
+                <div class="breadcrumb-content bg-breadcrumb-01">
+                    <div class="caption">
+                        <div class="title">Account</div>
+                        <ul>
+                            <li>Home</li>
+                            <li>Account</li>
+                        </ul>
                     </div>
                 </div>
-            </section>
-            <!-- breadcrumb end -->
-            <!-- customer-page start -->
-            <section class="customer-page section-ptb">
-                <div class="container">
-                    <div class="row">
-                        <div class="col">
-                            <!-- account login title start -->
-                            <div class="section-capture">
-                                <div class="">
-                                    <h2><span>Login account</span></h2>
-                                </div>
+            </div>
+        </section>
+        <!-- breadcrumb end -->
+        
+        <!-- customer-page start -->
+        <section class="customer-page section-ptb">
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <!-- account login title start -->
+                        <div class="section-capture">
+                            <div class="">
+                                <h2><span>Login account</span></h2>
                             </div>
-                            <!-- account login title end -->
-                            <!-- account login start  -->
-                            <div class="log-acc-page">
-                                <!-- Displaying error messages -->
-                                <!-- Contact form for login -->
-                                <div class="contact-form-list">
-                                  <form method="post" action="{% url 'loginaccount' %}">
-                                        {% csrf_token %}
-                                        <ul class="form-fill">
-                                            <li class="form-fill-li Email">
-                                                <label>Email address</label>
-                                                <input type="email" name="email" autocomplete="email" placeholder="Email address" required>
-                                            </li>
-                                            <li class="form-fill-li Password">
-                                                <label>Password</label>
-                                                <input type="password" name="password" placeholder="Password" required>
-                                            </li>
-                                        </ul>
-                                        <div class="form-action-button">
-                                            <div class="button-forget">
-                                                <button type="submit" class="btn btn-style2">Sign in</button>
-                                            </div>
+                        </div>
+                        <!-- account login title end -->
+                        
+                        <!-- account login start  -->
+                        <div class="log-acc-page">
+                            <!-- Displaying error messages -->
+                            <!-- Contact form for login -->
+                            <div class="contact-form-list">
+                                <form method="post" action="{% url 'loginaccount' %}">
+                                    {% csrf_token %}
+                                    <ul class="form-fill">
+                                        <li class="form-fill-li Email">
+                                            <label>Email address</label>
+                                            <input type="email" name="email" autocomplete="email" placeholder="Email address" required>
+                                        </li>
+                                        <li class="form-fill-li Password">
+                                            <label>Password</label>
+                                            <input type="password" name="password" placeholder="Password" required>
+                                        </li>
+                                    </ul>
+                                    <div class="form-action-button">
+                                        <div class="button-forget">
+                                            <button type="submit" class="btn btn-style2">Sign in</button>
                                         </div>
-                                    </form>
-                                </div>
-                                <div class="acc-wrapper">
-                                    <h6>Don't have an account? </h6>
-                                    <div class="account-optional">
-                                        <a href="{% url 'createaccount' %}">Create an account</a>
                                     </div>
+                                </form>
+                                
+                                <!-- 2. GOOGLE AUTOMATIC ONE-TAP TRIGGER -->
+                                <div id="g_id_onload"
+                                     data-client_id="YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com"
+                                     data-login_uri="http://127.0.0.1:8000/accounts/google/login/callback/"
+                                     data-auto_prompt="true">
                                 </div>
                             </div>
-                            <!-- account login start -->
+                            
+                            <div class="acc-wrapper">
+                                <h6>Don't have an account? </h6>
+                                <div class="account-optional">
+                                    <a href="{% url 'createaccount' %}">Create an account</a>
+                                </div>
+                            </div>
                         </div>
+                        <!-- account login end -->
                     </div>
                 </div>
-            </section>
-            <!-- customer-page end  -->
-        </main>
-
-
-    </body>
-    {% endblock %}
-</html>
+            </div>
+        </section>
+        <!-- customer-page end  -->
+    </main>
+</body>
+{% endblock %}
