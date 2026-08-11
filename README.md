@@ -1,4 +1,5 @@
 # Little Forest
+https://litleforest.com/
 
 Little Forest is an online marketplace for bonsai trees and terrariums, serving customers looking to buy bonsai plants in Bangalore and beyond. The platform lets customers browse curated plant collections, view detailed product information, and purchase online, with guidance provided at every step of plant ownership.
 
