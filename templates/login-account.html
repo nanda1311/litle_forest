@@ -8,8 +8,6 @@
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 
 <body>
-    <!-- header end -->
-    <!-- main section start-->
     <main>
         <!-- breadcrumb start -->
         <section id="breadcrumb">
@@ -32,18 +30,13 @@
             <div class="container">
                 <div class="row">
                     <div class="col">
-                        <!-- account login title start -->
                         <div class="section-capture">
                             <div class="">
                                 <h2><span>Login account</span></h2>
                             </div>
                         </div>
-                        <!-- account login title end -->
-                        
-                        <!-- account login start  -->
+
                         <div class="log-acc-page">
-                            <!-- Displaying error messages -->
-                            <!-- Contact form for login -->
                             <div class="contact-form-list">
                                 <form method="post" action="{% url 'loginaccount' %}">
                                     {% csrf_token %}
@@ -67,7 +60,7 @@
                                 <!-- 2. GOOGLE AUTOMATIC ONE-TAP TRIGGER -->
                                 <div id="g_id_onload"
                                      data-client_id="YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com"
-                                     data-login_uri="http://127.0.0.1:8000/accounts/google/login/callback/"
+                                     data-login_uri="https://litleforest.com/accounts/google/login/callback/"
                                      data-auto_prompt="true">
                                 </div>
                             </div>

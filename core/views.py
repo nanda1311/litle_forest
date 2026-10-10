@@ -771,7 +771,7 @@ def delete_address(request, pk):
     address = get_object_or_404(Address, pk=pk, user=request.user)
     address.delete()
 
-    messages.success(request, "Address deleted successfully 🌿")
+    messages.success(request, "Address deleted successfully")
 
     return redirect('proaddress')
 

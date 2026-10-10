@@ -9658,19 +9658,19 @@ div:where(.swal2-icon).swal2-info {
     flex-shrink: 0;
 }
 
-
-
 .branch-image {
     position: relative;
     width: 2560px;
     max-width: 100%;   /* makes it responsive */
     height: auto;      /* better than 100% */
 }
-
-.branch-image img {
-    width: 100%;
-    height: auto;
+.branch-video {
+    position: relative;
+    width: 2560px;
+    max-width: 100%;   /* makes it responsive */
+    height: auto;      /* better than 100% */
 }
+
 
 /* Large desktops */
 @media (max-width: 1400px) {
