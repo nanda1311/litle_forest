@@ -1,0 +1,937 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Little Forest | Green Living{% endblock %}
+
+{% block content %}
+<section class="promo-landing-page-v2">
+    <div class="promo-hero-v2">
+        <div class="container promo-hero-inner-v2">
+            <div class="promo-copy-v2">
+                <span class="promo-badge-v2">A little more green</span>
+                <h1>Bring home a greener, calmer lifestyle.</h1>
+                <p>
+                    Explore bonsai trees and terrariums selected to bring a little more nature into your
+                    home. Find a new favorite and get friendly guidance to help it thrive.
+                </p>
+                <div class="promo-actions-v2">
+                    <a href="{% url 'collection' %}" class="promo-btn-v2 promo-btn-primary-v2">Shop the collection</a>
+                    <a href="{% url 'about' %}" class="promo-btn-v2 promo-btn-secondary-v2">Why choose us</a>
+                </div>
+                <ul class="promo-points-v2">
+                    <li>Free delivery above ₹999</li>
+                    <li>30-day plant care support</li>
+                    <li>Gift-ready packaging</li>
+                </ul>
+            </div>
+
+            <div class="promo-visual-v2">
+                <div class="promo-card-v2 promo-main-card-v2">
+                    <img src="{% static 'img/slider/home6-slider-1.png' %}" alt="Bonsai collection promotional banner">
+                </div>
+                <div class="promo-floating-card-v2">
+                    <span class="mini-label-v2">Made for your space</span>
+                    <strong>Find your green</strong>
+                    <small>Bonsai and terrariums</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="promo-stats-v2">
+        <div class="container promo-stats-grid-v2">
+            <div>
+                <strong>Fast</strong>
+                <span>Delivery on eligible orders</span>
+            </div>
+            <div>
+                <strong>30 days</strong>
+                <span>Plant health guarantee</span>
+            </div>
+            <div>
+                <strong>All day</strong>
+                <span>Customer support</span>
+            </div>
+            <div>
+                <strong>Expert</strong>
+                <span>Plant care guidance</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="promo-features-v2 container">
+        <div class="section-heading-v2">
+            <span>Why people love Little Forest</span>
+            <h2>Minimal care, maximum joy.</h2>
+        </div>
+
+        <div class="feature-grid-v2">
+            <div class="feature-item-v2">
+                <div class="feature-icon-v2">🌿</div>
+                <h3>Curated bonsai collection</h3>
+                <p>Beautiful indoor and outdoor bonsai selected for easy care and long-lasting appeal.</p>
+            </div>
+            <div class="feature-item-v2">
+                <div class="feature-icon-v2">📦</div>
+                <h3>Safe doorstep delivery</h3>
+                <p>Each order is packed with protective care to arrive healthy and ready to display.</p>
+            </div>
+            <div class="feature-item-v2">
+                <div class="feature-icon-v2">💬</div>
+                <h3>Expert care guidance</h3>
+                <p>Get practical bonsai maintenance tips from our team to keep your plant thriving.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="promo-offers-v2 container">
+        <div class="promo-offers-heading-v2">
+            <div class="section-heading-v2">
+                <span>Thoughtfully selected</span>
+                <h2>Find your new favorite</h2>
+                <p>Explore bonsai picks selected to bring a little more nature into your home.</p>
+            </div>
+            <a href="{% url 'collection' %}" class="promo-all-link-v2">Browse all bonsai</a>
+        </div>
+
+        <div class="promo-product-grid-v2">
+            {% for product in featured_products %}
+            <article class="promo-product-card-v2">
+                <div class="promo-product-image-wrap-v2">
+                    <a href="{% url 'product_detail' product.id %}" class="promo-product-image-link-v2" aria-label="View {{ product.name }}">
+                    {% if product.main_image %}
+                        <img src="{{ product.main_image.url }}" alt="{{ product.name }}" loading="lazy" decoding="async">
+                    {% else %}
+                        <img src="{% static 'img/slider/home6-slider-1.png' %}" alt="{{ product.name }}" loading="lazy" decoding="async">
+                    {% endif %}
+                    </a>
+                    {% if product.price and product.discounted_price and product.discounted_price < product.price and product.discount_percentage %}
+                        <span class="promo-discount-v2">-{{ product.discount_percentage }}%</span>
+                    {% endif %}
+                </div>
+                <div class="promo-product-body-v2">
+                    <p class="promo-category-v2">{{ product.category.name|default:'Bonsai collection' }}</p>
+                    <h3><a href="{% url 'product_detail' product.id %}">{{ product.name }}</a></h3>
+                    <div class="promo-price-row-v2">
+                        {% if product.price and product.discounted_price and product.discounted_price < product.price %}
+                            <strong>₹{{ product.discounted_price|floatformat:2 }}</strong>
+                            <span>₹{{ product.price }}</span>
+                        {% elif product.price %}
+                            <strong>₹{{ product.price|floatformat:2 }}</strong>
+                        {% elif product.discounted_price %}
+                            <strong>₹{{ product.discounted_price|floatformat:2 }}</strong>
+                        {% else %}
+                            <span class="promo-price-unavailable-v2">Price on request</span>
+                        {% endif %}
+                    </div>
+                    <a href="{% url 'product_detail' product.id %}" class="promo-card-link-v2">Explore this plant</a>
+                </div>
+            </article>
+            {% empty %}
+            <div class="promo-empty-state-v2">
+                <p>Our featured picks are being refreshed. Explore the full collection in the meantime.</p>
+                <a href="{% url 'collection' %}" class="promo-btn-v2 promo-btn-primary-v2">Browse the collection</a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="promo-banner-v2">
+        <div class="container promo-banner-inner-v2">
+            <div>
+                <span class="promo-badge-v2">Make room for nature</span>
+                <h2>Give your home a calmer, greener corner.</h2>
+            </div>
+            <a href="{% url 'collection' %}" class="promo-btn-v2 promo-btn-primary-v2">Explore the collection</a>
+        </div>
+    </div>
+</section>
+
+<style>
+    /* Bootstrap's clearfix pseudo-elements must not become extra grid cells. */
+    .promo-hero-inner-v2::before,
+    .promo-hero-inner-v2::after {
+        display: none;
+    }
+
+    .promo-landing-page-v2 {
+        background: #f8f8f3;
+        color: #1e2a1d;
+        padding-bottom: 80px;
+        overflow: hidden;
+    }
+
+    .promo-hero-v2 {
+        position: relative;
+        background:
+            radial-gradient(ellipse at 82% 18%, rgba(196, 220, 184, 0.42), transparent 34%),
+            linear-gradient(125deg, #eef5e9 0%, #f6f2e9 68%, #f1eee4 100%);
+        padding: 116px 0 88px;
+    }
+
+    .promo-hero-inner-v2 {
+        display: grid;
+        grid-template-columns: minmax(0, 1.05fr) minmax(360px, 0.95fr);
+        align-items: center;
+        gap: clamp(32px, 5vw, 76px);
+        max-width: 1280px;
+    }
+
+    .promo-badge-v2 {
+        display: inline-block;
+        background: rgba(52, 118, 68, 0.1);
+        color: #28643a;
+        border: 1px solid rgba(52, 118, 68, 0.16);
+        padding: 9px 15px;
+        border-radius: 999px;
+        font-size: 12px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        font-weight: 700;
+    }
+
+    .promo-copy-v2 h1 {
+        max-width: 660px;
+        font-size: clamp(42px, 5.1vw, 68px);
+        line-height: 1.04;
+        letter-spacing: -0.045em;
+        margin: 22px 0 20px;
+        color: #17301d;
+        font-weight: 800;
+    }
+
+    .promo-copy-v2 p {
+        max-width: 560px;
+        font-size: 16px;
+        line-height: 1.8;
+        color: #536253;
+    }
+
+    .promo-actions-v2 {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 30px;
+    }
+
+    .promo-btn-v2 {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 52px;
+        padding: 0 25px;
+        border-radius: 999px;
+        font-size: 14px;
+        font-weight: 700;
+        text-decoration: none;
+        transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    }
+
+    .promo-btn-v2:hover,
+    .promo-btn-v2:focus-visible {
+        transform: translateY(-2px);
+        text-decoration: none;
+    }
+
+    .promo-btn-primary-v2 {
+        background: #286d42;
+        color: #fff;
+        box-shadow: 0 12px 24px rgba(47, 127, 74, 0.2);
+    }
+
+    .promo-btn-primary-v2:hover,
+    .promo-btn-primary-v2:focus-visible {
+        background: #1d5934;
+        color: #fff;
+        box-shadow: 0 15px 28px rgba(47, 127, 74, 0.28);
+    }
+
+    .promo-btn-secondary-v2 {
+        background: rgba(255, 255, 255, 0.42);
+        border: 1px solid rgba(23, 48, 29, 0.18);
+        color: #17301d;
+    }
+
+    .promo-points-v2 {
+        list-style: none;
+        padding: 0;
+        margin: 25px 0 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px 18px;
+        color: #536253;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .promo-points-v2 li {
+        position: relative;
+        padding-left: 22px;
+    }
+
+    .promo-points-v2 li::before {
+        content: '✓';
+        position: absolute;
+        left: 0;
+        top: 0;
+        color: #2f7f4a;
+        font-weight: 700;
+    }
+
+    .promo-visual-v2 {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        isolation: isolate;
+    }
+
+    .promo-visual-v2::before {
+        content: "";
+        position: absolute;
+        z-index: -1;
+        width: 82%;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        background: rgba(210, 225, 195, 0.68);
+    }
+
+    .promo-main-card-v2 {
+        width: min(100%, 470px);
+        border-radius: 30px;
+        background: rgba(255, 255, 255, 0.86);
+        padding: 12px;
+        box-shadow: 0 32px 72px rgba(31, 65, 40, 0.18);
+    }
+
+    .promo-main-card-v2 img {
+        width: 100%;
+        display: block;
+        border-radius: 22px;
+        object-fit: cover;
+        aspect-ratio: 1 / 1.1;
+    }
+
+    .promo-floating-card-v2 {
+        position: absolute;
+        right: -18px;
+        bottom: 30px;
+        background: #17301d;
+        color: #fff;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 18px;
+        padding: 16px 20px;
+        box-shadow: 0 20px 40px rgba(11, 28, 18, 0.2);
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        max-width: 220px;
+    }
+
+    .promo-floating-card-v2 .mini-label-v2 {
+        font-size: 11px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        opacity: 0.8;
+    }
+
+    .promo-floating-card-v2 strong {
+        font-size: 22px;
+        line-height: 1;
+    }
+
+    .promo-floating-card-v2 small {
+        opacity: 0.9;
+        font-size: 12px;
+    }
+
+    .promo-stats-v2 {
+        position: relative;
+        z-index: 1;
+        margin-top: -42px;
+    }
+
+    .promo-stats-grid-v2 {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 0;
+        background: #fff;
+        border: 1px solid rgba(23, 48, 29, 0.06);
+        border-radius: 22px;
+        padding: 22px 14px;
+        box-shadow: 0 18px 48px rgba(15, 29, 18, 0.09);
+        max-width: 1180px;
+    }
+
+    .promo-stats-grid-v2::before,
+    .promo-stats-grid-v2::after {
+        display: none;
+    }
+
+    .promo-stats-grid-v2 div {
+        text-align: center;
+        padding: 12px 16px;
+        border-right: 1px solid #e8eee5;
+    }
+
+    .promo-stats-grid-v2 div:last-child {
+        border-right: 0;
+    }
+
+    .promo-stats-grid-v2 strong {
+        display: block;
+        font-size: clamp(21px, 2vw, 28px);
+        line-height: 1.15;
+        color: #17301d;
+    }
+
+    .promo-stats-grid-v2 span {
+        display: block;
+        color: #697769;
+        font-size: 13px;
+        margin-top: 5px;
+    }
+
+    .promo-features-v2,
+    .promo-offers-v2 {
+        padding-top: 88px;
+    }
+
+    .promo-offers-heading-v2 {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 24px;
+        margin-bottom: 30px;
+    }
+
+    .section-heading-v2 {
+        margin-bottom: 34px;
+        text-align: center;
+    }
+
+    .promo-offers-heading-v2 .section-heading-v2 {
+        margin: 0;
+        text-align: left;
+    }
+
+    .section-heading-v2 span {
+        display: inline-block;
+        color: #2f7f4a;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        font-weight: 700;
+        font-size: 11px;
+        margin-bottom: 10px;
+    }
+
+    .section-heading-v2 h2 {
+        font-size: clamp(30px, 3.2vw, 42px);
+        letter-spacing: -0.035em;
+        color: #17301d;
+        line-height: 1.15;
+        margin: 0;
+    }
+
+    .promo-offers-heading-v2 .section-heading-v2 p {
+        margin-top: 9px;
+        color: #697769;
+        font-size: 14px;
+    }
+
+    .promo-all-link-v2 {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        min-height: 44px;
+        padding: 0 17px;
+        border: 1px solid rgba(40, 109, 66, 0.25);
+        border-radius: 999px;
+        color: #286d42;
+        font-size: 13px;
+        font-weight: 700;
+        text-decoration: none;
+        white-space: nowrap;
+        transition: background-color 0.2s ease, color 0.2s ease;
+    }
+
+    .promo-all-link-v2::after {
+        content: "→";
+    }
+
+    .promo-all-link-v2:hover,
+    .promo-all-link-v2:focus-visible {
+        background: #286d42;
+        color: #fff;
+    }
+
+    .feature-grid-v2 {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 20px;
+    }
+
+    .feature-item-v2 {
+        background: #fff;
+        border: 1px solid rgba(23, 48, 29, 0.07);
+        border-radius: 22px;
+        padding: 30px 26px;
+        box-shadow: 0 12px 32px rgba(12, 29, 18, 0.045);
+        transition: transform 0.22s ease, box-shadow 0.22s ease;
+    }
+
+    .feature-item-v2:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 42px rgba(12, 29, 18, 0.09);
+    }
+
+    .feature-icon-v2 {
+        width: 64px;
+        height: 64px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 18px;
+        background: #edf7eb;
+        font-size: 28px;
+        margin-bottom: 20px;
+    }
+
+    .feature-item-v2 h3 {
+        font-size: 19px;
+        line-height: 1.35;
+        margin-bottom: 10px;
+        color: #17301d;
+    }
+
+    .feature-item-v2 p {
+        margin: 0;
+        font-size: 14px;
+        line-height: 1.75;
+        color: #697769;
+    }
+
+    .promo-product-grid-v2 {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 22px;
+    }
+
+    .promo-product-card-v2 {
+        background: #fff;
+        border-radius: 20px;
+        overflow: hidden;
+        border: 1px solid rgba(26, 45, 31, 0.07);
+        box-shadow: 0 10px 28px rgba(15, 29, 18, 0.045);
+        transition: transform 0.22s ease, box-shadow 0.22s ease;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .promo-product-card-v2:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 22px 42px rgba(15, 29, 18, 0.11);
+    }
+
+    .promo-empty-state-v2 {
+        grid-column: 1 / -1;
+        background: #fff;
+        border-radius: 24px;
+        padding: 32px;
+        text-align: center;
+    }
+
+    .promo-product-image-wrap-v2 {
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(145deg, #f1f5ec, #e7eee2);
+        aspect-ratio: 1.28 / 1;
+    }
+
+    .promo-product-image-link-v2 {
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+
+    .promo-product-image-wrap-v2 img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        min-height: 220px;
+        object-fit: cover;
+        transition: transform 0.35s ease;
+    }
+
+    .promo-product-card-v2:hover .promo-product-image-wrap-v2 img {
+        transform: scale(1.035);
+    }
+
+    .promo-discount-v2 {
+        position: absolute;
+        top: 18px;
+        left: 18px;
+        background: #fff;
+        border: 1px solid rgba(23, 48, 29, 0.08);
+        color: #286d42;
+        padding: 7px 11px;
+        border-radius: 999px;
+        font-size: 11px;
+        font-weight: 700;
+        box-shadow: 0 5px 15px rgba(15, 29, 18, 0.12);
+    }
+
+    .promo-product-body-v2 {
+        padding: 22px 22px 24px;
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+    }
+
+    .promo-category-v2 {
+        margin: 0 0 8px;
+        color: #2f7f4a;
+        text-transform: uppercase;
+        font-size: 10px;
+        letter-spacing: 0.1em;
+        font-weight: 700;
+    }
+
+    .promo-product-body-v2 h3 {
+        margin: 0 0 13px;
+        color: #17301d;
+        font-size: 20px;
+        line-height: 1.3;
+        min-height: 52px;
+    }
+
+    .promo-product-body-v2 h3 a {
+        color: inherit;
+        text-decoration: none;
+    }
+
+    .promo-product-body-v2 h3 a:hover,
+    .promo-product-body-v2 h3 a:focus-visible {
+        color: #286d42;
+    }
+
+    .promo-price-row-v2 {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-height: 34px;
+        margin-bottom: 17px;
+    }
+
+    .promo-price-row-v2 strong {
+        color: #17301d;
+        font-size: 21px;
+    }
+
+    .promo-price-row-v2 span {
+        color: #7a8578;
+        font-size: 14px;
+        text-decoration: line-through;
+    }
+
+    .promo-price-row-v2 .promo-price-unavailable-v2 {
+        color: #697769;
+        font-size: 13px;
+        text-decoration: none;
+    }
+
+    .promo-card-link-v2 {
+        display: inline-flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        min-height: 44px;
+        margin-top: auto;
+        padding: 0 14px;
+        border: 1px solid #dfe9dd;
+        border-radius: 10px;
+        background: #f5f8f2;
+        color: #286d42;
+        font-size: 13px;
+        font-weight: 700;
+        text-decoration: none;
+        transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    }
+
+    .promo-card-link-v2::after {
+        content: "↗";
+        font-size: 17px;
+        transition: transform 0.2s ease;
+    }
+
+    .promo-card-link-v2:hover,
+    .promo-card-link-v2:focus-visible {
+        background: #286d42;
+        border-color: #286d42;
+        color: #fff;
+    }
+
+    .promo-card-link-v2:hover::after,
+    .promo-card-link-v2:focus-visible::after {
+        transform: translate(2px, -2px);
+    }
+
+    .promo-banner-v2 {
+        padding-top: 88px;
+    }
+
+    .promo-banner-inner-v2 {
+        background: linear-gradient(135deg, #17301d 0%, #2f7f4a 100%);
+        color: #fff;
+        border-radius: 26px;
+        padding: 44px 48px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+    }
+
+    .promo-banner-inner-v2 h2 {
+        margin: 12px 0 0;
+        color: #fff;
+        max-width: 650px;
+        font-size: clamp(30px, 3.2vw, 42px);
+        line-height: 1.15;
+        letter-spacing: -0.035em;
+    }
+
+    @media (max-width: 991px) {
+        .promo-hero-inner-v2,
+        .feature-grid-v2,
+        .promo-product-grid-v2,
+        .promo-stats-grid-v2 {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .promo-hero-inner-v2 {
+            grid-template-columns: minmax(0, 1fr);
+            max-width: 760px;
+            gap: 46px;
+        }
+
+        .promo-copy-v2 {
+            text-align: center;
+        }
+
+        .promo-copy-v2 h1,
+        .promo-copy-v2 p {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .promo-actions-v2,
+        .promo-points-v2 {
+            justify-content: center;
+        }
+
+        .promo-main-card-v2 {
+            width: min(100%, 430px);
+        }
+
+        .promo-floating-card-v2 {
+            right: max(0px, calc((100% - 430px) / 2 - 20px));
+        }
+
+        .promo-stats-grid-v2 {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .promo-stats-grid-v2 div:nth-child(2) {
+            border-right: 0;
+        }
+
+        .promo-stats-grid-v2 div:nth-child(-n + 2) {
+            border-bottom: 1px solid #e8eee5;
+        }
+
+        .promo-banner-inner-v2 {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+    }
+
+    @media (max-width: 640px) {
+        .promo-hero-v2 {
+            padding: 42px 0 76px;
+        }
+
+        .promo-hero-inner-v2,
+        .feature-grid-v2,
+        .promo-product-grid-v2 {
+            grid-template-columns: 1fr;
+        }
+
+        .promo-stats-grid-v2 {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .promo-copy-v2 h1 {
+            font-size: clamp(36px, 10vw, 48px);
+            line-height: 1.06;
+        }
+
+        .promo-copy-v2 p {
+            font-size: 15px;
+        }
+
+        .promo-points-v2 {
+            display: grid;
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: left;
+        }
+
+        .promo-visual-v2 {
+            padding: 0 8px 24px;
+        }
+
+        .promo-floating-card-v2 {
+            right: 0;
+            bottom: 0;
+            padding: 13px 15px;
+            max-width: 190px;
+        }
+
+        .promo-floating-card-v2 strong {
+            font-size: 18px;
+        }
+
+        .promo-stats-v2 {
+            margin-top: -34px;
+        }
+
+        .promo-stats-grid-v2 {
+            padding: 8px 18px;
+        }
+
+        .promo-stats-grid-v2 div,
+        .promo-stats-grid-v2 div:nth-child(2) {
+            border-bottom: 1px solid #e8eee5;
+            padding: 14px 8px;
+        }
+
+        .promo-stats-grid-v2 div:nth-child(odd) {
+            border-right: 1px solid #e8eee5;
+        }
+
+        .promo-stats-grid-v2 div:nth-child(even) {
+            border-right: 0;
+        }
+
+        .promo-stats-grid-v2 div:nth-last-child(-n + 2) {
+            border-bottom: 0;
+        }
+
+        .promo-stats-grid-v2 div:last-child {
+            border-bottom: 0;
+        }
+
+        .promo-features-v2,
+        .promo-offers-v2 {
+            padding-top: 64px;
+        }
+
+        .promo-offers-heading-v2 {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 18px;
+            margin-bottom: 24px;
+        }
+
+        .promo-offers-heading-v2 .section-heading-v2 {
+            text-align: center;
+        }
+
+        .promo-all-link-v2 {
+            align-self: center;
+        }
+
+        .section-heading-v2 {
+            margin-bottom: 26px;
+        }
+
+        .section-heading-v2 h2 {
+            font-size: 30px;
+        }
+
+        .feature-grid-v2,
+        .promo-product-grid-v2 {
+            gap: 14px;
+        }
+
+        .feature-item-v2 {
+            padding: 24px 22px;
+        }
+
+        .promo-product-image-wrap-v2 {
+            aspect-ratio: 1.35 / 1;
+        }
+
+        .promo-product-image-wrap-v2 img {
+            min-height: 0;
+        }
+
+        .promo-product-body-v2 h3 {
+            min-height: 0;
+        }
+
+        .promo-banner-v2 {
+            padding-top: 64px;
+        }
+
+        .promo-banner-inner-v2 {
+            padding: 30px 24px;
+            border-radius: 20px;
+        }
+
+        .promo-banner-inner-v2 h2 {
+            font-size: 30px;
+        }
+
+        .promo-banner-inner-v2 .promo-btn-v2 {
+            width: 100%;
+        }
+    }
+
+    @media (max-width: 380px) {
+        .promo-actions-v2 {
+            flex-direction: column;
+        }
+
+        .promo-actions-v2 .promo-btn-v2 {
+            width: 100%;
+        }
+
+        .promo-stats-grid-v2 {
+            grid-template-columns: 1fr;
+        }
+
+        .promo-stats-grid-v2 div,
+        .promo-stats-grid-v2 div:nth-child(odd),
+        .promo-stats-grid-v2 div:nth-child(even) {
+            border-right: 0;
+            border-bottom: 1px solid #e8eee5;
+        }
+
+        .promo-stats-grid-v2 div:last-child {
+            border-bottom: 0;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .promo-landing-page-v2 *,
+        .promo-landing-page-v2 *::before,
+        .promo-landing-page-v2 *::after {
+            scroll-behavior: auto !important;
+            transition-duration: 0.01ms !important;
+        }
+    }
+</style>
+{% endblock %}

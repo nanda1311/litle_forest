@@ -4,6 +4,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const mainImage = document.querySelector(".main-card img");
     const cardsContainer = document.querySelector(".plant-cards");
 
+    if (!mainTitle || !mainImage || !cardsContainer) return;
+
     let interval;
 
     function rotatePlants() {

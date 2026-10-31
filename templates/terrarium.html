@@ -313,14 +313,11 @@
                                                             </a>
                                                         </div>
                                                         {% endif %}
-
                                                     </div>
                                                 </div>
-
                                             </div>
                                         </li>
                                         {% endfor %}
-
                                     </ul>
                                 </div>
                             </div>
@@ -330,6 +327,39 @@
             </div>
         </div>
     </div>
+    <style>
+        .terrarium-note {
+            margin: 2rem auto 0;
+            padding: 1.25rem 1.5rem;
+            border: 1px solid rgba(74, 107, 61, 0.25);
+            background: linear-gradient(110deg, #176b35 0%, #43b765 22%, #c7ffd4 38%, #39a957 52%, #176b35 76%, #a5f2b5 100%);
+            background-size: 250% 100%;
+            color: #2f4527;
+            text-align: center;
+            line-height: 1.7;
+            box-shadow: 0 8px 24px rgba(42, 43, 38, 0.08);
+            animation: terrarium-note-appear 700ms ease-out both,
+                       terrarium-note-shimmer 7s ease-in-out 700ms infinite;
+        }
+
+        @keyframes terrarium-note-appear {
+            from { opacity: 0; transform: translateY(14px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes terrarium-note-shimmer {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .terrarium-note { animation: none; }
+        }
+    </style>
+    <aside class="terrarium-note" role="note">
+        Each Little Forest creation is unique. Slight variations in size, colour, and appearance are natural. The final product may differ slightly from the images shown.
+    </aside>
+    
 </section>
 
 <script>

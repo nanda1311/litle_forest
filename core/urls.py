@@ -12,6 +12,7 @@ urlpatterns = [
 
     # ================= MAIN PAGES =================
     path('', home, name='home'),
+    path('promotion/', promotional_landing, name='promotion_landing'),
     path('about/', about, name='about'),
     path('blog/', blog, name='blog'),
     path('contact/', contact, name='contact'),
@@ -22,6 +23,9 @@ urlpatterns = [
     # ================= AUTH =================
     path('loginaccount/', loginaccount, name='loginaccount'),
     path('createaccount/', createaccount, name='createaccount'),
+    path('auth/google/', google_login_start, name='google_login'),
+    path('auth/google/callback/', google_callback, name='google_callback'),
+    path('auth/google/complete/', google_complete, name='google_complete'),
     path("login/", auth_views.LoginView.as_view(template_name="dashboard/login.html"), name="login"),
     path('logout/', logout, name='logout'),
 

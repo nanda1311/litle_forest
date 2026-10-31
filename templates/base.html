@@ -13,7 +13,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
         <!-- title -->
-        <title>Little Forest - Bonsai Plants for Every Home</title>
+        <title>{% block title %}Little Forest - Bonsai Plants for Every Home{% endblock %}</title>
         
         <!-- favicon -->
         <link rel="icon" type="image/x-icon" href="{% static 'img/favicon/favicon.png' %}">
@@ -78,17 +78,15 @@
                 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
                 
                 <!-- CSS LIBRARY -->
-                <link rel="stylesheet" href="{% static 'css/css/font-awesome.min.css' %}">
                 <link rel="stylesheet" href="{% static 'css/css/ionicons.min.css' %}">
-                <link rel="stylesheet" href="{% static 'css/slick-theme.css' %}">
                 <link rel="stylesheet" href="{% static 'css/css/slick.css' %}">
+                <link rel="stylesheet" href="{% static 'css/css/slick-theme.css' %}">
                 <link rel="stylesheet" href="{% static 'css/css/Pe-icon-7-stroke.min.css' %}">
                 <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}">
                 <link rel="stylesheet" href="{% static 'css/css/bootstrap-select.min.css' %}">
                 <link rel="stylesheet" href="{% static 'css/css/styles.css' %}">
                 <link rel="stylesheet" href="{% static 'css/css/owl.video.play.html' %}">
-                <link rel="stylesheet" href="{% static 'css/css/slick-theme.css' %}">
-                <link rel="stylesheet" href="{% static 'css/css/style7.css' %}">
+                <link rel="stylesheet" href="{% static 'css/style7.css' %}">
                 
 
                 <link rel="shortcut icon" href="{% static 'css/images/favicon.png' %}">
@@ -216,19 +214,20 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                                                                     </span>
                                                                 </a>
                                                             </div>
-                                                                    {% if user.is_authenticated %}
-                                                                        <a href="{% url 'profile' %}" class="menusup-title d-flex align-items-center">
-                                                                            <i class="ri-user-3-line"></i>
-                                                                        </a>
-                                                                    {% else %}
-                                                                        <a href="#store-account" class="collapsed d-flex align-items-center    " data-bs-toggle="collapse" aria-expanded="false">
-                                                                            
-                                                                            <span class="user-title">Login</span>
-                                                                        </a>
-                                                                        <div class="user-drower collapse" id="store-account">
-                                                                            <a href="{% url 'loginaccount' %}">Login</a>
-                                                                            <a href="{% url 'createaccount' %}">Register</a>
-                                                                        </div>
+                                                                    {% if request.resolver_match.url_name != 'promotion_landing' %}
+                                                                        {% if user.is_authenticated %}
+                                                                            <a href="{% url 'profile' %}" class="menusup-title d-flex align-items-center">
+                                                                                <i class="ri-user-3-line"></i>
+                                                                            </a>
+                                                                        {% else %}
+                                                                            <a href="#store-account" class="collapsed d-flex align-items-center" data-bs-toggle="collapse" aria-expanded="false">
+                                                                                <span class="user-title">Login</span>
+                                                                            </a>
+                                                                            <div class="user-drower collapse" id="store-account">
+                                                                                <a href="{% url 'loginaccount' %}">Login</a>
+                                                                                <a href="{% url 'createaccount' %}">Register</a>
+                                                                            </div>
+                                                                        {% endif %}
                                                                     {% endif %}
                                                                 </div>
                                                     </div>
@@ -284,38 +283,44 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             <a href="{% url 'contact' %}">Contact</a></br>
             <a href="{% url 'wishlistproduct' %}">Wishlist</a></br>
             <a href="{% url 'cart' %}">Cart</a></br>
-            {% if user.is_authenticated %}
-                <a href="{% url 'profile' %}">Profile</a></br>
-            {% else %}
-                <a href="{% url 'loginaccount' %}">Login</a></br>
-                <a href="{% url 'createaccount' %}">Register</a></br>
+            {% if request.resolver_match.url_name != 'promotion_landing' %}
+                {% if user.is_authenticated %}
+                    <a href="{% url 'profile' %}">Profile</a></br>
+                {% else %}
+                    <a href="{% url 'loginaccount' %}">Login</a></br>
+                    <a href="{% url 'createaccount' %}">Register</a></br>
+                {% endif %}
             {% endif %}
         </div>
         </div>
 
         <script>
+            (function () {
             const menuToggle = document.getElementById("menuToggle");
             const closeMenu = document.getElementById("closeMenu");
             const mobileMenu = document.getElementById("mobileMenu");
             const sidebarOverlay = document.getElementById("sidebarOverlay");
 
-            // Open Menu
-            menuToggle.addEventListener("click", () => {
-                mobileMenu.classList.add("active");
-                sidebarOverlay.classList.add("active");
-            });
+            if (menuToggle && closeMenu && mobileMenu && sidebarOverlay) {
+                // Open Menu
+                menuToggle.addEventListener("click", () => {
+                    mobileMenu.classList.add("active");
+                    sidebarOverlay.classList.add("active");
+                });
 
-            // Close Menu
-            closeMenu.addEventListener("click", () => {
-                mobileMenu.classList.remove("active");
-                sidebarOverlay.classList.remove("active");
-            });
+                // Close Menu
+                closeMenu.addEventListener("click", () => {
+                    mobileMenu.classList.remove("active");
+                    sidebarOverlay.classList.remove("active");
+                });
 
-            // Close on Overlay Click
-            sidebarOverlay.addEventListener("click", () => {
-                mobileMenu.classList.remove("active");
-                sidebarOverlay.classList.remove("active");
-            });
+                // Close on Overlay Click
+                sidebarOverlay.addEventListener("click", () => {
+                    mobileMenu.classList.remove("active");
+                    sidebarOverlay.classList.remove("active");
+                });
+            }
+            })();
         </script>
         <!-- header end -->
 <script>
@@ -591,31 +596,33 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                         </a>
                     </div>
                 </li>
-                <li class="bottom-menu-wrap">
-                    <div class="bottom-menu-wrapper">
-                        {% if user.is_authenticated %}
-                            <a href="{% url 'profile' %}" class="bottom-menu-user">
-                                <span class="bottom-menu-icon">
-                                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                                        <circle cx="12" cy="7" r="4"></circle>
-                                    </svg>
-                                </span>
-                                <span class="bottom-menu-title"></span>
-                            </a>
-                        {% else %}
-                            <a href="{% url 'loginaccount' %}" class="bottom-menu-user">
-                                <span class="bottom-menu-icon">
-                                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                                        <circle cx="12" cy="7" r="4"></circle>
-                                    </svg>
-                                </span>
-                                <span class="bottom-menu-title"></span>
-                            </a>
-                        {% endif %}
-                    </div>
-                </li>
+                {% if request.resolver_match.url_name != 'promotion_landing' %}
+                    <li class="bottom-menu-wrap">
+                        <div class="bottom-menu-wrapper">
+                            {% if user.is_authenticated %}
+                                <a href="{% url 'profile' %}" class="bottom-menu-user">
+                                    <span class="bottom-menu-icon">
+                                        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                            <circle cx="12" cy="7" r="4"></circle>
+                                        </svg>
+                                    </span>
+                                    <span class="bottom-menu-title"></span>
+                                </a>
+                            {% else %}
+                                <a href="{% url 'loginaccount' %}" class="bottom-menu-user">
+                                    <span class="bottom-menu-icon">
+                                        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                            <circle cx="12" cy="7" r="4"></circle>
+                                        </svg>
+                                    </span>
+                                    <span class="bottom-menu-title"></span>
+                                </a>
+                            {% endif %}
+                        </div>
+                    </li>
+                {% endif %}
                 
                 
                 <li class="bottom-menu-wrap">
@@ -783,9 +790,7 @@ document.addEventListener('mousemove', e => {
 </script>
 
 <script src="{% static 'js/jquery.js' %}"></script>
-<script src="{% static 'js/ja.js' %}"></script>
-<script src="{% static 'js/cursor.js' %}"></script>
-
+<script src="{% static 'js/ja.js' %}?v=2"></script>
 <!-- Bootstrap JS -->
 <script src="{% static 'js/popper.min.js' %}"></script>
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
@@ -809,8 +814,8 @@ document.addEventListener('mousemove', e => {
 
 <!-- Counter -->
 <script src="{% static 'js/counter.js' %}"></script>
-<script type="text/javascript" src="js/jquery123.js"></script>
-<script type="text/javascript" src="js/owlcarousel.js"></script>
+<script type="text/javascript" src="{% static 'js/jquery123.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/owlcarousel.js' %}"></script>
 
 
 
@@ -936,20 +941,18 @@ if (window.history.replaceState) {
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
         <!-- main js -->
-        <script src="js/main.js"></script>
+        {% if request.resolver_match.url_name != 'promotion_landing' %}
+        <script src="{% static 'js/main.js' %}"></script>
+        {% endif %}
         <script type="text/javascript" src="{% static 'js/js/jquery-1.12.4.min.js' %}"></script>
         <script type="text/javascript" src="{% static 'js/js/owl.carousel.min.js' %}"></script>
         <script type="text/javascript" src="{% static 'js/js/bootstrap.min.js' %}"></script>
-        <script type="text/javascript" src="{% static 'js/js/vit-gallery.js' %}"></script>
-        <script type="text/javascript" src="{% static 'js/js/jquery.countTo.js' %}"></script>
-        <script type="text/javascript" src="{% static 'js/js/jquery.appear.min.js' %}"></script>
-        <script type="text/javascript" src="{% static 'js/js/isotope.pkgd.min.js' %}"></script>
         <script type="text/javascript" src="{% static 'js/js/slick.min.js' %}"></script>
-        <script type="text/javascript" src="{% static 'js/js/bootstrap-select.js' %}"></script>
-        <script type="text/javascript" src="{% static 'js/js/jquery.littlelightbox.js' %}"></script>
+        {% if request.resolver_match.url_name != 'promotion_landing' %}
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBDyCxHyc8z9gMA5IlipXpt0c33Ajzqix4"></script>
-        <script type="text/javascript" src="js/jquery.js"></script>
-        <script type="text/javascript" src="js/owl.carousel.js"></script>
+        {% endif %}
+        <script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/owlcarousel.js' %}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
@@ -1174,13 +1177,6 @@ function showLoginAlert(action) {
     });
 }
 </script>
-<script src="https://accounts.google.com/gsi/client" async defer></script>
-
-<div id="g_id_onload"
-     data-client_id="YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com"
-     data-login_uri="https://litleforest.com/accounts/google/login/callback/"
-     data-auto_prompt="true">
-</div>
 
 <style>
 

@@ -78,7 +78,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'litleproject.wsgi.application'
 
+GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_CLIENT_ID", "846100390627-h5nhb658vk2k7cm8v9f4l929smpovvle.apps.googleusercontent.com")
+SECURE_CROSS_ORIGIN_OPENER_POLICY = "same-origin-allow-popups"
+SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
 
+RAZORPAY_KEY_ID = 'rzp_live_4StBL0cFwPL5XD'
+RAZORPAY_KEY_SECRET = 'QIfA93KAJAdp8ZRlTVtkFwxK'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 

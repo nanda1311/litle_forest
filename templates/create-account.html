@@ -40,6 +40,7 @@
                             <!-- account login start  -->
                             <div class="log-acc-page">
                                 <div class="contact-form-list">
+                                  {% include 'partials/google_signin.html' with google_button_text='Sign up with Google' divider_text='or sign up with email' %}
                                   <form method="post" enctype="multipart/form-data">
                                                 {% csrf_token %}
 

@@ -4193,15 +4193,17 @@ function initializeClock(id, endtime) {
   const mobileMenu = document.getElementById("mobile-menu");
   const menuCloseBtn = document.querySelector(".menu-close-btn");
 
-  // Show menu
-  menuToggle.addEventListener("click", () => {
-    mobileMenu.classList.add("active");
-  });
+  if (menuToggle && mobileMenu && menuCloseBtn) {
+    // Show menu
+    menuToggle.addEventListener("click", () => {
+      mobileMenu.classList.add("active");
+    });
 
-  // Hide menu
-  menuCloseBtn.addEventListener("click", () => {
-    mobileMenu.classList.remove("active");
-  });
+    // Hide menu
+    menuCloseBtn.addEventListener("click", () => {
+      mobileMenu.classList.remove("active");
+    });
+  }
 
   (function($) {
     /* Gallery Isotope */

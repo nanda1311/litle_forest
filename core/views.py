@@ -40,6 +40,9 @@ import json
 from django.core.paginator import Paginator
 import re
 import uuid
+import secrets
+from urllib.parse import urlencode
+from django.urls import reverse
 from django.core.exceptions import PermissionDenied
 from .models import Order
 
@@ -232,6 +235,23 @@ def home(request):
         'page_title': 'Our Blog',
         'selected_categories': list(map(int, selected_categories)) if selected_categories else [],
         'show_login_alert': not request.user.is_authenticated,
+    })
+
+
+def promotional_landing(request):
+    categories = Category.objects.filter(status='active')[:4]
+    featured_products = Product.objects.filter(
+        is_active=True,
+        product_type='bonsai',
+        availability=True,
+    ).order_by('-discount_percentage', '-price')[:3]
+
+    if not featured_products:
+        featured_products = Product.objects.filter(is_active=True, product_type='bonsai')[:3]
+
+    return render(request, 'promotion.html', {
+        'categories': categories,
+        'featured_products': featured_products,
     })
 
 @login_required(login_url='loginaccount')
@@ -1000,8 +1020,116 @@ def loginaccount(request):
             messages.error(request, "Invalid email or password.")
 
     return render(request, "login-account.html", {
-        "categories": categories
+        "categories": categories,
+        "google_login_enabled": bool(settings.GOOGLE_CLIENT_ID),
     })
+
+
+def _unique_username_from_email(email):
+    base = re.sub(r'[^\w.@+-]', '', email.split('@')[0])[:140] or 'user'
+    username = base
+    while User.objects.filter(username=username).exists():
+        username = f"{base}{uuid.uuid4().hex[:6]}"
+    return username
+
+
+GOOGLE_AUTH_URL = 'https://accounts.google.com/o/oauth2/v2/auth'
+
+
+def _google_redirect_uri(request):
+    # nginx talks plain HTTP to gunicorn behind Cloudflare, so the request
+    # scheme is always "http"; Google needs the public https URL.
+    host = request.get_host()
+    scheme = 'http' if host.split(':')[0] in ('localhost', '127.0.0.1') else 'https'
+    return f"{scheme}://{host}{reverse('google_callback')}"
+
+
+def google_login_start(request):
+    """Send the user to Google's sign-in page. Google redirects back to
+    google_callback with a signed ID token in the URL fragment."""
+    if not settings.GOOGLE_CLIENT_ID:
+        messages.error(request, "Google sign-in is not available right now.")
+        return redirect('loginaccount')
+
+    state = secrets.token_urlsafe(32)
+    nonce = secrets.token_urlsafe(32)
+    request.session['google_oauth'] = {'state': state, 'nonce': nonce}
+
+    params = {
+        'client_id': settings.GOOGLE_CLIENT_ID,
+        'redirect_uri': _google_redirect_uri(request),
+        'response_type': 'id_token',
+        'scope': 'openid email profile',
+        'state': state,
+        'nonce': nonce,
+        'prompt': 'select_account',
+    }
+    return redirect(f"{GOOGLE_AUTH_URL}?{urlencode(params)}")
+
+
+def google_callback(request):
+    """Google lands here with the token in the URL fragment, which never reaches
+    the server; a tiny page posts it to google_complete (same-origin, CSRF-protected)."""
+    return render(request, 'google-callback.html')
+
+
+@require_POST
+def google_complete(request):
+    """Verify the ID token from Google, then log the user in, creating an
+    account on first sign-in."""
+    from google.auth.exceptions import GoogleAuthError
+    from google.oauth2 import id_token
+    from google.auth.transport import requests as google_requests
+
+    expected = request.session.pop('google_oauth', None)
+    failed = "Google sign-in failed. Please try again."
+
+    if request.POST.get('error'):
+        # e.g. the user backed out of Google's account chooser ("access_denied")
+        logger.info("Google sign-in cancelled: %s", request.POST.get('error'))
+        messages.error(request, "Google sign-in was cancelled.")
+        return redirect('loginaccount')
+
+    credential = request.POST.get('id_token')
+    if not expected or not credential or not secrets.compare_digest(
+            request.POST.get('state', ''), expected['state']):
+        logger.warning("Google sign-in: missing token or state mismatch")
+        messages.error(request, failed)
+        return redirect('loginaccount')
+
+    try:
+        idinfo = id_token.verify_oauth2_token(
+            credential, google_requests.Request(), settings.GOOGLE_CLIENT_ID
+        )
+        if not secrets.compare_digest(idinfo.get('nonce', ''), expected['nonce']):
+            raise ValueError('nonce mismatch')
+    except (ValueError, GoogleAuthError):
+        logger.warning("Google sign-in: ID token verification failed", exc_info=True)
+        messages.error(request, failed)
+        return redirect('loginaccount')
+
+    email = (idinfo.get('email') or '').lower()
+    if not email or not idinfo.get('email_verified'):
+        messages.error(request, "Your Google email address is not verified.")
+        return redirect('loginaccount')
+
+    user = User.objects.filter(email__iexact=email).order_by('id').first()
+    if user is None:
+        user = User(
+            username=_unique_username_from_email(email),
+            email=email,
+            first_name=(idinfo.get('given_name') or '')[:150],
+            last_name=(idinfo.get('family_name') or '')[:150],
+        )
+        user.set_unusable_password()
+        user.save()
+    elif not user.is_active:
+        messages.error(request, "This account is disabled.")
+        return redirect('loginaccount')
+
+    login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+    messages.success(request, "Login successful 🎉")
+    return redirect('home')
 
 
 def shop_page(request):
@@ -1184,7 +1312,10 @@ def createaccount(request):
         # GET request — empty form
         form = SignupForm()
 
-    return render(request, "create-account.html", {'form': form})
+    return render(request, "create-account.html", {
+        'form': form,
+        'google_login_enabled': bool(settings.GOOGLE_CLIENT_ID),
+    })
 
 from django.shortcuts import render
 from .models import Product, Category, MyCart
